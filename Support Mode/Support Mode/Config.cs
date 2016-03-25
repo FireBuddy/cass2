@@ -6,7 +6,7 @@ namespace Support_Mode
     public static class Config
     {
         private static Menu _disableAa;
-        public static Menu Main, Harass, LaneClear, LastHit;
+        public static Menu Main, Harass, LaneClear, LastHit, Draw;
         public static bool GlobalToggler
         {
             get { return Main["globalToggle"].Cast<KeyBind>().CurrentValue; }
@@ -38,6 +38,10 @@ namespace Support_Mode
             LastHit.Add("disableAAILH", new CheckBox("Disable AA on minions in LastHit Mode", true));
             LastHit.Add("stacksILH", new CheckBox("Still AA when we have shield stacks", false));
             LastHit.Add("allyRangeLH", new Slider("Allies in range x to disable AA in LastHit Mode", 1400, 0, 5000));
+
+            Draw = _disableAa.AddSubMenu("Draw", "Draw");
+            Draw.AddGroupLabel("Options for draw stuff");
+            Draw.Add("globalDraw", new CheckBox("Draw the Status", true));
         }
 
         public static bool IsChecked(Menu obj, string value)

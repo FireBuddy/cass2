@@ -1,6 +1,7 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK;
+using SharpDX;
 
 namespace Support_Mode
 {
@@ -14,6 +15,7 @@ namespace Support_Mode
         public static void Init()
         {
             Orbwalker.OnPreAttack += OnBeforeAttack;
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
@@ -68,6 +70,14 @@ namespace Support_Mode
                         }
                     }
                 }
+            }
+        }
+
+        private static void Drawing_OnDraw(EventArgs args)
+        {
+            if (Config.IsChecked(Config.Draw, "globalDraw"))
+            {
+                Drawing.DrawText(Drawing.WorldToScreen(Player.Instance.Position) - new Vector2(30, -30), System.Drawing.Color.Green, "Support Mode", 2);
             }
         }
     }

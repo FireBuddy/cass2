@@ -53,8 +53,8 @@ namespace Support_Mode
                         {
                             if (Config.IsChecked(Config.LaneClear, "pushNoCS"))
                             {
-                                var minions = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.Index == target.Index);
-                                var targetMinion = minions.FirstOrDefault();
+                                var targetMinion = EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(x => x.Index == target.Index);
+                                //var targetMinion = minions.FirstOrDefault();
                                 var aaTravelTime = target.Distance(ObjectManager.Player) / _Player.BasicAttack.MissileSpeed + _Player.AttackDelay + Game.Ping / 2f / 1000;
                                 if (Prediction.Health.GetPrediction(targetMinion, (int)(aaTravelTime)*1000) <= _Player.GetAutoAttackDamage(targetMinion) + 5)
                                 {

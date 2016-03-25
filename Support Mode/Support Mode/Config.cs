@@ -33,8 +33,7 @@ namespace Support_Mode
             LaneClear.Add("disableAAILC", new CheckBox("Disable AA on minions in LaneClear Mode", true));
             LaneClear.Add("stacksILC", new CheckBox("Still AA when we have shield stacks", false));
             LaneClear.Add("allyRangeLC", new Slider("Allies in range x to disable AA in LaneClear Mode", 1400, 0, 5000));
-            LaneClear.AddGroupLabel("BETA");
-            LaneClear.Add("pushNoCS", new CheckBox("AA minions, but dont take CS - BETA", false));
+            LaneClear.Add("pushNoCS", new CheckBox("AA minions, but dont take CS", false));
 
             LastHit = _disableAa.AddSubMenu("LastHit", "LastHit");
             LastHit.AddGroupLabel("Options for LastHit");

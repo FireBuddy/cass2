@@ -9,17 +9,18 @@ namespace Support_Mode
         public static Menu Main, Harass, LaneClear, LastHit, Draw;
         public static bool GlobalToggler
         {
-            get { return Main["globalToggle"].Cast<KeyBind>().CurrentValue; }
+            get { return _disableAa["globalToggle"].Cast<KeyBind>().CurrentValue; }
         }
 
         public static void CallMenu()
         {
             _disableAa = MainMenu.AddMenu("Support Mode", "SupportMode");
+            _disableAa.AddGroupLabel("Support Mode");
 
-            Main = _disableAa.AddSubMenu("Main", "Main");
-            Main.AddGroupLabel("Global options");
-            Main.Add(
-                "globalToggle", new KeyBind("Global enable/disable toggle", true, KeyBind.BindTypes.PressToggle, 'O'));
+            //Main = _disableAa.AddSubMenu("Main", "Main");
+            _disableAa.AddGroupLabel("Global options");
+            _disableAa.Add(
+                "globalToggle", new KeyBind("Global enable/disable toggle", true, KeyBind.BindTypes.PressToggle));
 
             Harass = _disableAa.AddSubMenu("Harass", "Harass");
             Harass.AddGroupLabel("Options for Harass");
@@ -32,6 +33,8 @@ namespace Support_Mode
             LaneClear.Add("disableAAILC", new CheckBox("Disable AA on minions in LaneClear Mode", true));
             LaneClear.Add("stacksILC", new CheckBox("Still AA when we have shield stacks", false));
             LaneClear.Add("allyRangeLC", new Slider("Allies in range x to disable AA in LaneClear Mode", 1400, 0, 5000));
+            LaneClear.AddGroupLabel("BETA");
+            LaneClear.Add("pushNoCS", new CheckBox("AA minions, but dont take CS - BETA", false));
 
             LastHit = _disableAa.AddSubMenu("LastHit", "LastHit");
             LastHit.AddGroupLabel("Options for LastHit");
@@ -43,8 +46,8 @@ namespace Support_Mode
             Draw.AddGroupLabel("Options for draw stuff");
             Draw.AddGroupLabel("Status Text");
             Draw.Add("globalDraw", new CheckBox("Draw the Status", true));
-            Draw.Add("globaldrawX", new Slider("Relative X Position of the Status Text", 35, -100, 100));
-            Draw.Add("globaldrawY", new Slider("Relative Y Position of the Status Text", -30, -100, 100));
+            Draw.Add("globaldrawX", new Slider("Relative X Position of the Status Text", 35, -200, 200));
+            Draw.Add("globaldrawY", new Slider("Relative Y Position of the Status Text", -30, -200, 200));
         }
 
         public static bool IsChecked(Menu obj, string value)

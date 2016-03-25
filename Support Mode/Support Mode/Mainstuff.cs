@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
@@ -50,7 +51,25 @@ namespace Support_Mode
                         }
                         else
                         {
-                            args.Process = false;
+                            if (Config.IsChecked(Config.LaneClear, "pushNoCS"))
+                            {
+                                var minions = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.Index == target.Index);
+                                var targetMinion = minions.FirstOrDefault();
+                                var aaTravelTime = target.Distance(ObjectManager.Player) / _Player.BasicAttack.MissileSpeed + _Player.AttackDelay + Game.Ping / 2f / 1000;
+                                if (Prediction.Health.GetPrediction(targetMinion, (int)(aaTravelTime)*1000) <= _Player.GetAutoAttackDamage(targetMinion) + 5)
+                                {
+                                    /*
+                                    var higherHpMinion =
+                                        EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(hp => hp.Health > target.Health);
+                                    target = higherHpMinion;
+                                    */
+                                    args.Process = false;
+                                }
+                            }
+                            else
+                            {
+                                args.Process = false;
+                            }
                         }
                     }
                 }

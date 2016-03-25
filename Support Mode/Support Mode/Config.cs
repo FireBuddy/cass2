@@ -41,7 +41,10 @@ namespace Support_Mode
 
             Draw = _disableAa.AddSubMenu("Draw", "Draw");
             Draw.AddGroupLabel("Options for draw stuff");
+            Draw.AddGroupLabel("Status Text");
             Draw.Add("globalDraw", new CheckBox("Draw the Status", true));
+            Draw.Add("globaldrawX", new Slider("Relative X Position of the Status Text", 35, -100, 100));
+            Draw.Add("globaldrawY", new Slider("Relative Y Position of the Status Text", -30, -100, 100));
         }
 
         public static bool IsChecked(Menu obj, string value)

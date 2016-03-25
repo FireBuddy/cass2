@@ -1,16 +1,25 @@
 ﻿using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
-namespace DisableAA
+namespace Support_Mode
 {
     public static class Config
     {
         private static Menu _disableAa;
-        public static Menu Harass, LaneClear, LastHit;
+        public static Menu Main, Harass, LaneClear, LastHit;
+        public static bool GlobalToggler
+        {
+            get { return Main["globalToggle"].Cast<KeyBind>().CurrentValue; }
+        }
 
         public static void CallMenu()
         {
-            _disableAa = MainMenu.AddMenu("DisableAA", "DisableAA");
+            _disableAa = MainMenu.AddMenu("Support Mode", "SupportMode");
+
+            Main = _disableAa.AddSubMenu("Main", "Main");
+            Main.AddGroupLabel("Global options");
+            Main.Add(
+                "globalToggle", new KeyBind("Global enable/disable toggle", true, KeyBind.BindTypes.PressToggle, 'O'));
 
             Harass = _disableAa.AddSubMenu("Harass", "Harass");
             Harass.AddGroupLabel("Options for Harass");

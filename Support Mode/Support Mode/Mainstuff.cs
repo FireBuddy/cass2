@@ -2,7 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 
-namespace DisableAA
+namespace Support_Mode
 {
     public static class Mainstuff
     {
@@ -18,7 +18,7 @@ namespace DisableAA
 
         private static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
-            if (args.Target.Type == GameObjectType.obj_AI_Minion)
+            if (args.Target.Type == GameObjectType.obj_AI_Minion && Config.GlobalToggler)
             {
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && Config.IsChecked(Config.Harass, "disableAAIH"))
                 {
@@ -28,7 +28,7 @@ namespace DisableAA
                         var shieldStacks = _Player.GetBuffCount("TalentReaper");
                         if (shieldStacks > 0 && Config.IsChecked(Config.Harass, "stacksIH"))
                         {
-                            
+
                         }
                         else
                         {

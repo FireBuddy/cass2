@@ -1,1 +1,0 @@
-c:\users\ridiculous\documents\visual studio 2015\Projects\DisableAA\DisableAA\bin\Debug\DisableAA.exe.config

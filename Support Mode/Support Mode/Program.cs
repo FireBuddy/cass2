@@ -2,7 +2,7 @@
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 
-namespace DisableAA
+namespace Support_Mode
 {
     public static class Program
     {

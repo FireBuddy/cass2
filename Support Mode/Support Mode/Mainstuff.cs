@@ -77,7 +77,7 @@ namespace Support_Mode
         {
             if (Config.IsChecked(Config.Draw, "globalDraw") && Config.GlobalToggler)
             {
-                Drawing.DrawText(Drawing.WorldToScreen(Player.Instance.Position) - new Vector2(30, -30), System.Drawing.Color.Green, "Support Mode", 2);
+                Drawing.DrawText(Drawing.WorldToScreen(Player.Instance.Position) - new Vector2(50, -30), System.Drawing.Color.White, "Support Mode", 2);
             }
         }
     }

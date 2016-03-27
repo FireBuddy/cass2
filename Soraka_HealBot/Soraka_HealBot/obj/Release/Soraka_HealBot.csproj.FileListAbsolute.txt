@@ -1,0 +1,12 @@
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.exe.config
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.pdb
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.SDK.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.Direct3D9.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.XInput.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\Newtonsoft.Json.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.csprojResolveAssemblyReference.cache
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.pdb

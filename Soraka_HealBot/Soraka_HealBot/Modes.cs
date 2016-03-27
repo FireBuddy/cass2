@@ -119,16 +119,14 @@ namespace Soraka_HealBot
 
         public static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
-            if (Config.IsChecked(Config.Harass, "disableAAH"))
+            if (args.Target.Type == GameObjectType.obj_AI_Minion &&
+                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
+                 Config.IsChecked(Config.Harass, "disableAAH"))
             {
-                if (args.Target.Type == GameObjectType.obj_AI_Minion &&
-                    Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+                var air = _Player.CountAlliesInRange(Config.GetSliderValue(Config.Harass, "allyRangeH"));
+                if (air > 1)
                 {
-                    var air = _Player.CountAlliesInRange(Config.GetSliderValue(Config.Harass, "allyRangeH"));
-                    if (air > 1)
-                    {
-                        args.Process = false;
-                    }
+                    args.Process = false;
                 }
             }
         }

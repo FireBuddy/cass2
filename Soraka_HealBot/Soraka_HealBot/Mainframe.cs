@@ -3,6 +3,8 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 namespace Soraka_HealBot
 {
@@ -66,7 +68,7 @@ namespace Soraka_HealBot
             }
         }
 
-        private static void OnProcessSpellCast(Obj_AI_Base target, GameObjectProcessSpellCastEventArgs spell) {}
+        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args) {}
 
         private static void Drawing_OnDraw(EventArgs args)
         {

@@ -21,6 +21,7 @@ namespace Soraka_HealBot
             Combo.Add("useQInCombo", new CheckBox("Use Q"));
             Combo.Add("useEInCombo", new CheckBox("Use E"));
             Combo.Add("eOnlyCC", new CheckBox("Use E only on CC'd or 100% Hit", false));
+            Combo.Add("comboDisableAA", new CheckBox("Disable AA on heroes in combo mode", false));
 
             Harass = Soraka.AddSubMenu("Harass", "Harass");
             Harass.AddGroupLabel("Options for Harass");

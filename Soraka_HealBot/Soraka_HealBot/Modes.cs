@@ -129,6 +129,10 @@ namespace Soraka_HealBot
                     args.Process = false;
                 }
             }
+            if (Config.IsChecked(Config.Combo, "comboDisableAA") && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && args.Target.Type == GameObjectType.AIHeroClient)
+            {
+                args.Process = false;
+            }
         }
     }
 }

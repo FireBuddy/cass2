@@ -22,7 +22,6 @@ namespace CassOp
                 if (qPred.HitChancePercent >= 85)
                 {
                     Spells.Q.Cast(qPred.CastPosition);
-                    //Spells.QCasted = Game.Time;
                 }
             }
 
@@ -144,7 +143,6 @@ namespace CassOp
                 if (qPred.HitChancePercent >= 90)
                 {
                     Spells.Q.Cast(qPred.CastPosition);
-                    //Spells.QCasted = Game.Time;
                 }
             }
 
@@ -272,7 +270,6 @@ namespace CassOp
 
         public static void LastHit()
         {
-            //Orbwalker.OnUnkillableMinion
         }
     }
 }

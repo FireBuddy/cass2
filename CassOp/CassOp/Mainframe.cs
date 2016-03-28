@@ -12,14 +12,10 @@ namespace CassOp
 
         public static void Init()
         {
-            //Game.OnTick += OnGameTick;
             Game.OnUpdate += OnGameUpdate;
-            Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Computed.OnSpellCast;
             Spellbook.OnCastSpell += Computed.OnSpellbookCastSpell;
             Orbwalker.OnUnkillableMinion += Computed.OnUnkillableMinion;
-            Drawing.OnDraw += OnDraw;
-            Drawing.OnEndScene += DrawOnEndScene;
             Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
         }
@@ -49,7 +45,7 @@ namespace CassOp
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
             {
-                Modes.LastHit();
+                //Modes.LastHit();
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {

@@ -134,10 +134,7 @@ namespace CassOp
 
         public static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            /*if (sender.IsMe && args.SData.Name == "CassiopeiaNoxiousBlast")
-            {
-                args.Process = false;
-            }*/
+            /* -> Didnt work - use Spellbook.OnCastSpell
             if (sender.IsMe && args.SData.Name == "CassiopeiaPetrifyingGaze" &&
                 Config.IsChecked(Config.Misc, "antiMissR"))
             {
@@ -145,7 +142,7 @@ namespace CassOp
                 {
                     args.Process = false;
                 }
-            }
+            }*/
         }
 
         public static void OnSpellbookCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
@@ -214,14 +211,6 @@ namespace CassOp
             }
             x = y / x;
             return Mainframe.RDelay.Next(y - x, y + x);
-        }
-
-        public static bool PredFace(Obj_AI_Base target)
-        {
-            var predictPos = Prediction.Position.PredictUnitPosition(target, 250);
-
-            return predictPos.Distance(Player.Instance.ServerPosition) <
-                   target.ServerPosition.Distance(Player.Instance.ServerPosition);
         }
 
         /**/

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -193,24 +194,13 @@ namespace CassOp
         public static int RandomDelay(int x)
         {
             var y = x;
-            if (x >= 100000000)
+            var i = Math.Abs(x);
+            while (i >= 10)
             {
-                x /= 100000000;
+                i /= 10;
             }
-            if (x >= 10000)
-            {
-                x /= 10000;
-            }
-            if (x >= 100)
-            {
-                x /= 100;
-            }
-            if (x >= 10)
-            {
-                x /= 10;
-            }
-            x = y / x;
-            return Mainframe.RDelay.Next(y - x, y + x);
+            i = y / i;
+            return Mainframe.RDelay.Next(y - i, y + i);
         }
 
         /**/

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 
@@ -268,8 +267,6 @@ namespace CassOp
             }
         }
 
-        public static void LastHit()
-        {
-        }
+        public static void LastHit() {}
     }
 }

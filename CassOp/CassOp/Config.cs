@@ -10,7 +10,7 @@ namespace CassOp
 
         public static void CallMenu()
         {
-            Cassop = MainMenu.AddMenu("Cass", "cass");
+            Cassop = MainMenu.AddMenu("Cassiopeia", "cass");
             Cassop.AddGroupLabel("Cassiopeia by mztikk");
 
             Combo = Cassop.AddSubMenu("Combo", "combo");

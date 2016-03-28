@@ -1,0 +1,12 @@
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.exe.config
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.pdb
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.SDK.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\SharpDX.Direct3D9.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\SharpDX.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\SharpDX.XInput.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\Newtonsoft.Json.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.csprojResolveAssemblyReference.cache
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.pdb

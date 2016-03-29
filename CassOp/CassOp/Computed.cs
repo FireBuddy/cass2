@@ -9,7 +9,7 @@ namespace CassOp
 {
     internal class Computed
     {
-        public static AIHeroClient _Player => EloBuddy.Player.Instance;
+        public static AIHeroClient _Player => Player.Instance;
 
         public static void AutoQ()
         {
@@ -134,7 +134,8 @@ namespace CassOp
 
         public static void OnSpellbookCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            if (sender.Owner.IsMe && args.Slot == SpellSlot.R && Config.IsChecked(Config.Misc, "antiMissR") && !Spells.flashR)
+            if (sender.Owner.IsMe && args.Slot == SpellSlot.R && Config.IsChecked(Config.Misc, "antiMissR") &&
+                !Spells.flashR)
             {
                 if (EntityManager.Heroes.Enemies.Count(h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(_Player)) < 1)
                 {
@@ -183,10 +184,11 @@ namespace CassOp
 
         public static void OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
-            var eTravelTime = target.Distance(EloBuddy.Player.Instance) / Spells.E.Handle.SData.MissileSpeed
-                                      + (Spells.E.CastDelay) + Game.Ping / 2f / 1000;
+            var eTravelTime = target.Distance(Player.Instance) / Spells.E.Handle.SData.MissileSpeed +
+                              (Spells.E.CastDelay) + Game.Ping / 2f / 1000;
             if (Config.IsChecked(Config.Misc, "eLastHit") && _Player.GetSpellDamage(target, SpellSlot.E) > target.Health &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) && Prediction.Health.GetPrediction(target, (int)eTravelTime*1000) > 0)
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) &&
+                Prediction.Health.GetPrediction(target, (int) eTravelTime * 1000) > 0)
             {
                 Spells.E.Cast(target);
             }
@@ -222,13 +224,21 @@ namespace CassOp
         {
             var dmg = 0f;
             if (Spells.Q.IsReady())
+            {
                 dmg += _Player.GetSpellDamage(target, SpellSlot.Q);
+            }
             if (Spells.W.IsReady())
+            {
                 dmg += _Player.GetSpellDamage(target, SpellSlot.W);
+            }
             if (Spells.E.IsReady())
+            {
                 dmg += _Player.GetSpellDamage(target, SpellSlot.E);
+            }
             if (Spells.R.IsReady())
+            {
                 dmg += _Player.GetSpellDamage(target, SpellSlot.R);
+            }
             return dmg;
         }
 
@@ -244,7 +254,7 @@ namespace CassOp
         {
             var result = new Vector2();
             var minionCount = 0;
-            var startPos = EloBuddy.Player.Instance.ServerPosition.To2D();
+            var startPos = Player.Instance.ServerPosition.To2D();
 
             range = range * range;
 

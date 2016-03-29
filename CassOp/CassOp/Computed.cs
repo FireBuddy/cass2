@@ -41,7 +41,6 @@ namespace CassOp
                 if (qPred.HitChancePercent >= 95)
                 {
                     Spells.Q.Cast(qPred.CastPosition);
-                    //Spells.QCasted = Game.Time;
                 }
             }
         }
@@ -131,23 +130,6 @@ namespace CassOp
                     Spells.R.Cast(enemyNearMouse);
                 }
             }
-        }
-
-        public static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender.IsMe)
-            {
-                Chat.Print(args.SData.Name);
-            }
-            /* -> Didnt work - use Spellbook.OnCastSpell
-            if (sender.IsMe && args.SData.Name == "CassiopeiaPetrifyingGaze" &&
-                Config.IsChecked(Config.Misc, "antiMissR"))
-            {
-                if (EntityManager.Heroes.Enemies.Count(h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(_Player)) < 1)
-                {
-                    args.Process = false;
-                }
-            }*/
         }
 
         public static void OnSpellbookCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)

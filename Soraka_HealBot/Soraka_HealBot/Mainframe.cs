@@ -37,7 +37,7 @@ namespace Soraka_HealBot
             {
                 AssistKS();
             }
-            if (Spells.W.IsReady())
+            if (Spells.W.IsReady() && Config.IsChecked(Config.HealBot, "autoW"))
             {
                 HealBotW();
             }

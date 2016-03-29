@@ -8,10 +8,36 @@ namespace CassOp
     {
         public static void Combo()
         {
-            var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget(Spells.Q.Range))
+            var target = TargetSelector.GetTarget(Spells.R.Range + 430, DamageType.Magical);
+            if (target == null)
             {
                 return;
+            }
+
+            if (Config.IsChecked(Config.Combo, "useRInCombo") && Spells.R.IsReady())
+            {
+                var flash = Player.Spells.FirstOrDefault(args => args.SData.Name == "SummonerFlash");
+                var enemiesAroundTarget = EntityManager.Heroes.Enemies.Count(en => en.Distance(target.Position) <= 1000) - 1;
+                if (Config.IsChecked(Config.Combo, "comboFlashR") && target.IsFacing(Player.Instance) &&
+                    (target.Distance(Player.Instance) > Spells.R.Range &&
+                     target.Distance(Player.Instance) <= Spells.R.Range + 400) && (flash != null && flash.IsReady) &&
+                    Computed.ComboDmg(target) > target.Health &&
+                    enemiesAroundTarget <= Config.GetSliderValue(Config.Combo, "maxEnFlash"))
+                {
+                    Spells.flashR = true;
+                    var relPos = target.Position.Shorten(Player.Instance.Position, -300);
+                    Spells.R.Cast(relPos);
+                    Core.DelayAction(() => Player.CastSpell(flash.Slot, target.Position), 300);
+                }
+
+                var countFace =
+                    EntityManager.Heroes.Enemies.Count(
+                        h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(Player.Instance));
+                if (countFace >= Config.GetSliderValue(Config.Combo, "comboMinR") && target.IsFacing(Player.Instance) &&
+                    target.IsValidTarget(Spells.R.Range))
+                {
+                    Spells.R.Cast(target);
+                }
             }
 
             if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.IsReady() &&
@@ -63,25 +89,13 @@ namespace CassOp
                     Spells.E.Cast(target);
                 }
             }
-
-            if (Config.IsChecked(Config.Combo, "useRInCombo") && Spells.R.IsReady())
-            {
-                var countFace =
-                    EntityManager.Heroes.Enemies.Count(
-                        h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(ObjectManager.Player));
-                if (countFace >= Config.GetSliderValue(Config.Combo, "comboMinR") &&
-                    target.IsFacing(ObjectManager.Player) && target.IsValidTarget(Spells.R.Range))
-                {
-                    Spells.R.Cast(target);
-                }
-            }
         }
 
         internal static void JungleClear()
         {
-            var minions = EntityManager.MinionsAndMonsters.Monsters;
+            var minions = EntityManager.MinionsAndMonsters.Monsters.OrderByDescending(x => x.MaxHealth);
             if (!minions.Any() || minions == null ||
-                ObjectManager.Player.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
             {
                 return;
             }
@@ -89,7 +103,7 @@ namespace CassOp
             {
                 var qFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(ObjectManager.Player) <= Spells.Q.Range)
+                        minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.Q.Width * 1.5f, Spells.Q.Range);
                 if (qFarmLoc.MinionsHit > 0)
@@ -102,7 +116,7 @@ namespace CassOp
             {
                 var wFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(ObjectManager.Player) <= Spells.W.Range)
+                        minions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC"))
@@ -114,10 +128,11 @@ namespace CassOp
             if (Config.IsChecked(Config.JungleClear, "useEInJC") && Spells.E.IsReady())
             {
                 var jngToE =
-                    EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(
-                        m =>
-                            m.IsValidTarget(Spells.E.Range) &&
-                            (Config.IsChecked(Config.JungleClear, "jungEonP") && m.HasBuffOfType(BuffType.Poison)));
+                    EntityManager.MinionsAndMonsters.Monsters.OrderByDescending(x => x.MaxHealth)
+                        .FirstOrDefault(
+                            m =>
+                                m.IsValidTarget(Spells.E.Range) &&
+                                (Config.IsChecked(Config.JungleClear, "jungEonP") && m.HasBuffOfType(BuffType.Poison)));
                 if (jngToE != null)
                 {
                     Spells.E.Cast(jngToE);
@@ -129,7 +144,7 @@ namespace CassOp
         {
             var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
             if (target == null || !target.IsValidTarget(Spells.Q.Range) ||
-                ObjectManager.Player.ManaPercent < Config.GetSliderValue(Config.Harass, "manaToHarass"))
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.Harass, "manaToHarass"))
             {
                 return;
             }
@@ -190,17 +205,17 @@ namespace CassOp
         {
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
             if (!minions.Any() || minions == null ||
-                ObjectManager.Player.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
             {
                 return;
             }
 
             if (Config.IsChecked(Config.LaneClear, "useQInLC") && Spells.Q.IsReady() &&
-                (Orbwalker.LastHitMinion != null && Orbwalker.IsAutoAttacking))
+                (Orbwalker.LastHitMinion == null && !Orbwalker.IsAutoAttacking))
             {
                 var qFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(ObjectManager.Player) <= Spells.Q.Range)
+                        minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.Q.Width * 1.5f, Spells.Q.Range);
                 if (qFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minQInLC"))
@@ -210,11 +225,11 @@ namespace CassOp
             }
 
             if (Config.IsChecked(Config.LaneClear, "useWInLC") && Spells.W.IsReady() &&
-                (Orbwalker.LastHitMinion != null && Orbwalker.IsAutoAttacking))
+                (Orbwalker.LastHitMinion == null && !Orbwalker.IsAutoAttacking))
             {
                 var wFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(ObjectManager.Player) <= Spells.W.Range)
+                        minions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC"))
@@ -228,11 +243,10 @@ namespace CassOp
                 var minToE =
                     EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
                         m =>
-                            m.IsValidTarget(Spells.E.Range) &&
-                            ObjectManager.Player.GetSpellDamage(m, SpellSlot.E) > m.Health &&
+                            m.IsValidTarget(Spells.E.Range) && Player.Instance.GetSpellDamage(m, SpellSlot.E) > m.Health &&
                             ((Config.IsChecked(Config.LaneClear, "laneEonP") && m.HasBuffOfType(BuffType.Poison)) ||
                              (Config.IsChecked(Config.LaneClear, "useManaEInLC") &&
-                              ObjectManager.Player.ManaPercent <= Config.GetSliderValue(Config.LaneClear, "manaEInLC"))));
+                              Player.Instance.ManaPercent <= Config.GetSliderValue(Config.LaneClear, "manaEInLC"))));
                 if (minToE != null)
                 {
                     Spells.E.Cast(minToE);
@@ -251,17 +265,17 @@ namespace CassOp
                 Computed.KillSteal("E");
             }
             if (Config.IsChecked(Config.Harass, "autoEHarass") &&
-                ObjectManager.Player.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
             {
                 Computed.AutoE();
             }
             if (Config.IsChecked(Config.Harass, "autoQHarass") &&
-                ObjectManager.Player.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
             {
                 Computed.AutoQ();
             }
             if (Config.IsChecked(Config.Harass, "autoWHarass") &&
-                ObjectManager.Player.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaToAutoHarass"))
             {
                 Computed.AutoW();
             }

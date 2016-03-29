@@ -24,6 +24,10 @@ namespace CassOp
             Combo.Add("comboWonlyCD", new CheckBox("W only on Q CD and no Poison", true));
             Combo.Add("comboMinR", new Slider("Min enemis to hit for R", 3, 1, 5));
             //Combo.Add("ignoreRonKill", new CheckBox("Ignore Min enemis when R on kill", true));
+            Combo.Add("comboNoAA", new CheckBox("Disable AA on Heroes in Combo", false));
+            Combo.AddGroupLabel("Options for Flash R Combo");
+            Combo.Add("comboFlashR", new CheckBox("Flash R Combo", false));
+            Combo.Add("maxEnFlash", new Slider("Max enemies around target to Flash R", 2, 0, 4));
 
             Harass = Cassop.AddSubMenu("Harass", "harass");
             Harass.AddGroupLabel("Options for Harass");
@@ -81,7 +85,7 @@ namespace CassOp
             Misc.AddGroupLabel("Misc Options");
             Misc.Add("antiMissR", new CheckBox("Block R Casts if they miss/don't face", true));
             Misc.Add("assistedR", new KeyBind("Assisted R", false, KeyBind.BindTypes.HoldActive, 'R'));
-            Misc.Add("eLastHit", new CheckBox("Use E to kill unkillable (AA) minions", true));
+            Misc.Add("eLastHit", new CheckBox("Use E to kill unkillable (AA) minions while LastHit", true));
             Misc.Add("eKillSteal", new CheckBox("Use E to Killsteal", true));
             Misc.Add("humanDelay", new Slider("Humanize", 30, 1, 500));
         }

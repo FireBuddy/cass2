@@ -9,7 +9,7 @@ namespace CassOp
 {
     internal class Computed
     {
-        public static AIHeroClient _Player => ObjectManager.Player;
+        public static AIHeroClient _Player => EloBuddy.Player.Instance;
 
         public static void AutoQ()
         {
@@ -38,7 +38,7 @@ namespace CassOp
             if (Spells.Q.IsReady() && !target.HasBuffOfType(BuffType.Poison))
             {
                 var qPred = Spells.Q.GetPrediction(target);
-                if (qPred.HitChancePercent >= 90)
+                if (qPred.HitChancePercent >= 95)
                 {
                     Spells.Q.Cast(qPred.CastPosition);
                     //Spells.QCasted = Game.Time;
@@ -135,6 +135,10 @@ namespace CassOp
 
         public static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            if (sender.IsMe)
+            {
+                Chat.Print(args.SData.Name);
+            }
             /* -> Didnt work - use Spellbook.OnCastSpell
             if (sender.IsMe && args.SData.Name == "CassiopeiaPetrifyingGaze" &&
                 Config.IsChecked(Config.Misc, "antiMissR"))
@@ -148,11 +152,28 @@ namespace CassOp
 
         public static void OnSpellbookCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            if (sender.Owner.IsMe && args.Slot == SpellSlot.R && Config.IsChecked(Config.Misc, "antiMissR"))
+            if (sender.Owner.IsMe && args.Slot == SpellSlot.R && Config.IsChecked(Config.Misc, "antiMissR") && !Spells.flashR)
             {
                 if (EntityManager.Heroes.Enemies.Count(h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(_Player)) < 1)
                 {
                     args.Process = false;
+                }
+            }
+            if (sender.Owner.IsMe)
+            {
+                switch (args.Slot)
+                {
+                    case SpellSlot.Q:
+                        Spells.QCasted = Game.Time;
+                        Spells.LastQPos = args.EndPosition;
+                        break;
+                    case SpellSlot.W:
+                        Spells.WCasted = Game.Time;
+                        Spells.LastWPos = args.EndPosition;
+                        break;
+                    case SpellSlot.E:
+                        Spells.ECasted = Game.Time;
+                        break;
                 }
             }
         }
@@ -161,17 +182,29 @@ namespace CassOp
         {
             if (sender.IsMe)
             {
-                if (args.SData.Name == "CassiopeiaNoxiousBlast")
+                if (args.SData.Name == "SummonerFlash" && Spells.flashR)
                 {
-                    Spells.QCasted = Game.Time;
+                    Spells.flashR = false;
                 }
+            }
+        }
+
+        public static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            if (Config.IsChecked(Config.Combo, "comboNoAA") &&
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                args.Target.Type == GameObjectType.AIHeroClient)
+            {
+                args.Process = false;
             }
         }
 
         public static void OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
+            var eTravelTime = target.Distance(EloBuddy.Player.Instance) / Spells.E.Handle.SData.MissileSpeed
+                                      + (Spells.E.CastDelay) + Game.Ping / 2f / 1000;
             if (Config.IsChecked(Config.Misc, "eLastHit") && _Player.GetSpellDamage(target, SpellSlot.E) > target.Health &&
-                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) && Prediction.Health.GetPrediction(target, (int)eTravelTime*1000) > 0)
             {
                 Spells.E.Cast(target);
             }
@@ -203,7 +236,24 @@ namespace CassOp
             return Mainframe.RDelay.Next(y - i, y + i);
         }
 
-        /**/
+        public static float ComboDmg(Obj_AI_Base target)
+        {
+            var dmg = 0f;
+            if (Spells.Q.IsReady())
+                dmg += _Player.GetSpellDamage(target, SpellSlot.Q);
+            if (Spells.W.IsReady())
+                dmg += _Player.GetSpellDamage(target, SpellSlot.W);
+            if (Spells.E.IsReady())
+                dmg += _Player.GetSpellDamage(target, SpellSlot.E);
+            if (Spells.R.IsReady())
+                dmg += _Player.GetSpellDamage(target, SpellSlot.R);
+            return dmg;
+        }
+
+        /*
+        Stolen from:
+            https://github.com/mrarticuno/Elobuddy/blob/master/Cassioloira/OneForWeek/Util/Misc/Misc.cs
+        */
 
         public static FarmLocation GetBestCircularFarmLocation(List<Vector2> minionPositions,
             float width,
@@ -212,7 +262,7 @@ namespace CassOp
         {
             var result = new Vector2();
             var minionCount = 0;
-            var startPos = ObjectManager.Player.ServerPosition.To2D();
+            var startPos = EloBuddy.Player.Instance.ServerPosition.To2D();
 
             range = range * range;
 

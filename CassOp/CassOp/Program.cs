@@ -18,7 +18,7 @@ namespace CassOp
 
         private static void OnLoadingComplete(EventArgs args)
         {
-            if (ObjectManager.Player.ChampionName != Champion.Cassiopeia.ToString())
+            if (EloBuddy.Player.Instance.ChampionName != Champion.Cassiopeia.ToString())
             {
                 return;
             }

@@ -6,7 +6,7 @@ namespace CassOp
 {
     /*
     TODO:
-        Calc combo dmg, use R on less than Config Min to kill if not possible otherwise
+        
     */
 
     internal class Program

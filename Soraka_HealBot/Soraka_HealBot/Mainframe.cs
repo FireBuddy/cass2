@@ -9,7 +9,7 @@ namespace Soraka_HealBot
     public static class Mainframe
     {
         private const bool Devmode = false;
-        private static AIHeroClient _Player => ObjectManager.Player;
+        private static AIHeroClient _Player => Player.Instance;
 
         public static void Init()
         {
@@ -81,7 +81,7 @@ namespace Soraka_HealBot
                 var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.Name == sender.Name);
                 var enemies =
                     EntityManager.Heroes.Enemies.Where(
-                        e => ally.Distance(e) <= 1000 && e.HealthPercent < 20 && e.IsHPBarRendered && !e.IsDead);
+                        e => ally.Distance(e) <= 1000 && e.HealthPercent < 20 && e.IsHPBarRendered && !e.IsDead && e.Distance(_Player) > 2000);
                 foreach (var enemy in enemies)
                 {
                     if (ally.GetSpellDamage(enemy, allySpellSlot) > enemy.Health)
@@ -140,7 +140,7 @@ namespace Soraka_HealBot
                         a.Distance(_Player) >= 2000).AsEnumerable();
             var enemies =
                 EntityManager.Heroes.Enemies.Where(
-                    e => !e.IsDead && !e.HasBuff("Recall") && e.HealthPercent <= 20 && e.Distance(_Player) >= 2000)
+                    e => !e.IsDead && !e.HasBuff("Recall") && e.HealthPercent <= 20 && e.Distance(_Player) > 2000)
                     .AsEnumerable();
             foreach (var ally in allies)
             {
@@ -153,7 +153,7 @@ namespace Soraka_HealBot
                     dmg += ally.GetSpellDamage(enemy, SpellSlot.R);
                     if (ally.Distance(enemy) <= 1000 && !enemy.HasBuff("Recall") && !enemy.IsInvulnerable &&
                         enemy.IsHPBarRendered &&
-                        (dmg / 2 > enemy.Health || ally.GetAutoAttackDamage(enemy) * 3 > enemy.Health))
+                        (dmg / 3 > enemy.Health || ally.GetAutoAttackDamage(enemy) * 2 > enemy.Health))
                     {
                         //Chat.Print(enemy.Name + " is about to get killed from: " + ally.Name);
                         _Player.Spellbook.CastSpell(SpellSlot.R);

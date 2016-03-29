@@ -61,7 +61,7 @@ namespace CassOp
 
         private static void OnDraw(EventArgs args)
         {
-            var front = EntityManager.Heroes.Enemies.Where(e => !e.IsDead && e.IsVisible && e.IsValid);
+            var front = EntityManager.Heroes.Enemies.Where(e => !e.IsDead && e.IsVisible && e.IsValid && e.IsHPBarRendered);
             foreach (var f in front)
             {
                 var relPos = f.Position.Shorten(_Player.Position, -300);

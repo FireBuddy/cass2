@@ -23,10 +23,9 @@ namespace CassOp
             Combo.Add("humanEInCombo", new CheckBox("Humanize E casts", true));
             Combo.Add("comboWonlyCD", new CheckBox("W only on Q CD and no Poison", true));
             Combo.Add("comboMinR", new Slider("Min enemis to hit for R", 3, 1, 5));
-            //Combo.Add("ignoreRonKill", new CheckBox("Ignore Min enemis when R on kill", true));
             Combo.Add("comboNoAA", new CheckBox("Disable AA on Heroes in Combo", false));
             Combo.AddGroupLabel("Options for Flash R Combo");
-            Combo.Add("comboFlashR", new CheckBox("Flash R Combo", false));
+            Combo.Add("comboFlashR", new CheckBox("Flash R Combo on killable", false));
             Combo.Add("maxEnFlash", new Slider("Max enemies around target to Flash R", 2, 0, 4));
 
             Harass = Cassop.AddSubMenu("Harass", "harass");

@@ -3,8 +3,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Rendering;
-using SharpDX;
 
 namespace Soraka_HealBot
 {
@@ -16,6 +14,7 @@ namespace Soraka_HealBot
         public static void Init()
         {
             Game.OnTick += Game_OnTick;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             //Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Modes.OnBeforeAttack;
             Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
@@ -32,6 +31,11 @@ namespace Soraka_HealBot
             if (Config.IsChecked(Config.HealBot, "autoR") && Spells.R.IsReady() && _Player.Mana >= 100)
             {
                 AutoR();
+            }
+            if (Config.IsChecked(Config.AssistKS, "autoAssistKS") && Spells.R.IsReady() &&
+                Config.GetComboBoxValue(Config.AssistKS, "assMode") == 1)
+            {
+                AssistKS();
             }
             if (Spells.W.IsReady())
             {
@@ -68,7 +72,25 @@ namespace Soraka_HealBot
             }
         }
 
-        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args) {}
+        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsAlly && Config.IsChecked(Config.AssistKS, "autoAssistKS") &&
+                Config.GetComboBoxValue(Config.AssistKS, "assMode") == 0 && Spells.R.IsReady())
+            {
+                var allySpellSlot = args.Slot;
+                var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.Name == sender.Name);
+                var enemies =
+                    EntityManager.Heroes.Enemies.Where(
+                        e => ally.Distance(e) <= 1000 && e.HealthPercent < 20 && e.IsHPBarRendered && !e.IsDead);
+                foreach (var enemy in enemies)
+                {
+                    if (ally.GetSpellDamage(enemy, allySpellSlot) > enemy.Health)
+                    {
+                        _Player.Spellbook.CastSpell(SpellSlot.R);
+                    }
+                }
+            }
+        }
 
         private static void Drawing_OnDraw(EventArgs args)
         {
@@ -102,6 +124,41 @@ namespace Soraka_HealBot
                 _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW"))
             {
                 Spells.W.Cast(allyInNeed);
+            }
+        }
+
+        private static void AssistKS()
+        {
+            if ((!Config.IsChecked(Config.AssistKS, "assCancelBase") && _Player.HasBuff("Recall")))
+            {
+                return;
+            }
+            var allies =
+                EntityManager.Heroes.Allies.Where(
+                    a =>
+                        !a.IsMe && !a.IsDead && !a.IsInShopRange() && !a.HasBuff("Recall") &&
+                        a.Distance(_Player) >= 2000).AsEnumerable();
+            var enemies =
+                EntityManager.Heroes.Enemies.Where(
+                    e => !e.IsDead && !e.HasBuff("Recall") && e.HealthPercent <= 20 && e.Distance(_Player) >= 2000)
+                    .AsEnumerable();
+            foreach (var ally in allies)
+            {
+                foreach (var enemy in enemies)
+                {
+                    var dmg = 0f;
+                    dmg += ally.GetSpellDamage(enemy, SpellSlot.Q);
+                    dmg += ally.GetSpellDamage(enemy, SpellSlot.W);
+                    dmg += ally.GetSpellDamage(enemy, SpellSlot.E);
+                    dmg += ally.GetSpellDamage(enemy, SpellSlot.R);
+                    if (ally.Distance(enemy) <= 1000 && !enemy.HasBuff("Recall") && !enemy.IsInvulnerable &&
+                        enemy.IsHPBarRendered &&
+                        (dmg / 2 > enemy.Health || ally.GetAutoAttackDamage(enemy) * 3 > enemy.Health))
+                    {
+                        //Chat.Print(enemy.Name + " is about to get killed from: " + ally.Name);
+                        _Player.Spellbook.CastSpell(SpellSlot.R);
+                    }
+                }
             }
         }
 
@@ -180,6 +237,10 @@ namespace Soraka_HealBot
 
         private static void AutoR()
         {
+            /*
+            TODO:
+                add max enemis around ally, so ult not gets wasted when its like 1v5 and he couldnt escape anyway
+            */
             if (!Config.IsChecked(Config.HealBot, "cancelBase") && _Player.HasBuff("Recall"))
             {
                 return;

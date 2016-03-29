@@ -8,7 +8,7 @@ namespace Soraka_HealBot
     public static class Config
     {
         private static Menu Soraka;
-        public static Menu Combo, Harass, LaneClear, HealBot, HealBotTeam, Interrupter, Gapclose, Dev;
+        public static Menu Combo, Harass, LaneClear, HealBot, HealBotTeam, AssistKS, Interrupter, Gapclose, Dev;
 
         public static void CallMenu()
         {
@@ -78,6 +78,19 @@ namespace Soraka_HealBot
                 HealBotTeam.Add(
                     "autoW_" + ally.BaseSkinName, new CheckBox("Auto Heal " + ally.BaseSkinName + " with W", true));
             }
+
+            AssistKS = Soraka.AddSubMenu("AssistKS", "assistks");
+            AssistKS.AddGroupLabel("Options for AssistKS");
+            AssistKS.AddLabel("This tries to ult when an ally is about to get a kill, so you can get an assist");
+            AssistKS.AddLabel("Consider this a beta thingy");
+            AssistKS.Add("autoAssistKS", new CheckBox("Use R to Auto AssistKS", false));
+            AssistKS.Add("assCancelBase", new CheckBox("Cancel Recall to AssistKS", false));
+            AssistKS.Add("assMode", new ComboBox("AssistKS Mode", 0, "Safe", "Wild"));
+            AssistKS.AddLabel("Safe Mode will only trigger on ally spellcasts able to kill the target");
+            AssistKS.AddLabel(" calculated by dmg lib might miss but shouldnt very often, doesnt register for AA's");
+            AssistKS.AddSeparator();
+            AssistKS.AddLabel("Wild mode tries to calculate combo dmg and predict a kill");
+            AssistKS.AddLabel(" will cast more often but will also fail more often");
 
             Interrupter = Soraka.AddSubMenu("Interrupter", "Interrupter");
             Interrupter.AddGroupLabel("Options for Interrupter");

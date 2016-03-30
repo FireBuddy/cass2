@@ -62,7 +62,7 @@ namespace CassOp
             LaneClear.Add("manaToLC", new Slider("Min Mana % to LaneClear", 20, 0, 100));
 
             JungleClear = Cassop.AddSubMenu("JungleClear", "jungleclear");
-            JungleClear.AddGroupLabel("Options for LaneClear");
+            JungleClear.AddGroupLabel("Options for JungleClear");
             JungleClear.Add("useQInJC", new CheckBox("Use Q", true));
             JungleClear.Add("useWInJC", new CheckBox("Use W", true));
             JungleClear.Add("useEInJC", new CheckBox("Use E", true));

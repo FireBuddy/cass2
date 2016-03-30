@@ -80,17 +80,16 @@ namespace Soraka_HealBot
             {
                 var enemy = EntityManager.Heroes.Enemies.FirstOrDefault(en => en.Name == sender.Name);
                 var usedSpell = args.Slot;
-                var targetedAlly = EntityManager.Heroes.Allies.FirstOrDefault(ally => ally.Name == args.Target.Name);
+                var targetedAlly =
+                    EntityManager.Heroes.Allies.FirstOrDefault(
+                        ally => ally.Name == args.Target.Name && ally.Health <= enemy.GetSpellDamage(ally, usedSpell));
                 if (targetedAlly != null &&
                     (Config.IsChecked(Config.HealBot, "wOnKill") && Spells.W.IsReady() &&
-                     targetedAlly.Distance(_Player) <= Spells.W.Range &&
-                     enemy.GetSpellDamage(targetedAlly, usedSpell) >= targetedAlly.Health))
+                     targetedAlly.Distance(_Player) <= Spells.W.Range))
                 {
                     Spells.W.Cast(targetedAlly);
                 }
-                if (targetedAlly != null &&
-                    (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady() &&
-                     enemy.GetSpellDamage(targetedAlly, usedSpell) >= targetedAlly.Health))
+                if (targetedAlly != null && (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady()))
                 {
                     Spells.R.Cast();
                 }

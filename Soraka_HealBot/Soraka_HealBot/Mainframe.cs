@@ -80,31 +80,19 @@ namespace Soraka_HealBot
             {
                 var enemy = EntityManager.Heroes.Enemies.FirstOrDefault(en => en.Name == sender.Name);
                 var usedSpell = args.Slot;
-                if (Config.IsChecked(Config.HealBot, "wOnKill") && Spells.W.IsReady())
+                var targetedAlly = EntityManager.Heroes.Allies.FirstOrDefault(ally => ally.Name == args.Target.Name);
+                if (targetedAlly != null &&
+                    (Config.IsChecked(Config.HealBot, "wOnKill") && Spells.W.IsReady() &&
+                     targetedAlly.Distance(_Player) <= Spells.W.Range &&
+                     enemy.GetSpellDamage(targetedAlly, usedSpell) >= targetedAlly.Health))
                 {
-                    var allies =
-                        EntityManager.Heroes.Allies.Where(all => all.Distance(_Player) <= Spells.W.Range && args.Target.Name == all.Name).AsEnumerable();
-                    foreach (var ally in allies)
-                    {
-                        var predDmg = enemy.GetSpellDamage(ally, usedSpell);
-                        if (predDmg >= ally.Health)
-                        {
-                            Spells.W.Cast(ally);
-                        }
-                    }
+                    Spells.W.Cast(targetedAlly);
                 }
-                if (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady())
+                if (targetedAlly != null &&
+                    (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady() &&
+                     enemy.GetSpellDamage(targetedAlly, usedSpell) >= targetedAlly.Health))
                 {
-                    var allies =
-                        EntityManager.Heroes.Allies.Where(all => args.Target.Name == all.Name).AsEnumerable();
-                    foreach (var ally in allies)
-                    {
-                        var predDmg = enemy.GetSpellDamage(ally, usedSpell);
-                        if (predDmg >= ally.Health)
-                        {
-                            Spells.R.Cast();
-                        }
-                    }
+                    Spells.R.Cast();
                 }
             }
             if (sender.IsAlly && Config.IsChecked(Config.AssistKS, "autoAssistKS") &&
@@ -114,7 +102,9 @@ namespace Soraka_HealBot
                 var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.Name == sender.Name);
                 var enemies =
                     EntityManager.Heroes.Enemies.Where(
-                        e => ally.Distance(e) <= 1000 && e.HealthPercent < 20 && e.IsHPBarRendered && !e.IsDead && e.Distance(_Player) > 2000);
+                        e =>
+                            ally.Distance(e) <= 1000 && e.HealthPercent < 20 && e.IsHPBarRendered && !e.IsDead &&
+                            e.Distance(_Player) > 2000);
                 foreach (var enemy in enemies)
                 {
                     if (ally.GetSpellDamage(enemy, allySpellSlot) > enemy.Health)
@@ -143,18 +133,22 @@ namespace Soraka_HealBot
             var allyInNeed =
                 ent.OrderBy(x => x.Health)
                     .FirstOrDefault(
-                        x => !x.IsInShopRange() && Config.IsChecked(Config.HealBotTeam, "autoW_" + x.BaseSkinName) && !x.HasBuff("Recall"));
+                        x =>
+                            !x.IsInShopRange() && Config.IsChecked(Config.HealBotTeam, "autoW_" + x.BaseSkinName) &&
+                            !x.HasBuff("Recall"));
             if (allyInNeed == null || _Player.HasBuff("Recall"))
             {
                 return;
             }
-            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBotTeam, "autoW_HP_" + allyInNeed.BaseSkinName) &&
+            if (allyInNeed.HealthPercent <=
+                Config.GetSliderValue(Config.HealBotTeam, "autoW_HP_" + allyInNeed.BaseSkinName) &&
                 _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW") &&
                 _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW"))
             {
                 Spells.W.Cast(allyInNeed);
             }
-            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBotTeam, "autoWBuff_HP_" + allyInNeed.BaseSkinName) &&
+            if (allyInNeed.HealthPercent <=
+                Config.GetSliderValue(Config.HealBotTeam, "autoWBuff_HP_" + allyInNeed.BaseSkinName) &&
                 _Player.HasBuff("SorakaQRegen") &&
                 _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW") &&
                 _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW"))

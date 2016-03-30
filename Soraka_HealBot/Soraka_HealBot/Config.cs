@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
@@ -8,7 +9,19 @@ namespace Soraka_HealBot
     public static class Config
     {
         private static Menu Soraka;
-        public static Menu Combo, Harass, LaneClear, HealBot, HealBotTeam, AssistKS, Interrupter, Gapclose, Draw, Dev;
+
+        public static Menu Combo,
+            Harass,
+            LaneClear,
+            HealBot,
+            HealBotTeam,
+            AssistKS,
+            Interrupter,
+            Gapclose,
+            Draw,
+            Dev,
+            AutoWMenu,
+            AutoRMenu;
 
         public static void CallMenu()
         {
@@ -46,55 +59,50 @@ namespace Soraka_HealBot
             LaneClear.Add("qTargets", new Slider("Min Targets to hit for Q", 6, 1, 20));
             LaneClear.Add("manaLaneClear", new Slider("Min Mana % to LaneClear", 60, 0, 100));
 
-            HealBot = Soraka.AddSubMenu("HealBot", "HealBot");
-            HealBot.AddLabel("Default Settings work pretty good");
-            HealBot.AddLabel("Shouldn't change much here");
-            HealBot.AddGroupLabel("Auto R");
-            HealBot.Add("autoR", new CheckBox("Auto use R", true));
-            HealBot.Add("cancelBase", new CheckBox("Cancel Recall to Auto R", true));
-            HealBot.Add(
-                "rOnKill", new CheckBox("Try to R Ally who'd die on targeted ability, ignores all other settings", true));
-            //HealBot.Add("lowAlliesForR", new Slider("Number of Allies to be low for Auto R", 1, 1, 5));
-            HealBot.Add("autoRHP", new Slider("HP % to trigger R Logic", 15, 1, 100));
-            HealBot.Add("autoREnemies", new Slider("Number of Enemies around Ally to R", 1, 1, 5));
-            HealBot.Add("enemyRange", new Slider("Enemies in x Distance of Ally to R", 900, 1, 5000));
-            HealBot.AddSeparator();
-            HealBot.AddGroupLabel("Auto W");
-            HealBot.Add("autoW", new CheckBox("Auto use W", true));
-            HealBot.Add(
-                "wOnKill", new CheckBox("Try to W Ally who'd die on targeted ability, ignores all other settings", true));
-            //HealBot.Add("allyHPToW", new Slider("HP % to Auto W", 50, 1, 100));
-            //HealBot.Add("allyHPToWBuff", new Slider("HP % to Auto W with Q Buff", 75, 1, 100));
-            HealBot.Add("manaToW", new Slider("Min Mana % to Auto W", 10, 0, 100));
-            HealBot.Add("playerHpToW", new Slider("Min Player HP % to Auto W", 25, 6, 100));
-
             var allAllies = EntityManager.Heroes.Allies.Where(ally => !ally.IsMe).ToArray();
-            HealBotTeam = Soraka.AddSubMenu("HealBot Team", "HealBotTeam");
-            HealBotTeam.AddGroupLabel("Auto R Teammate Settings");
+            AutoWMenu = Soraka.AddSubMenu("Auto W", "autow");
+            AutoWMenu.AddGroupLabel("Auto W");
+            AutoWMenu.Add("autoW", new CheckBox("Auto use W", true));
+            AutoWMenu.Add(
+                "wOnKill",
+                new CheckBox(
+                    "Try to W Ally who'd die on targeted ability " + Environment.NewLine + " ignores all other settings",
+                    true));
+            AutoWMenu.Add(
+                "wHealMode", new ComboBox("Priority Mode", 0, "Lowest Health", "Total AD", "Total AP", "AD+AP", "Closest"));
+            AutoWMenu.Add("manaToW", new Slider("Min Mana % to Auto W", 10, 0, 100));
+            AutoWMenu.Add("playerHpToW", new Slider("Min Player HP % to Auto W", 25, 6, 100));
+            AutoWMenu.AddGroupLabel("Auto W Teammate Settings");
             foreach (var ally in allAllies)
             {
-                HealBotTeam.Add(
-                    "autoR_" + ally.BaseSkinName, new CheckBox("Auto Heal " + ally.BaseSkinName + " with R", true));
-            }
-            HealBotTeam.AddGroupLabel("Auto W Teammate Settings");
-            foreach (var ally in allAllies)
-            {
-                HealBotTeam.Add(
+                AutoWMenu.Add(
                     "autoW_" + ally.BaseSkinName, new CheckBox("Auto Heal " + ally.BaseSkinName + " with W", true));
-                HealBotTeam.Add(
+                AutoWMenu.Add(
                     "autoW_HP_" + ally.BaseSkinName,
                     new Slider("HP % to heal " + ally.BaseSkinName + " with W", 50, 1, 100));
-                HealBotTeam.Add(
+                AutoWMenu.Add(
                     "autoWBuff_HP_" + ally.BaseSkinName,
                     new Slider("HP % to heal " + ally.BaseSkinName + " with W + Q Buff", 75, 1, 100));
             }
-            /*foreach (var ally in allAllies)
+
+            AutoRMenu = Soraka.AddSubMenu("Auto R", "autor");
+            AutoRMenu.AddGroupLabel("Auto R");
+            AutoRMenu.Add("autoR", new CheckBox("Auto use R", true));
+            AutoRMenu.Add("cancelBase", new CheckBox("Cancel Recall to Auto R", true));
+            AutoRMenu.Add(
+                "rOnKill",
+                new CheckBox(
+                    "Try to R Ally who'd die on targeted ability, " + Environment.NewLine +
+                    " ignores all other settings", true));
+            AutoRMenu.Add("autoRHP", new Slider("HP % to trigger R Logic", 15, 1, 100));
+            AutoRMenu.Add("autoREnemies", new Slider("Number of Enemies around Ally to R", 1, 1, 5));
+            AutoRMenu.Add("enemyRange", new Slider("Enemies in x Distance of Ally to R", 900, 1, 5000));
+            AutoRMenu.AddGroupLabel("Auto R Teammate Settings");
+            foreach (var ally in allAllies)
             {
-                HealBotTeam.Add(
-                    "autoW_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W", 50, 1, 100));
-                HealBotTeam.Add(
-                    "autoWBuff_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W + Q Buff", 75, 1, 100));
-            }*/
+                AutoRMenu.Add(
+                    "autoR_" + ally.BaseSkinName, new CheckBox("Auto Heal " + ally.BaseSkinName + " with R", true));
+            }
 
             AssistKS = Soraka.AddSubMenu("AssistKS", "assistks");
             AssistKS.AddGroupLabel("Options for AssistKS");

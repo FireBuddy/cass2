@@ -11,6 +11,7 @@ namespace Soraka_HealBot
     public static class Mainframe
     {
         private const bool Devmode = false;
+        private static Array AlliesToHeal;
         private static AIHeroClient _Player => Player.Instance;
 
         public static void Init()
@@ -30,7 +31,7 @@ namespace Soraka_HealBot
             {
                 return;
             }
-            if (Config.IsChecked(Config.HealBot, "autoR") && Spells.R.IsReady() && _Player.Mana >= 100)
+            if (Config.IsChecked(Config.AutoRMenu, "autoR") && Spells.R.IsReady() && _Player.Mana >= 100)
             {
                 AutoR();
             }
@@ -39,7 +40,7 @@ namespace Soraka_HealBot
             {
                 AssistKS();
             }
-            if (Spells.W.IsReady() && Config.IsChecked(Config.HealBot, "autoW"))
+            if (Spells.W.IsReady() && Config.IsChecked(Config.AutoWMenu, "autoW"))
             {
                 HealBotW();
             }
@@ -84,12 +85,12 @@ namespace Soraka_HealBot
                     EntityManager.Heroes.Allies.FirstOrDefault(
                         ally => ally.Name == args.Target.Name && ally.Health <= enemy.GetSpellDamage(ally, usedSpell));
                 if (targetedAlly != null &&
-                    (Config.IsChecked(Config.HealBot, "wOnKill") && Spells.W.IsReady() &&
+                    (Config.IsChecked(Config.AutoWMenu, "wOnKill") && Spells.W.IsReady() &&
                      targetedAlly.Distance(_Player) <= Spells.W.Range))
                 {
                     Spells.W.Cast(targetedAlly);
                 }
-                if (targetedAlly != null && (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady()))
+                if (targetedAlly != null && (Config.IsChecked(Config.AutoRMenu, "rOnKill") && Spells.R.IsReady()))
                 {
                     Spells.R.Cast();
                 }
@@ -129,28 +130,71 @@ namespace Soraka_HealBot
                     allies =>
                         !allies.IsMe && !allies.IsDead && !allies.IsInShopRange() && !allies.IsZombie &&
                         allies.Distance(_Player) <= Spells.W.Range).ToList();
-            var allyInNeed =
-                ent.OrderBy(x => x.Health)
-                    .FirstOrDefault(
-                        x =>
-                            !x.IsInShopRange() && Config.IsChecked(Config.HealBotTeam, "autoW_" + x.BaseSkinName) &&
-                            !x.HasBuff("Recall"));
+            var allyInNeed = new AIHeroClient();
+            switch (Config.GetComboBoxValue(Config.AutoWMenu, "wHealMode"))
+            {
+                case 0:
+                    allyInNeed =
+                        ent.OrderBy(x => x.Health)
+                            .FirstOrDefault(
+                                x =>
+                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
+                                    !x.HasBuff("Recall"));
+                    break;
+                case 1:
+                    allyInNeed =
+                        ent.OrderByDescending(x => x.TotalAttackDamage)
+                            .ThenBy(u => u.Health)
+                            .FirstOrDefault(
+                                x =>
+                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
+                                    !x.HasBuff("Recall"));
+                    break;
+                case 2:
+                    allyInNeed =
+                        ent.OrderByDescending(x => x.TotalMagicalDamage)
+                            .ThenBy(u => u.Health)
+                            .FirstOrDefault(
+                                x =>
+                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
+                                    !x.HasBuff("Recall"));
+                    break;
+                case 3:
+                    allyInNeed =
+                        ent.OrderByDescending(x => x.TotalAttackDamage + x.TotalMagicalDamage)
+                            .ThenBy(u => u.Health)
+                            .FirstOrDefault(
+                                x =>
+                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
+                                    !x.HasBuff("Recall"));
+                    break;
+                case 4:
+                    allyInNeed =
+                        ent.OrderBy(x => x.Distance(_Player))
+                            .ThenBy(u => u.Health)
+                            .FirstOrDefault(
+                                x =>
+                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
+                                    !x.HasBuff("Recall"));
+                    break;
+            }
+
             if (allyInNeed == null || _Player.HasBuff("Recall"))
             {
                 return;
             }
             if (allyInNeed.HealthPercent <=
-                Config.GetSliderValue(Config.HealBotTeam, "autoW_HP_" + allyInNeed.BaseSkinName) &&
-                _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW") &&
-                _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW"))
+                Config.GetSliderValue(Config.AutoWMenu, "autoW_HP_" + allyInNeed.BaseSkinName) &&
+                _Player.ManaPercent >= Config.GetSliderValue(Config.AutoWMenu, "manaToW") &&
+                _Player.HealthPercent >= Config.GetSliderValue(Config.AutoWMenu, "playerHpToW"))
             {
                 Spells.W.Cast(allyInNeed);
             }
             if (allyInNeed.HealthPercent <=
-                Config.GetSliderValue(Config.HealBotTeam, "autoWBuff_HP_" + allyInNeed.BaseSkinName) &&
+                Config.GetSliderValue(Config.AutoWMenu, "autoWBuff_HP_" + allyInNeed.BaseSkinName) &&
                 _Player.HasBuff("SorakaQRegen") &&
-                _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW") &&
-                _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW"))
+                _Player.HealthPercent >= Config.GetSliderValue(Config.AutoWMenu, "playerHpToW") &&
+                _Player.ManaPercent >= Config.GetSliderValue(Config.AutoWMenu, "manaToW"))
             {
                 Spells.W.Cast(allyInNeed);
             }
@@ -270,7 +314,7 @@ namespace Soraka_HealBot
             TODO:
                 add max enemies around ally, so ult not gets wasted when its like 1v5 and he couldnt escape anyway
             */
-            if (!Config.IsChecked(Config.HealBot, "cancelBase") && _Player.HasBuff("Recall"))
+            if (!Config.IsChecked(Config.AutoRMenu, "cancelBase") && _Player.HasBuff("Recall"))
             {
                 return;
             }
@@ -279,20 +323,20 @@ namespace Soraka_HealBot
                     h => !h.IsMe && !h.IsDead && !h.IsInShopRange() && !h.HasBuff("Recall")).AsEnumerable();
             foreach (var ally in alliesToR)
             {
-                if (!(ally.HealthPercent <= Config.GetSliderValue(Config.HealBot, "autoRHP")) ||
-                    !Config.IsChecked(Config.HealBotTeam, "autoR_" + ally.BaseSkinName))
+                if (!(ally.HealthPercent <= Config.GetSliderValue(Config.AutoRMenu, "autoRHP")) ||
+                    !Config.IsChecked(Config.AutoRMenu, "autoR_" + ally.BaseSkinName))
                 {
                     continue;
                 }
                 var enemiesAroundAlly =
                     EntityManager.Heroes.Enemies.Where(
-                        en => en.Distance(ally.ServerPosition) <= Config.GetSliderValue(Config.HealBot, "enemyRange"))
+                        en => en.Distance(ally.ServerPosition) <= Config.GetSliderValue(Config.AutoRMenu, "enemyRange"))
                         .ToArray();
                 var enemiesAroundAllyCount = enemiesAroundAlly.Count();
                 /*foreach (var enAl in enemiesAroundAlly)
                     {
                     }*/
-                if (enemiesAroundAllyCount < Config.GetSliderValue(Config.HealBot, "autoREnemies") ||
+                if (enemiesAroundAllyCount < Config.GetSliderValue(Config.AutoRMenu, "autoREnemies") ||
                     !Spells.R.IsReady())
                 {
                     continue;

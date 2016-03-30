@@ -135,6 +135,10 @@ namespace Soraka_HealBot
                         !allies.IsMe && !allies.IsDead && !allies.IsInShopRange() && !allies.IsZombie &&
                         allies.Distance(_Player) <= Spells.W.Range && !allies.HasBuff("Recall") &&
                         Config.IsChecked(Config.AutoWMenu, "autoW_" + allies.BaseSkinName)).ToList();
+            if (!ent.Any())
+            {
+                return;
+            }
             var allyInNeed = new AIHeroClient();
             switch (Config.GetComboBoxValue(Config.AutoWMenu, "wHealMode"))
             {

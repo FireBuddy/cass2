@@ -17,6 +17,7 @@ namespace Soraka_HealBot
         public static void Init()
         {
             Game.OnTick += Game_OnTick;
+            Game.OnUpdate += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Modes.OnBeforeAttack;
@@ -24,6 +25,8 @@ namespace Soraka_HealBot
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
             //Dash.OnDash += OnDash;
         }
+
+        private static void OnGameUpdate(EventArgs args) {}
 
         private static void Game_OnTick(EventArgs args)
         {
@@ -77,7 +80,8 @@ namespace Soraka_HealBot
 
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsEnemy && args.Target.IsAlly)
+            if (sender.IsEnemy && args.Target.IsAlly &&
+                (Config.IsChecked(Config.AutoWMenu, "wOnKill") || Config.IsChecked(Config.AutoRMenu, "rOnKill")))
             {
                 var enemy = EntityManager.Heroes.Enemies.FirstOrDefault(en => en.Name == sender.Name);
                 var usedSpell = args.Slot;
@@ -129,53 +133,28 @@ namespace Soraka_HealBot
                 EntityManager.Heroes.Allies.Where(
                     allies =>
                         !allies.IsMe && !allies.IsDead && !allies.IsInShopRange() && !allies.IsZombie &&
-                        allies.Distance(_Player) <= Spells.W.Range).ToList();
+                        allies.Distance(_Player) <= Spells.W.Range && !allies.HasBuff("Recall") &&
+                        Config.IsChecked(Config.AutoWMenu, "autoW_" + allies.BaseSkinName)).ToList();
             var allyInNeed = new AIHeroClient();
             switch (Config.GetComboBoxValue(Config.AutoWMenu, "wHealMode"))
             {
                 case 0:
-                    allyInNeed =
-                        ent.OrderBy(x => x.Health)
-                            .FirstOrDefault(
-                                x =>
-                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
-                                    !x.HasBuff("Recall"));
+                    allyInNeed = ent.OrderBy(x => x.Health).FirstOrDefault();
                     break;
                 case 1:
-                    allyInNeed =
-                        ent.OrderByDescending(x => x.TotalAttackDamage)
-                            .ThenBy(u => u.Health)
-                            .FirstOrDefault(
-                                x =>
-                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
-                                    !x.HasBuff("Recall"));
+                    allyInNeed = ent.OrderByDescending(x => x.TotalAttackDamage).ThenBy(u => u.Health).FirstOrDefault();
                     break;
                 case 2:
-                    allyInNeed =
-                        ent.OrderByDescending(x => x.TotalMagicalDamage)
-                            .ThenBy(u => u.Health)
-                            .FirstOrDefault(
-                                x =>
-                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
-                                    !x.HasBuff("Recall"));
+                    allyInNeed = ent.OrderByDescending(x => x.TotalMagicalDamage).ThenBy(u => u.Health).FirstOrDefault();
                     break;
                 case 3:
                     allyInNeed =
                         ent.OrderByDescending(x => x.TotalAttackDamage + x.TotalMagicalDamage)
                             .ThenBy(u => u.Health)
-                            .FirstOrDefault(
-                                x =>
-                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
-                                    !x.HasBuff("Recall"));
+                            .FirstOrDefault();
                     break;
                 case 4:
-                    allyInNeed =
-                        ent.OrderBy(x => x.Distance(_Player))
-                            .ThenBy(u => u.Health)
-                            .FirstOrDefault(
-                                x =>
-                                    !x.IsInShopRange() && Config.IsChecked(Config.AutoWMenu, "autoW_" + x.BaseSkinName) &&
-                                    !x.HasBuff("Recall"));
+                    allyInNeed = ent.OrderBy(x => x.Distance(_Player)).ThenBy(u => u.Health).FirstOrDefault();
                     break;
             }
 
@@ -320,7 +299,7 @@ namespace Soraka_HealBot
             }
             var alliesToR =
                 EntityManager.Heroes.Allies.Where(
-                    h => !h.IsMe && !h.IsDead && !h.IsInShopRange() && !h.HasBuff("Recall")).AsEnumerable();
+                    h => !h.IsMe && !h.IsDead && !h.IsInShopRange() && !h.HasBuff("Recall")).ToList();
             foreach (var ally in alliesToR)
             {
                 if (!(ally.HealthPercent <= Config.GetSliderValue(Config.AutoRMenu, "autoRHP")) ||

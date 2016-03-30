@@ -8,7 +8,7 @@ namespace Soraka_HealBot
     public static class Config
     {
         private static Menu Soraka;
-        public static Menu Combo, Harass, LaneClear, HealBot, HealBotTeam, AssistKS, Interrupter, Gapclose, Dev;
+        public static Menu Combo, Harass, LaneClear, HealBot, HealBotTeam, AssistKS, Interrupter, Gapclose, Draw, Dev;
 
         public static void CallMenu()
         {
@@ -52,6 +52,7 @@ namespace Soraka_HealBot
             HealBot.AddGroupLabel("Auto R");
             HealBot.Add("autoR", new CheckBox("Auto use R", true));
             HealBot.Add("cancelBase", new CheckBox("Cancel Recall to Auto R", true));
+            HealBot.Add("rOnKill", new CheckBox("Try to R Ally who'd die on targeted ability, ignores all other settings", true));
             //HealBot.Add("lowAlliesForR", new Slider("Number of Allies to be low for Auto R", 1, 1, 5));
             HealBot.Add("autoRHP", new Slider("HP % to trigger R Logic", 15, 1, 100));
             HealBot.Add("autoREnemies", new Slider("Number of Enemies around Ally to R", 1, 1, 5));
@@ -59,8 +60,9 @@ namespace Soraka_HealBot
             HealBot.AddSeparator();
             HealBot.AddGroupLabel("Auto W");
             HealBot.Add("autoW", new CheckBox("Auto use W", true));
-            HealBot.Add("allyHPToW", new Slider("HP % to Auto W", 50, 1, 100));
-            HealBot.Add("allyHPToWBuff", new Slider("HP % to Auto W with Q Buff", 75, 1, 100));
+            HealBot.Add("wOnKill", new CheckBox("Try to W Ally who'd die on targeted ability, ignores all other settings", true));
+            //HealBot.Add("allyHPToW", new Slider("HP % to Auto W", 50, 1, 100));
+            //HealBot.Add("allyHPToWBuff", new Slider("HP % to Auto W with Q Buff", 75, 1, 100));
             HealBot.Add("manaToW", new Slider("Min Mana % to Auto W", 10, 0, 100));
             HealBot.Add("playerHpToW", new Slider("Min Player HP % to Auto W", 25, 6, 100));
 
@@ -77,7 +79,18 @@ namespace Soraka_HealBot
             {
                 HealBotTeam.Add(
                     "autoW_" + ally.BaseSkinName, new CheckBox("Auto Heal " + ally.BaseSkinName + " with W", true));
+                HealBotTeam.Add(
+                    "autoW_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W", 50, 1, 100));
+                HealBotTeam.Add(
+                    "autoWBuff_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W + Q Buff", 75, 1, 100));
             }
+            /*foreach (var ally in allAllies)
+            {
+                HealBotTeam.Add(
+                    "autoW_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W", 50, 1, 100));
+                HealBotTeam.Add(
+                    "autoWBuff_HP_" + ally.BaseSkinName, new Slider("HP % to heal " + ally.BaseSkinName + " with W + Q Buff", 75, 1, 100));
+            }*/
 
             AssistKS = Soraka.AddSubMenu("AssistKS", "assistks");
             AssistKS.AddGroupLabel("Options for AssistKS");
@@ -101,6 +114,10 @@ namespace Soraka_HealBot
             Gapclose.AddGroupLabel("Options for Anti GapClose");
             Gapclose.Add("qGapclose", new CheckBox("Anti GapClose with Q", false));
             Gapclose.Add("eGapclose", new CheckBox("Anti GapClose with E", false));
+
+            Draw = Soraka.AddSubMenu("Drawings", "drawings");
+            Draw.AddGroupLabel("Options for Drawings");
+            Draw.Add("wRangeDraw", new CheckBox("Draw W Range", false));
         }
 
         public static bool IsChecked(Menu obj, string value)

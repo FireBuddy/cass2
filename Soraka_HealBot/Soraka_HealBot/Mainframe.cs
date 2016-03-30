@@ -3,6 +3,8 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 namespace Soraka_HealBot
 {
@@ -15,7 +17,7 @@ namespace Soraka_HealBot
         {
             Game.OnTick += Game_OnTick;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
-            //Drawing.OnDraw += Drawing_OnDraw;
+            Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Modes.OnBeforeAttack;
             Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
@@ -74,6 +76,37 @@ namespace Soraka_HealBot
 
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            if (sender.IsEnemy && args.Target.IsAlly)
+            {
+                var enemy = EntityManager.Heroes.Enemies.FirstOrDefault(en => en.Name == sender.Name);
+                var usedSpell = args.Slot;
+                if (Config.IsChecked(Config.HealBot, "wOnKill") && Spells.W.IsReady())
+                {
+                    var allies =
+                        EntityManager.Heroes.Allies.Where(all => all.Distance(_Player) <= Spells.W.Range && args.Target.Name == all.Name).AsEnumerable();
+                    foreach (var ally in allies)
+                    {
+                        var predDmg = enemy.GetSpellDamage(ally, usedSpell);
+                        if (predDmg >= ally.Health)
+                        {
+                            Spells.W.Cast(ally);
+                        }
+                    }
+                }
+                if (Config.IsChecked(Config.HealBot, "rOnKill") && Spells.R.IsReady())
+                {
+                    var allies =
+                        EntityManager.Heroes.Allies.Where(all => args.Target.Name == all.Name).AsEnumerable();
+                    foreach (var ally in allies)
+                    {
+                        var predDmg = enemy.GetSpellDamage(ally, usedSpell);
+                        if (predDmg >= ally.Health)
+                        {
+                            Spells.R.Cast();
+                        }
+                    }
+                }
+            }
             if (sender.IsAlly && Config.IsChecked(Config.AssistKS, "autoAssistKS") &&
                 Config.GetComboBoxValue(Config.AssistKS, "assMode") == 0 && Spells.R.IsReady())
             {
@@ -94,7 +127,10 @@ namespace Soraka_HealBot
 
         private static void Drawing_OnDraw(EventArgs args)
         {
-            //Circle.Draw(Color.Red, Spells.Q.Range, Player.Instance.Position);
+            if (Config.IsChecked(Config.Draw, "wRangeDraw"))
+            {
+                Circle.Draw(Color.White, Spells.W.Range, Player.Instance.Position);
+            }
         }
 
         private static void HealBotW()
@@ -107,18 +143,18 @@ namespace Soraka_HealBot
             var allyInNeed =
                 ent.OrderBy(x => x.Health)
                     .FirstOrDefault(
-                        x => !x.IsInShopRange() && Config.IsChecked(Config.HealBotTeam, "autoW_" + x.BaseSkinName));
+                        x => !x.IsInShopRange() && Config.IsChecked(Config.HealBotTeam, "autoW_" + x.BaseSkinName) && !x.HasBuff("Recall"));
             if (allyInNeed == null || _Player.HasBuff("Recall"))
             {
                 return;
             }
-            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBot, "allyHPToW") &&
+            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBotTeam, "autoW_HP_" + allyInNeed.BaseSkinName) &&
                 _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW") &&
                 _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW"))
             {
                 Spells.W.Cast(allyInNeed);
             }
-            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBot, "allyHPToWBuff") &&
+            if (allyInNeed.HealthPercent <= Config.GetSliderValue(Config.HealBotTeam, "autoWBuff_HP_" + allyInNeed.BaseSkinName) &&
                 _Player.HasBuff("SorakaQRegen") &&
                 _Player.HealthPercent >= Config.GetSliderValue(Config.HealBot, "playerHpToW") &&
                 _Player.ManaPercent >= Config.GetSliderValue(Config.HealBot, "manaToW"))
@@ -239,7 +275,7 @@ namespace Soraka_HealBot
         {
             /*
             TODO:
-                add max enemis around ally, so ult not gets wasted when its like 1v5 and he couldnt escape anyway
+                add max enemies around ally, so ult not gets wasted when its like 1v5 and he couldnt escape anyway
             */
             if (!Config.IsChecked(Config.HealBot, "cancelBase") && _Player.HasBuff("Recall"))
             {

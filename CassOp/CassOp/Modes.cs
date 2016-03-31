@@ -16,21 +16,20 @@ namespace CassOp
 
             if (Config.IsChecked(Config.Combo, "useRInCombo") && Spells.R.IsReady())
             {
-                var flash = Player.Spells.FirstOrDefault(args => args.SData.Name == "SummonerFlash");
                 var enemiesAroundTarget =
                     EntityManager.Heroes.Enemies.Count(
                         en => en.Distance(target.Position) <= 1000 && en.Name != target.Name);
                 if (Config.IsChecked(Config.Combo, "comboFlashR") && target.IsFacing(Player.Instance) &&
                     (target.Distance(Player.Instance) > Spells.R.Range &&
-                     target.Distance(Player.Instance) <= Spells.R.Range + 400) && (flash != null && flash.IsReady) &&
-                    Computed.ComboDmg(target) > target.Health &&
+                     target.Distance(Player.Instance) <= Spells.R.Range + 400) &&
+                    (Spells.Flash != null && Spells.Flash.IsReady) && Computed.ComboDmg(target) > target.Health &&
                     enemiesAroundTarget <= Config.GetSliderValue(Config.Combo, "maxEnFlash"))
                 {
                     Spells.flashR = true;
                     var relPos = target.Position.Shorten(Player.Instance.Position, -300);
                     Spells.R.Cast(relPos);
                     Core.DelayAction(
-                        () => Player.CastSpell(flash.Slot, target.Position), Mainframe.RDelay.Next(300, 400));
+                        () => Player.CastSpell(Spells.Flash.Slot, target.Position), Mainframe.RDelay.Next(300, 400));
                 }
 
                 var countFace =

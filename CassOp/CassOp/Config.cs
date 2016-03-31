@@ -43,7 +43,6 @@ namespace CassOp
             Harass.Add("autoQHarass", new CheckBox("Auto Q", true));
             Harass.Add("autoWHarass", new CheckBox("Auto W", false));
             Harass.Add("autoEHarass", new CheckBox("Auto E", false));
-            Harass.Add("autoRHarass", new CheckBox("Auto R", false));
             Harass.Add("autoHarassEonP", new CheckBox("E only on poisoned", true));
             Harass.Add("humanEInAutoHarass", new CheckBox("Humanize E casts", true));
             Harass.Add("dontAutoHarassInBush", new CheckBox("Dont Auto Harass in Bush", true));

@@ -1,4 +1,5 @@
-﻿using EloBuddy;
+﻿using System.Linq;
+using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using SharpDX;
@@ -11,6 +12,7 @@ namespace CassOp
         public static Spell.Skillshot W;
         public static Spell.Targeted E;
         public static Spell.Skillshot R;
+        public static SpellDataInst Flash = Player.Spells.FirstOrDefault(args => args.SData.Name == "SummonerFlash");
         public static float QCasted = 0f;
         public static float WCasted = 0f;
         public static float ECasted = 0f;

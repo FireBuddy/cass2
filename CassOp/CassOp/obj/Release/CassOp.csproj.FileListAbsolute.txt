@@ -10,3 +10,4 @@ c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Rele
 c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.csprojResolveAssemblyReference.cache
 c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.exe
 c:\users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.pdb
+C:\Users\ridiculous\documents\visual studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.Sandbox.dll

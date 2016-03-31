@@ -18,7 +18,8 @@ namespace CassOp
             {
                 var flash = Player.Spells.FirstOrDefault(args => args.SData.Name == "SummonerFlash");
                 var enemiesAroundTarget =
-                    EntityManager.Heroes.Enemies.Count(en => en.Distance(target.Position) <= 1000 && en.Name != target.Name);
+                    EntityManager.Heroes.Enemies.Count(
+                        en => en.Distance(target.Position) <= 1000 && en.Name != target.Name);
                 if (Config.IsChecked(Config.Combo, "comboFlashR") && target.IsFacing(Player.Instance) &&
                     (target.Distance(Player.Instance) > Spells.R.Range &&
                      target.Distance(Player.Instance) <= Spells.R.Range + 400) && (flash != null && flash.IsReady) &&
@@ -28,7 +29,8 @@ namespace CassOp
                     Spells.flashR = true;
                     var relPos = target.Position.Shorten(Player.Instance.Position, -300);
                     Spells.R.Cast(relPos);
-                    Core.DelayAction(() => Player.CastSpell(flash.Slot, target.Position), 300);
+                    Core.DelayAction(
+                        () => Player.CastSpell(flash.Slot, target.Position), Mainframe.RDelay.Next(300, 400));
                 }
 
                 var countFace =

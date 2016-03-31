@@ -1,4 +1,5 @@
-﻿using EloBuddy.SDK.Menu;
+﻿using System;
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
 namespace CassOp
@@ -84,7 +85,7 @@ namespace CassOp
             Misc.AddGroupLabel("Misc Options");
             Misc.Add("antiMissR", new CheckBox("Block R Casts if they miss/don't face", true));
             Misc.Add("assistedR", new KeyBind("Assisted R", false, KeyBind.BindTypes.HoldActive, 'R'));
-            Misc.Add("eLastHit", new CheckBox("Use E to kill unkillable (AA) minions while LastHit", true));
+            Misc.Add("eLastHit", new CheckBox("Use E to kill unkillable (AA)" + Environment.NewLine + "minions while LastHit", true));
             Misc.Add("eKillSteal", new CheckBox("Use E to Killsteal", true));
             Misc.Add("humanDelay", new Slider("Humanize", 30, 1, 500));
         }

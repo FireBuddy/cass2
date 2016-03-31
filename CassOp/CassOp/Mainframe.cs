@@ -68,6 +68,8 @@ namespace CassOp
                 Circle.Draw(Color.White, 100, relPos);
                 Drawing.DrawText(Drawing.WorldToScreen(relPos), System.Drawing.Color.AliceBlue, f.Name, 2);
             }
+            //var delay = Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanDelay"));
+            //Drawing.DrawText(0, 0, System.Drawing.Color.White, delay.ToString(), 2);
         }
     }
 }

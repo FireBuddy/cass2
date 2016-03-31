@@ -60,7 +60,7 @@ namespace CassOp
                 return;
             }
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget(Spells.Q.Range))
+            if (target == null || !target.IsValidTarget(Spells.E.Range))
             {
                 return;
             }
@@ -99,7 +99,7 @@ namespace CassOp
                 return;
             }
             var target = TargetSelector.GetTarget(Spells.W.Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget(Spells.Q.Range))
+            if (target == null || !target.IsValidTarget(Spells.W.Range))
             {
                 return;
             }

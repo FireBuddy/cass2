@@ -11,7 +11,6 @@ namespace CassOp
     internal class Mainframe
     {
         public static readonly Random RDelay = new Random();
-        private static AIHeroClient _Player => Player.Instance;
 
         public static void Init()
         {
@@ -27,7 +26,7 @@ namespace CassOp
 
         private static void OnGameUpdate(EventArgs args)
         {
-            if (_Player.IsDead)
+            if (Player.Instance.IsDead)
             {
                 return;
             }
@@ -65,7 +64,7 @@ namespace CassOp
                 EntityManager.Heroes.Enemies.Where(e => !e.IsDead && e.IsVisible && e.IsValid && e.IsHPBarRendered);
             foreach (var f in front)
             {
-                var relPos = f.Position.Shorten(_Player.Position, -300);
+                var relPos = f.Position.Shorten(Player.Instance.Position, -300);
                 Circle.Draw(Color.White, 100, relPos);
                 Drawing.DrawText(Drawing.WorldToScreen(relPos), System.Drawing.Color.AliceBlue, f.Name, 2);
             }

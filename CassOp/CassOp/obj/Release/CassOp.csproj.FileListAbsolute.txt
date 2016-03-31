@@ -10,4 +10,3 @@ C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Rele
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\SharpDX.XInput.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\Newtonsoft.Json.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.Sandbox.dll
-C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.csprojResolveAssemblyReference.cache

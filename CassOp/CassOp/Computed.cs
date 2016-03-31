@@ -9,7 +9,7 @@ namespace CassOp
 {
     internal class Computed
     {
-        public static AIHeroClient _Player => Player.Instance;
+        private static AIHeroClient _Player => Player.Instance;
 
         public static void AutoQ()
         {

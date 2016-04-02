@@ -22,10 +22,10 @@ namespace CassOp
 
         public static void LoadSpells()
         {
-            Q = new Spell.Skillshot(SpellSlot.Q, 850, SkillShotType.Circular, 400, null, 75);
+            Q = new Spell.Skillshot(SpellSlot.Q, 850, SkillShotType.Circular, 400, null, 130);
             W = new Spell.Skillshot(SpellSlot.W, 850, SkillShotType.Circular, spellWidth: 125);
             E = new Spell.Targeted(SpellSlot.E, 700);
-            R = new Spell.Skillshot(SpellSlot.R, 825, SkillShotType.Cone, spellWidth: 80);
+            R = new Spell.Skillshot(SpellSlot.R, 825, SkillShotType.Cone, 500, spellWidth: 80);
         }
     }
 }

@@ -107,7 +107,7 @@ namespace CassOp
                     Computed.GetBestCircularFarmLocation(
                         minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(), Spells.Q.Width, Spells.Q.Range);
+                            .ToList(), Spells.Q.Width*1.5f, Spells.Q.Range);
                 if (qFarmLoc.MinionsHit > 0)
                 {
                     Spells.Q.Cast(qFarmLoc.Position.To3D());
@@ -219,7 +219,7 @@ namespace CassOp
                     Computed.GetBestCircularFarmLocation(
                         minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(), Spells.Q.Width, Spells.Q.Range);
+                            .ToList(), Spells.Q.Width*1.5f, Spells.Q.Range);
                 if (qFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minQInLC"))
                 {
                     Spells.Q.Cast(qFarmLoc.Position.To3D());

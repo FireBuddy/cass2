@@ -10,3 +10,4 @@ c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_
 c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.csprojResolveAssemblyReference.cache
 c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.exe
 c:\users\ridiculous\documents\visual studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.pdb
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.Sandbox.dll

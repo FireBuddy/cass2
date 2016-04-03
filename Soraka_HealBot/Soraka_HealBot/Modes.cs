@@ -16,13 +16,12 @@ namespace Soraka_HealBot
                 return;
             }
             var qPred = Spells.Q.GetPrediction(target);
-            var ePred = Spells.E.GetPrediction(target);
-            if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.IsReady() && _Player.Mana >= 40 &&
-                _Player.CanCast && Spells.Q.IsInRange(qPred.CastPosition) && qPred.HitChancePercent >= 70)
+            if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.IsReady() && _Player.Mana >= 40 && Spells.Q.IsInRange(qPred.CastPosition) && qPred.HitChancePercent >= 70)
             {
                 Spells.Q.Cast(qPred.CastPosition);
             }
-            if (Spells.E.IsReady() && _Player.Mana >= 70 && _Player.CanCast &&
+            var ePred = Spells.E.GetPrediction(target);
+            if (Spells.E.IsReady() && _Player.Mana >= 70 &&
                 Config.IsChecked(Config.Combo, "useEInCombo") && Spells.E.IsInRange(ePred.CastPosition) &&
                 ePred.HitChancePercent >= 70)
             {

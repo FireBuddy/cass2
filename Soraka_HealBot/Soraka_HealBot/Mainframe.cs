@@ -125,6 +125,42 @@ namespace Soraka_HealBot
             {
                 Circle.Draw(Color.White, Spells.W.Range, Player.Instance.Position);
             }
+            /* Debug Drawings
+            var ent = EntityManager.Heroes.Allies.Where(ally => !ally.IsDead && !ally.IsMe && !ally.IsZombie).ToList();
+            var drawTip = 10;
+            foreach (var stuff in ent)
+            {
+                Drawing.DrawText(10 * drawTip, 0, System.Drawing.Color.White, stuff.Name, 2);
+                Drawing.DrawText(10 * drawTip, 20, System.Drawing.Color.White, "Health: " + stuff.Health, 2);
+                Drawing.DrawText(10 * drawTip, 40, System.Drawing.Color.White, "TAD: " + stuff.TotalAttackDamage, 2);
+                Drawing.DrawText(10 * drawTip, 60, System.Drawing.Color.White, "TAP: " + stuff.TotalMagicalDamage, 2);
+                drawTip += 20;
+            }
+
+            var allyInNeed = new AIHeroClient();
+            switch (Config.GetComboBoxValue(Config.AutoWMenu, "wHealMode"))
+            {
+                case 0:
+                    allyInNeed = ent.OrderBy(x => x.Health).FirstOrDefault();
+                    break;
+                case 1:
+                    allyInNeed = ent.OrderByDescending(x => x.TotalAttackDamage).ThenBy(u => u.Health).FirstOrDefault();
+                    break;
+                case 2:
+                    allyInNeed = ent.OrderByDescending(x => x.TotalMagicalDamage).ThenBy(u => u.Health).FirstOrDefault();
+                    break;
+                case 3:
+                    allyInNeed =
+                        ent.OrderByDescending(x => x.TotalAttackDamage + x.TotalMagicalDamage)
+                            .ThenBy(u => u.Health)
+                            .FirstOrDefault();
+                    break;
+                case 4:
+                    allyInNeed = ent.OrderBy(x => x.Distance(_Player)).ThenBy(u => u.Health).FirstOrDefault();
+                    break;
+            }
+            Drawing.DrawText(0, 0, System.Drawing.Color.Red, allyInNeed.Name, 2);
+            */
         }
 
         private static void HealBotW()
@@ -134,7 +170,7 @@ namespace Soraka_HealBot
                     allies =>
                         !allies.IsMe && !allies.IsDead && !allies.IsInShopRange() && !allies.IsZombie &&
                         allies.Distance(_Player) <= Spells.W.Range && !allies.HasBuff("Recall") &&
-                        Config.IsChecked(Config.AutoWMenu, "autoW_" + allies.BaseSkinName)).ToList();
+                        (Config.IsChecked(Config.AutoWMenu, "autoW_" + allies.BaseSkinName))).ToList();
             if (!ent.Any())
             {
                 return;
@@ -222,7 +258,7 @@ namespace Soraka_HealBot
         {
             if (!Spells.Q.IsReady() || !(_Player.Mana >= 40) || !_Player.CanCast ||
                 !(_Player.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaAutoHarass")) ||
-                _Player.HasBuff("Recall"))
+                _Player.HasBuff("Recall") && !Config.IsChecked(Config.Harass, "autoQHarass"))
             {
                 return;
             }
@@ -255,7 +291,7 @@ namespace Soraka_HealBot
         {
             if (!Spells.E.IsReady() || !(_Player.Mana >= 70) || !_Player.CanCast ||
                 !(_Player.ManaPercent >= Config.GetSliderValue(Config.Harass, "manaAutoHarass")) ||
-                _Player.HasBuff("Recall"))
+                _Player.HasBuff("Recall") && !Config.IsChecked(Config.Harass, "autoEHarass"))
             {
                 return;
             }

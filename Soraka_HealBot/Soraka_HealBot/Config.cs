@@ -35,6 +35,8 @@ namespace Soraka_HealBot
             Combo.Add("useEInCombo", new CheckBox("Use E"));
             Combo.Add("eOnlyCC", new CheckBox("Use E only on CC'd or 100% Hit", false));
             Combo.Add("comboDisableAA", new CheckBox("Disable AA on heroes in combo mode", false));
+            Combo.Add("bLvlDisableAA", new CheckBox("Disable AA after Level x", false));
+            Combo.Add("lvlDisableAA", new Slider("Min Level to disable AA", 8, 1, 18));
 
             Harass = Soraka.AddSubMenu("Harass", "Harass");
             Harass.AddGroupLabel("Options for Harass");
@@ -69,7 +71,8 @@ namespace Soraka_HealBot
                     "Try to W Ally who'd die on targeted ability " + Environment.NewLine + " ignores all other settings",
                     true));
             AutoWMenu.Add(
-                "wHealMode", new ComboBox("Priority Mode", 0, "Lowest Health", "Total AD", "Total AP", "AD+AP", "Closest"));
+                "wHealMode",
+                new ComboBox("Priority Mode", 0, "Lowest Health", "Total AD", "Total AP", "AD+AP", "Closest"));
             AutoWMenu.Add("manaToW", new Slider("Min Mana % to Auto W", 10, 0, 100));
             AutoWMenu.Add("playerHpToW", new Slider("Min Player HP % to Auto W", 25, 6, 100));
             AutoWMenu.AddGroupLabel("Auto W Teammate Settings");
@@ -111,9 +114,13 @@ namespace Soraka_HealBot
             AssistKS.Add("autoAssistKS", new CheckBox("Use R to Auto AssistKS", false));
             AssistKS.Add("assCancelBase", new CheckBox("Cancel Recall to AssistKS", false));
             AssistKS.Add("assMode", new ComboBox("AssistKS Mode", 0, "Safe", "Wild"));
-            AssistKS.AddLabel("Safe Mode will only trigger on ally spellcasts able to kill the target" + Environment.NewLine + "calculated by dmg lib might miss but shouldnt very often, doesnt register for AA's");
+            AssistKS.AddLabel(
+                "Safe Mode will only trigger on ally spellcasts able to kill the target" + Environment.NewLine +
+                "calculated by dmg lib might miss but shouldnt very often, doesnt register for AA's");
             AssistKS.AddSeparator();
-            AssistKS.AddLabel("Wild mode tries to calculate combo dmg and predict a kill" + Environment.NewLine + "will cast more often but will also fail more often");
+            AssistKS.AddLabel(
+                "Wild mode tries to calculate combo dmg and predict a kill" + Environment.NewLine +
+                "will cast more often but will also fail more often");
 
             Interrupter = Soraka.AddSubMenu("Interrupter", "Interrupter");
             Interrupter.AddGroupLabel("Options for Interrupter");

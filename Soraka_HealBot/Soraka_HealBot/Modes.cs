@@ -16,14 +16,14 @@ namespace Soraka_HealBot
                 return;
             }
             var qPred = Spells.Q.GetPrediction(target);
-            if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.IsReady() && _Player.Mana >= 40 && Spells.Q.IsInRange(qPred.CastPosition) && qPred.HitChancePercent >= 70)
+            if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.IsReady() && _Player.Mana >= 40 &&
+                Spells.Q.IsInRange(qPred.CastPosition) && qPred.HitChancePercent >= 70)
             {
                 Spells.Q.Cast(qPred.CastPosition);
             }
             var ePred = Spells.E.GetPrediction(target);
-            if (Spells.E.IsReady() && _Player.Mana >= 70 &&
-                Config.IsChecked(Config.Combo, "useEInCombo") && Spells.E.IsInRange(ePred.CastPosition) &&
-                ePred.HitChancePercent >= 70)
+            if (Spells.E.IsReady() && _Player.Mana >= 70 && Config.IsChecked(Config.Combo, "useEInCombo") &&
+                Spells.E.IsInRange(ePred.CastPosition) && ePred.HitChancePercent >= 70)
             {
                 if (Config.IsChecked(Config.Combo, "eOnlyCC"))
                 {
@@ -128,7 +128,9 @@ namespace Soraka_HealBot
                     args.Process = false;
                 }
             }
-            if (Config.IsChecked(Config.Combo, "comboDisableAA") &&
+            if ((Config.IsChecked(Config.Combo, "comboDisableAA") ||
+                 (Config.IsChecked(Config.Combo, "bLvlDisableAA") &&
+                  _Player.Level >= Config.GetSliderValue(Config.Combo, "lvlDisableAA"))) &&
                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                 args.Target.Type == GameObjectType.AIHeroClient)
             {

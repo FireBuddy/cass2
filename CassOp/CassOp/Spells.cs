@@ -18,7 +18,7 @@ namespace CassOp
         public static float ECasted = 0f;
         public static Vector3 LastQPos = new Vector3();
         public static Vector3 LastWPos = new Vector3();
-        public static bool flashR;
+        public static bool FlashR;
 
         public static void LoadSpells()
         {

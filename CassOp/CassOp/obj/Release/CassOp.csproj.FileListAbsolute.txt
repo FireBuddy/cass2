@@ -1,6 +1,4 @@
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.exe.config
-C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.exe
-C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.pdb
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.exe
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\CassOp.pdb
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.dll
@@ -10,4 +8,5 @@ C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Rele
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\SharpDX.XInput.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\Newtonsoft.Json.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Release\EloBuddy.Sandbox.dll
-C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.exe
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Release\CassOp.pdb

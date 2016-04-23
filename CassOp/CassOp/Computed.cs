@@ -9,7 +9,7 @@ namespace CassOp
 {
     internal class Computed
     {
-        private static AIHeroClient _Player => Player.Instance;
+        private static AIHeroClient Player => EloBuddy.Player.Instance;
 
         public static void AutoQ()
         {
@@ -18,10 +18,10 @@ namespace CassOp
                 return;
             }
             var bush =
-                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(_Player.ServerPosition)).FirstOrDefault();
+                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(Player.ServerPosition)).FirstOrDefault();
             if (bush != null &&
                 (Config.IsChecked(Config.Harass, "dontAutoHarassInBush") &&
-                 _Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
+                 Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
             {
                 return;
             }
@@ -31,7 +31,7 @@ namespace CassOp
                 return;
             }
             if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                _Player.IsUnderEnemyturret())
+                Player.IsUnderEnemyturret())
             {
                 return;
             }
@@ -52,10 +52,10 @@ namespace CassOp
                 return;
             }
             var bush =
-                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(_Player.ServerPosition)).FirstOrDefault();
+                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(Player.ServerPosition)).FirstOrDefault();
             if (bush != null &&
                 (Config.IsChecked(Config.Harass, "dontAutoHarassInBush") &&
-                 _Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
+                 Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace CassOp
                 return;
             }
             if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                _Player.IsUnderEnemyturret())
+                Player.IsUnderEnemyturret())
             {
                 return;
             }
@@ -91,10 +91,10 @@ namespace CassOp
                 return;
             }
             var bush =
-                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(_Player.ServerPosition)).FirstOrDefault();
+                ObjectManager.Get<GrassObject>().OrderBy(br => br.Distance(Player.ServerPosition)).FirstOrDefault();
             if (bush != null &&
                 (Config.IsChecked(Config.Harass, "dontAutoHarassInBush") &&
-                 _Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
+                 Player.ServerPosition.IsInRange(bush, bush.BoundingRadius)))
             {
                 return;
             }
@@ -104,7 +104,7 @@ namespace CassOp
                 return;
             }
             if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                _Player.IsUnderEnemyturret())
+                Player.IsUnderEnemyturret())
             {
                 return;
             }
@@ -135,9 +135,11 @@ namespace CassOp
         public static void OnSpellbookCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
             if (sender.Owner.IsMe && args.Slot == SpellSlot.R && Config.IsChecked(Config.Misc, "antiMissR") &&
-                !Spells.flashR)
+                !Spells.FlashR)
             {
-                if (EntityManager.Heroes.Enemies.Count(h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(_Player)) < 1)
+                var facingEns =
+                    EntityManager.Heroes.Enemies.Where(h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(Player));
+                if (!facingEns.Any())
                 {
                     args.Process = false;
                 }
@@ -165,9 +167,9 @@ namespace CassOp
         {
             if (sender.IsMe)
             {
-                if (args.SData.Name == "SummonerFlash" && Spells.flashR)
+                if (args.SData.Name == "SummonerFlash" && Spells.FlashR)
                 {
-                    Spells.flashR = false;
+                    Spells.FlashR = false;
                 }
             }
         }
@@ -184,9 +186,13 @@ namespace CassOp
 
         public static void OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
-            var eTravelTime = target.Distance(Player.Instance) / Spells.E.Handle.SData.MissileSpeed +
+            if (target == null)
+            {
+                return;
+            }
+            var eTravelTime = target.Distance(EloBuddy.Player.Instance) / Spells.E.Handle.SData.MissileSpeed +
                               (Spells.E.CastDelay) + Game.Ping / 2f / 1000;
-            if (Config.IsChecked(Config.Misc, "eLastHit") && _Player.GetSpellDamage(target, SpellSlot.E) > target.Health &&
+            if (Config.IsChecked(Config.Misc, "eLastHit") && Player.GetSpellDamage(target, SpellSlot.E) > target.Health &&
                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) &&
                 Prediction.Health.GetPrediction(target, (int) eTravelTime * 1000) > 0)
             {
@@ -200,7 +206,7 @@ namespace CassOp
             {
                 var entKs =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
-                        h => h.IsValidTarget(Spells.E.Range) && h.Health < _Player.GetSpellDamage(h, SpellSlot.E));
+                        h => h.IsValidTarget(Spells.E.Range) && h.Health < Player.GetSpellDamage(h, SpellSlot.E));
                 if (entKs != null)
                 {
                     Spells.E.Cast(entKs);
@@ -225,19 +231,19 @@ namespace CassOp
             var dmg = 0f;
             if (Spells.Q.IsReady())
             {
-                dmg += _Player.GetSpellDamage(target, SpellSlot.Q);
+                dmg += Player.GetSpellDamage(target, SpellSlot.Q);
             }
             if (Spells.W.IsReady())
             {
-                dmg += _Player.GetSpellDamage(target, SpellSlot.W);
+                dmg += Player.GetSpellDamage(target, SpellSlot.W);
             }
             if (Spells.E.IsReady())
             {
-                dmg += _Player.GetSpellDamage(target, SpellSlot.E);
+                dmg += Player.GetSpellDamage(target, SpellSlot.E);
             }
             if (Spells.R.IsReady())
             {
-                dmg += _Player.GetSpellDamage(target, SpellSlot.R);
+                dmg += Player.GetSpellDamage(target, SpellSlot.R);
             }
             return dmg;
         }
@@ -250,11 +256,11 @@ namespace CassOp
         public static FarmLocation GetBestCircularFarmLocation(List<Vector2> minionPositions,
             float width,
             float range,
-            int useMECMax = 9)
+            int useMecMax = 9)
         {
             var result = new Vector2();
             var minionCount = 0;
-            var startPos = Player.Instance.ServerPosition.To2D();
+            var startPos = EloBuddy.Player.Instance.ServerPosition.To2D();
 
             range = range * range;
 
@@ -264,14 +270,14 @@ namespace CassOp
             }
 
             /* Use MEC to get the best positions only when there are less than 9 positions because it causes lag with more. */
-            if (minionPositions.Count <= useMECMax)
+            if (minionPositions.Count <= useMecMax)
             {
                 var subGroups = GetCombinations(minionPositions);
                 foreach (var subGroup in subGroups)
                 {
                     if (subGroup.Count > 0)
                     {
-                        var circle = MEC.GetMec(subGroup);
+                        var circle = Mec.GetMec(subGroup);
 
                         if (circle.Radius <= width && circle.Center.Distance(startPos, true) <= range)
                         {

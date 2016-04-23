@@ -25,7 +25,7 @@ namespace CassOp
                     (Spells.Flash != null && Spells.Flash.IsReady) && Computed.ComboDmg(target) > target.Health &&
                     enemiesAroundTarget <= Config.GetSliderValue(Config.Combo, "maxEnFlash"))
                 {
-                    Spells.flashR = true;
+                    Spells.FlashR = true;
                     var relPos = target.Position.Shorten(Player.Instance.Position, -300);
                     Spells.R.Cast(relPos);
                     Core.DelayAction(
@@ -57,7 +57,7 @@ namespace CassOp
             {
                 if (Config.IsChecked(Config.Combo, "comboWonlyCD"))
                 {
-                    if (!Spells.Q.IsReady() && (Spells.QCasted - Game.Time) < -0.45f &&
+                    if (!Spells.Q.IsReady() && (Spells.QCasted - Game.Time) < -0.5f &&
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
@@ -96,7 +96,7 @@ namespace CassOp
         internal static void JungleClear()
         {
             var minions = EntityManager.MinionsAndMonsters.Monsters.OrderByDescending(x => x.MaxHealth);
-            if (!minions.Any() || minions == null ||
+            if (!minions.Any() ||
                 Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
             {
                 return;
@@ -167,7 +167,7 @@ namespace CassOp
             {
                 if (Config.IsChecked(Config.Harass, "harassWonlyCD"))
                 {
-                    if (!Spells.Q.IsReady() && (Spells.QCasted - Game.Time) < -0.45f &&
+                    if (!Spells.Q.IsReady() && (Spells.QCasted - Game.Time) < -0.5f &&
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
@@ -206,7 +206,8 @@ namespace CassOp
         internal static void LaneClear()
         {
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
-            if (!minions.Any() || minions == null ||
+            var objAiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();
+            if (!objAiMinions.Any() || minions == null ||
                 Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
             {
                 return;
@@ -217,7 +218,7 @@ namespace CassOp
             {
                 var qFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
+                        objAiMinions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.Q.Width, Spells.Q.Range);
                 if (qFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minQInLC"))
@@ -231,7 +232,7 @@ namespace CassOp
             {
                 var wFarmLoc =
                     Computed.GetBestCircularFarmLocation(
-                        minions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
+                        objAiMinions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC"))

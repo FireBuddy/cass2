@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Rendering;
-using SharpDX;
 
 namespace CassOp
 {
@@ -58,6 +55,7 @@ namespace CassOp
             }
         }
 
+/*
         private static void OnDraw(EventArgs args)
         {
             var front =
@@ -71,5 +69,6 @@ namespace CassOp
             var delay = Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanDelay"));
             Drawing.DrawText(0, 0, System.Drawing.Color.White, delay.ToString(), 2);
         }
+*/
     }
 }

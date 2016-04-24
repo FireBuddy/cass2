@@ -1,0 +1,12 @@
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\TwistedFate.exe.config
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\TwistedFate.exe
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\TwistedFate.pdb
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\EloBuddy.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\SharpDX.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\SharpDX.XInput.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\obj\Release\TwistedFate.exe
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\obj\Release\TwistedFate.pdb

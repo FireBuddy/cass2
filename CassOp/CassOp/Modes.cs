@@ -35,7 +35,7 @@ namespace CassOp
                 var countFace =
                     EntityManager.Heroes.Enemies.Count(
                         h => h.IsValidTarget(Spells.R.Range) && h.IsFacing(Player.Instance));
-                if (countFace >= Config.GetSliderValue(Config.Combo, "comboMinR") && target.IsFacing(Player.Instance) &&
+                if (countFace >= Config.GetSliderValue(Config.Combo, "comboMinR") &&
                     target.IsValidTarget(Spells.R.Range))
                 {
                     Spells.R.Cast(target);

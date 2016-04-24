@@ -120,15 +120,16 @@ namespace CassOp
 
         public static void AssistedR()
         {
-            if (Config.IsKeyPressed(Config.Misc, "assistedR") && Spells.R.IsReady())
+            if (!Config.IsKeyPressed(Config.Misc, "assistedR") || !Spells.R.IsReady())
             {
-                var enemyNearMouse =
-                    EntityManager.Heroes.Enemies.OrderBy(entity => entity.Distance(Game.CursorPos, true))
-                        .FirstOrDefault(entity => entity.IsValidTarget(Spells.R.Range));
-                if (enemyNearMouse != null)
-                {
-                    Spells.R.Cast(enemyNearMouse);
-                }
+                return;
+            }
+            var enemyNearMouse =
+                EntityManager.Heroes.Enemies.OrderBy(entity => entity.Distance(Game.CursorPos, true))
+                    .FirstOrDefault(entity => entity.IsValidTarget(Spells.R.Range));
+            if (enemyNearMouse != null)
+            {
+                Spells.R.Cast(enemyNearMouse);
             }
         }
 

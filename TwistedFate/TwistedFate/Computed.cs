@@ -28,5 +28,23 @@ namespace TwistedFate
                 Spells.Q.Cast(enemyTarget);
             }
         }
+
+        public static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe && args.SData.Name == "Gate" && Config.IsChecked(Config.Misc, "AutoYAG"))
+            {
+                CardSelector.StartSelecting(Cards.Yellow);
+            }
+            if (!sender.IsMe) { }
+        }
+
+        public static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            if (args.Target is AIHeroClient)
+            {
+                args.Process = CardSelector.Status != SelectStatus.Selecting &&
+                               Environment.TickCount - CardSelector.LastWSent > 300;
+            }
+        }
     }
 }

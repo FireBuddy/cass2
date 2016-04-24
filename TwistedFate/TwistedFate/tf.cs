@@ -13,8 +13,8 @@ namespace TwistedFate
         public static void Init()
         {
             Game.OnUpdate += OnGameUpdate;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
-            Orbwalker.OnPreAttack += OnBeforeAttack;
+            Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
+            Orbwalker.OnPreAttack += Computed.OnBeforeAttack;
             Orbwalker.OnPostAttack += Computed.OnPostAttack;
             //Drawing.OnDraw += Drawing_OnDraw;
         }
@@ -53,27 +53,7 @@ namespace TwistedFate
         }
 
         //private static void Game_OnTick(EventArgs args) {}
-
-        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender.IsMe && args.SData.Name == "Gate" && Config.IsChecked(Config.Misc, "AutoYAG"))
-            {
-                CardSelector.StartSelecting(Cards.Yellow);
-            }
-            if (!sender.IsMe) {}
-        }
-
         //private static void OnDash(Obj_AI_Base sender, Dash.DashEventArgs args) {}
-
-        private static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
-        {
-            if (args.Target is AIHeroClient)
-            {
-                args.Process = CardSelector.Status != SelectStatus.Selecting &&
-                               Environment.TickCount - CardSelector.LastWSent > 300;
-            }
-        }
-
         //private static void Drawing_OnDraw(EventArgs args) {}
     }
 }

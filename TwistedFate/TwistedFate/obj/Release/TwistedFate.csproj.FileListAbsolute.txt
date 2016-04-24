@@ -10,3 +10,4 @@ C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFat
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\bin\Release\EloBuddy.Sandbox.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\obj\Release\TwistedFate.exe
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\obj\Release\TwistedFate.pdb
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\TwistedFate\TwistedFate\obj\Release\TwistedFate.csprojResolveAssemblyReference.cache

@@ -35,7 +35,7 @@ namespace TwistedFate
             {
                 CardSelector.StartSelecting(Cards.Yellow);
             }
-            if (!sender.IsMe) { }
+            if (!sender.IsMe) {}
         }
 
         public static void OnBeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
@@ -44,6 +44,18 @@ namespace TwistedFate
             {
                 args.Process = CardSelector.Status != SelectStatus.Selecting &&
                                Environment.TickCount - CardSelector.LastWSent > 300;
+            }
+            if (CardSelector.Status == SelectStatus.Selecting &&
+                ((Config.IsChecked(Config.Combo, "disableAAselectingC") &&
+                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) ||
+                 (Config.IsChecked(Config.Harass, "disableAAselectingH") &&
+                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) ||
+                 (Config.IsChecked(Config.LaneClear, "disableAAselectingLC") &&
+                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) ||
+                 (Config.IsChecked(Config.JungleClear, "disableAAselectingJC") &&
+                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))))
+            {
+                args.Process = false;
             }
         }
     }

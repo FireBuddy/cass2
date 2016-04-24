@@ -18,12 +18,14 @@ namespace TwistedFate
             Combo.Add("qAAReset", new CheckBox("Only use Q after AA to reset", false));
             Combo.Add("useWinCombo", new CheckBox("Use W in Combo"));
             Combo.Add("wModeC", new ComboBox("W Mode", 0, "Smart Mode", "Always Yellow", "Always Blue", "Always Red"));
+            Combo.Add("disableAAselectingC", new CheckBox("Disable AA while selecting a card", false));
 
             Harass = _twistedFate.AddSubMenu("Harass", "harass");
             Harass.AddGroupLabel("Harass");
             Harass.Add("useQinHarass", new CheckBox("Use Q in Harass"));
             Harass.Add("useWinHarass", new CheckBox("Use W in Harass"));
             Harass.Add("wModeH", new ComboBox("W Mode", 0, "Smart Mode", "Always Yellow", "Always Blue", "Always Red"));
+            Harass.Add("disableAAselectingH", new CheckBox("Disable AA while selecting a card", false));
             Harass.Add("manaToHarass", new Slider("Min Mana % to Harass", 50));
             Harass.AddGroupLabel("Auto Harass");
             Harass.Add("autoQ", new CheckBox("Auto Q Harass"));
@@ -35,6 +37,7 @@ namespace TwistedFate
             LaneClear.Add("useWinLC", new CheckBox("Use W in LaneClear"));
             LaneClear.Add(
                 "wModeLC", new ComboBox("W Mode", 0, "Smart Mode", "Always Yellow", "Always Blue", "Always Red"));
+            LaneClear.Add("disableAAselectingLC", new CheckBox("Disable AA while selecting a card", false));
             LaneClear.Add("manaToLC", new Slider("Min Mana % to LaneClear", 30));
 
             JungleClear = _twistedFate.AddSubMenu("JungleClear", "jungleclear");
@@ -42,8 +45,9 @@ namespace TwistedFate
             JungleClear.Add("useWinJC", new CheckBox("Use W in JungleClear"));
             JungleClear.Add(
                 "wModeJC", new ComboBox("W Mode", 0, "Smart Mode", "Always Yellow", "Always Blue", "Always Red"));
+            JungleClear.Add("disableAAselectingJC", new CheckBox("Disable AA while selecting a card", false));
             JungleClear.Add("manaToJC", new Slider("Min Mana % to JungleClear", 10));
-
+            
             CardSelectorMenu = _twistedFate.AddSubMenu("CardSelector", "cardselector");
             CardSelectorMenu.Add(
                 "csYellow", new KeyBind("Select Yellow Card", false, KeyBind.BindTypes.HoldActive, 'W'));

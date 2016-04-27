@@ -57,6 +57,7 @@ namespace TwistedFate
             Misc = _twistedFate.AddSubMenu("Misc", "misc");
             Misc.Add("AutoYAG", new CheckBox("Auto Yellow on R teleport"));
             Misc.Add("qKillsteal", new CheckBox("Killsteal with Q"));
+            Misc.Add("cancelAApicking", new CheckBox("Cancel AA right before card pick", false));
             Misc.Add("humanizePicks", new CheckBox("Humanize Card Picks"));
             Misc.Add("humanizeInt", new Slider("Humanize", 50, 10, 300));
         }

@@ -142,40 +142,43 @@ namespace TwistedFate
 
         public static void LaneClear()
         {
-            var target =
-                EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
-                    x => x.NetworkId == Orbwalker.LaneClearMinion.NetworkId);
-            if (target == null || Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
+            if (Orbwalker.LaneClearMinion != null)
             {
-                return;
-            }
-            switch (Config.GetComboBoxValue(Config.LaneClear, "wModeLC"))
-            {
-                case 0:
-                    if (Player.Instance.ManaPercent >=
-                        Math.Max(30f, Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10))
-                    {
-                        var targetAoE =
-                            EntityManager.MinionsAndMonsters.EnemyMinions.Count(a => a.Distance(target) <= 250);
-                        if (targetAoE > 2)
+                var target =
+               EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
+                   x => x.NetworkId == Orbwalker.LaneClearMinion.NetworkId);
+                if (target == null || Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
+                {
+                    return;
+                }
+                switch (Config.GetComboBoxValue(Config.LaneClear, "wModeLC"))
+                {
+                    case 0:
+                        if (Player.Instance.ManaPercent >=
+                            Math.Max(30f, Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10))
                         {
-                            CardSelector.StartSelecting(Cards.Red);
+                            var targetAoE =
+                                EntityManager.MinionsAndMonsters.EnemyMinions.Count(a => a.Distance(target) <= 250);
+                            if (targetAoE > 2)
+                            {
+                                CardSelector.StartSelecting(Cards.Red);
+                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
+                            CardSelector.StartSelecting(Cards.Blue);
+                        }
+                        break;
+                    case 1:
+                        CardSelector.StartSelecting(Cards.Yellow);
+                        break;
+                    case 2:
                         CardSelector.StartSelecting(Cards.Blue);
-                    }
-                    break;
-                case 1:
-                    CardSelector.StartSelecting(Cards.Yellow);
-                    break;
-                case 2:
-                    CardSelector.StartSelecting(Cards.Blue);
-                    break;
-                case 3:
-                    CardSelector.StartSelecting(Cards.Red);
-                    break;
+                        break;
+                    case 3:
+                        CardSelector.StartSelecting(Cards.Red);
+                        break;
+                }
             }
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.IsValidTarget(Spells.Q.Range));
             if (minions.Any() && Config.IsChecked(Config.LaneClear, "useQinLC") && Spells.Q.IsReady())

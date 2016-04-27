@@ -38,12 +38,20 @@ namespace TwistedFate
         {
             if (Config.IsChecked(Config.Misc, "humanizePicks"))
             {
+                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
                 Core.DelayAction(
                     () => Player.Instance.Spellbook.CastSpell(SpellSlot.W, false),
                     Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanizeInt")));
             }
             else
             {
+                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
                 Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
             }
         }

@@ -21,6 +21,7 @@ namespace CassOp
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
         }
 
+
         private static void OnGameUpdate(EventArgs args)
         {
             if (Player.Instance.IsDead)
@@ -52,6 +53,22 @@ namespace CassOp
             {
                 //Modes.Flee();
                 //_fleeActivated = true;
+            }
+            if (Config.IsChecked(Config.Misc, "clearE") &&
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaClearE"))
+            {
+                Computed.AutoClearE();
+            }
+            if (Config.IsChecked(Config.Misc, "tearStackQ") &&
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaTearStack") && Computed.HasTear() &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
+            {
+                Computed.TearStack();
             }
         }
 

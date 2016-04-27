@@ -9,6 +9,16 @@ namespace CassOp
 {
     internal static class Computed
     {
+        private static readonly int Tear = (int) ItemId.Tear_of_the_Goddess;
+        private static readonly int Tear2 = (int) ItemId.Tear_of_the_Goddess_Crystal_Scar;
+
+        private static readonly int Muramana = (int) ItemId.Muramana; // 3042
+        private static readonly int Seraph = (int) ItemId.Seraphs_Embrace; // 3040
+
+        private static readonly int Manamune = (int) ItemId.Manamune;
+        private static readonly int Manamune2 = (int) ItemId.Manamune_Crystal_Scar;
+        private static readonly int Archangels = (int) ItemId.Archangels_Staff;
+        private static readonly int Archangels2 = (int) ItemId.Archangels_Staff_Crystal_Scar;
         private static AIHeroClient Player => EloBuddy.Player.Instance;
         public static float TurretRange => 775;
 
@@ -131,6 +141,68 @@ namespace CassOp
             if (enemyNearMouse != null)
             {
                 Spells.R.Cast(enemyNearMouse);
+            }
+        }
+
+        public static void AutoClearE()
+        {
+            if (!Spells.E.IsReady() && (Orbwalker.LastHitMinion != null && Orbwalker.IsAutoAttacking))
+            {
+                return;
+            }
+            var minionToE =
+                EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
+                    x =>
+                        x.IsValidTarget(Spells.E.Range) && Player.GetSpellDamage(x, SpellSlot.E) >= x.Health &&
+                        x.HasBuffOfType(BuffType.Poison));
+            if (minionToE != null)
+            {
+                Spells.E.Cast(minionToE);
+            }
+        }
+
+        public static bool HasTear()
+        {
+            return (Item.HasItem(Tear) || Item.HasItem(Tear2)) || (Item.HasItem(Manamune) || Item.HasItem(Manamune2)) ||
+                   Item.HasItem(Archangels) || Item.HasItem(Archangels2);
+        }
+
+        public static bool CompletedTear()
+        {
+            return Item.HasItem(Muramana) || Item.HasItem(Seraph);
+        }
+
+        public static void TearStack()
+        {
+            if (!Spells.Q.IsReady())
+            {
+                return;
+            }
+            var enemyTarget = TargetSelector.GetTarget(Spells.Q.Range + 200, DamageType.Magical);
+            if (enemyTarget != null)
+            {
+                Spells.Q.Cast(enemyTarget);
+            }
+            else
+            {
+                var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
+                var objAiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();
+                var qFarmLoc =
+                    GetBestCircularFarmLocation(
+                        objAiMinions.Where(m => m.Distance(EloBuddy.Player.Instance) <= Spells.Q.Range)
+                            .Select(mx => mx.ServerPosition.To2D())
+                            .ToList(), Spells.Q.Width, Spells.Q.Range);
+                if (qFarmLoc.MinionsHit >= 1)
+                {
+                    Spells.Q.Cast(qFarmLoc.Position.To3D());
+                }
+                else
+                {
+                    var rndPlayerPos = Player.Position;
+                    rndPlayerPos.X += Mainframe.RDelay.Next(-200, 200);
+                    rndPlayerPos.Y += Mainframe.RDelay.Next(-200, 200);
+                    Core.DelayAction(() => Spells.Q.Cast(rndPlayerPos), Mainframe.RDelay.Next(30, 70));
+                }
             }
         }
 

@@ -89,6 +89,11 @@ namespace CassOp
                 new CheckBox("Use E to kill unkillable (AA)" + Environment.NewLine + "minions while LastHit"));
             Misc.Add("eKillSteal", new CheckBox("Use E to Killsteal"));
             Misc.Add("humanDelay", new Slider("Humanize", 30, 1, 500));
+            Misc.AddSeparator(5);
+            Misc.Add("clearE", new CheckBox("Automatically kill poisoned minions with E", false));
+            Misc.Add("manaClearE", new Slider("Min Mana % to Auto E", 10));
+            Misc.Add("tearStackQ", new CheckBox("Use Q to stack Tear passively", false));
+            Misc.Add("manaTearStack", new Slider("Min Mana % to stack Tear", 50));
         }
 
         public static bool IsChecked(Menu obj, string value)

@@ -96,8 +96,7 @@ namespace CassOp
         internal static void JungleClear()
         {
             var minions = EntityManager.MinionsAndMonsters.Monsters.OrderByDescending(x => x.MaxHealth);
-            if (!minions.Any() ||
-                Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
+            if (!minions.Any() || Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
             {
                 return;
             }

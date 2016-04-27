@@ -10,7 +10,7 @@ namespace Soraka_HealBot
 
         public static void Combo()
         {
-            var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.Q.Range + 400, DamageType.Magical);
             if (target == null)
             {
                 return;
@@ -80,7 +80,7 @@ namespace Soraka_HealBot
 
         public static void Harass()
         {
-            var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.Q.Range + 400, DamageType.Magical);
             if (target == null)
             {
                 return;

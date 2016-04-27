@@ -80,6 +80,10 @@ namespace Soraka_HealBot
 
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            if (args.Target == null)
+            {
+                return;
+            }
             if (sender.IsEnemy && args.Target.IsAlly &&
                 (Config.IsChecked(Config.AutoWMenu, "wOnKill") || Config.IsChecked(Config.AutoRMenu, "rOnKill")))
             {
@@ -125,6 +129,7 @@ namespace Soraka_HealBot
             {
                 Circle.Draw(Color.White, Spells.W.Range, Player.Instance.Position);
             }
+            Circle.Draw(Color.White, Spells.Q.Range, _Player);
             /* Debug Drawings
             var ent = EntityManager.Heroes.Allies.Where(ally => !ally.IsDead && !ally.IsMe && !ally.IsZombie).ToList();
             var drawTip = 10;

@@ -7,9 +7,10 @@ using SharpDX;
 
 namespace CassOp
 {
-    internal class Computed
+    internal static class Computed
     {
         private static AIHeroClient Player => EloBuddy.Player.Instance;
+        public static float TurretRange => 775;
 
         public static void AutoQ()
         {
@@ -30,8 +31,8 @@ namespace CassOp
             {
                 return;
             }
-            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                Player.IsUnderEnemyturret())
+            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && UnderEnemyTurret(target.Position) &&
+                UnderEnemyTurret(Player.Position))
             {
                 return;
             }
@@ -64,8 +65,8 @@ namespace CassOp
             {
                 return;
             }
-            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                Player.IsUnderEnemyturret())
+            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && UnderEnemyTurret(target.Position) &&
+                UnderEnemyTurret(Player.Position))
             {
                 return;
             }
@@ -103,8 +104,8 @@ namespace CassOp
             {
                 return;
             }
-            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && target.IsUnderEnemyturret() &&
-                Player.IsUnderEnemyturret())
+            if (Config.IsChecked(Config.Harass, "dontAutoHarassTower") && UnderEnemyTurret(target.Position) &&
+                UnderEnemyTurret(Player.Position))
             {
                 return;
             }
@@ -199,6 +200,11 @@ namespace CassOp
             {
                 Spells.E.Cast(target);
             }
+        }
+
+        public static bool UnderEnemyTurret(this Vector3 position)
+        {
+            return (EntityManager.Turrets.Enemies.Any(turret => turret.Distance(position) < TurretRange));
         }
 
         public static void KillSteal(string mode)

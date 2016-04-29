@@ -55,7 +55,7 @@ namespace CassOp
                 //_fleeActivated = true;
             }
             if (Config.IsChecked(Config.Misc, "clearE") &&
-                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaClearE"))
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaClearE") && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Computed.AutoClearE();
             }

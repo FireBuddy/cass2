@@ -11,7 +11,7 @@ namespace CassOp
 
         public static void Init()
         {
-            Game.OnUpdate += OnGameUpdate;
+            Game.OnTick += OnGameUpdate;
             //Drawing.OnDraw += OnDraw;
             //Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Computed.OnSpellCast;

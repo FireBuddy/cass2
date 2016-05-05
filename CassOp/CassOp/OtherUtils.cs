@@ -59,7 +59,7 @@ namespace CassOp
                     }
                 }
             }
-            if (Config.IsChecked(Config.Gapclose, "wGapclose"))
+            /*if (Config.IsChecked(Config.Gapclose, "wGapclose"))
             {
                 if (Spells.W.IsInRange(sender) && Spells.W.IsReady())
                 {
@@ -70,7 +70,7 @@ namespace CassOp
                         Core.DelayAction(() => Spells.W.Cast(ePred.CastPosition), delay);
                     }
                 }
-            }
+            }*/
         }
     }
 }

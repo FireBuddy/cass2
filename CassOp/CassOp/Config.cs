@@ -82,7 +82,7 @@ namespace CassOp
             Gapclose = _cassop.AddSubMenu("Anti GapCloser", "AntiGapCloser");
             Gapclose.AddGroupLabel("Options for Anti GapClose");
             Gapclose.Add("qGapclose", new CheckBox("Anti GapClose with Q", false));
-            Gapclose.Add("wGapclose", new CheckBox("Anti GapClose with W"));
+            //Gapclose.Add("wGapclose", new CheckBox("Anti GapClose with W"));
 
             Misc = _cassop.AddSubMenu("Misc", "misc");
             Misc.AddGroupLabel("Misc Options");

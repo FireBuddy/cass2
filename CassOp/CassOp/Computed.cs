@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
@@ -175,7 +176,7 @@ namespace CassOp
 
         public static void TearStack()
         {
-            if (!Spells.Q.IsReady())
+            if (!Spells.Q.IsReady() || Player.IsRecalling())
             {
                 return;
             }
@@ -319,12 +320,13 @@ namespace CassOp
             }
             if (Spells.E.IsReady())
             {
-                dmg += Player.GetSpellDamage(target, SpellSlot.E);
+                dmg += Player.GetSpellDamage(target, SpellSlot.E) * 2;
             }
             if (Spells.R.IsReady())
             {
                 dmg += Player.GetSpellDamage(target, SpellSlot.R);
             }
+            dmg += Player.GetAutoAttackDamage(target);
             return dmg;
         }
 

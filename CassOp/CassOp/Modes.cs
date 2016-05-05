@@ -8,7 +8,7 @@ namespace CassOp
     {
         public static void Combo()
         {
-            var target = TargetSelector.GetTarget(Spells.R.Range + 430, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.R.Range + 250, DamageType.Magical);
             if (target == null)
             {
                 return;
@@ -22,7 +22,7 @@ namespace CassOp
                 if (Config.IsChecked(Config.Combo, "comboFlashR") && target.IsFacing(Player.Instance) &&
                     (target.Distance(Player.Instance) > Spells.R.Range &&
                      target.Distance(Player.Instance) <= Spells.R.Range + 400) &&
-                    (Spells.Flash != null && Spells.Flash.IsReady) && Computed.ComboDmg(target) > target.Health &&
+                    (Spells.Flash != null && Spells.Flash.IsReady) && Computed.ComboDmg(target) * Spells.ComboDmgMod > target.Health &&
                     enemiesAroundTarget <= Config.GetSliderValue(Config.Combo, "maxEnFlash"))
                 {
                     Spells.FlashR = true;

@@ -1,24 +1,38 @@
 ﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 namespace CassOp
 {
     internal class Mainframe
     {
         public static readonly Random RDelay = new Random();
+        public static bool DebugDrawings;
 
         public static void Init()
         {
             Game.OnTick += OnGameUpdate;
-            //Drawing.OnDraw += OnDraw;
+            Drawing.OnDraw += OnDraw;
             //Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Computed.OnSpellCast;
             Spellbook.OnCastSpell += Computed.OnSpellbookCastSpell;
             Orbwalker.OnUnkillableMinion += Computed.OnUnkillableMinion;
             Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
+            Chat.OnInput += OnChatInput;
+        }
+
+        private static void OnChatInput(ChatInputEventArgs args)
+        {
+            if (args.Input == "//debugdraw")
+            {
+                DebugDrawings = !DebugDrawings;
+                args.Process = false;
+            }
         }
 
 
@@ -55,7 +69,8 @@ namespace CassOp
                 //_fleeActivated = true;
             }
             if (Config.IsChecked(Config.Misc, "clearE") &&
-                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaClearE") && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Misc, "manaClearE") &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Computed.AutoClearE();
             }
@@ -72,20 +87,27 @@ namespace CassOp
             }
         }
 
-/*
+
         private static void OnDraw(EventArgs args)
         {
-            var front =
-                EntityManager.Heroes.Enemies.Where(e => !e.IsDead && e.IsVisible && e.IsValid && e.IsHPBarRendered);
-            foreach (var f in front)
+            if (DebugDrawings)
             {
-                var relPos = f.Position.Shorten(Player.Instance.Position, -300);
-                Circle.Draw(Color.White, 100, relPos);
-                Drawing.DrawText(Drawing.WorldToScreen(relPos), System.Drawing.Color.AliceBlue, f.Name, 2);
+                var front =
+                    EntityManager.Heroes.Enemies.Where(e => !e.IsDead && e.IsVisible && e.IsValid && e.IsHPBarRendered);
+                foreach (var f in front)
+                {
+                    var relPos = f.Position.Shorten(Player.Instance.Position, -300);
+                    ColorBGRA drawColor = f.Health <= Computed.ComboDmg(f) * Spells.ComboDmgMod
+                        ? Color.OrangeRed
+                        : Color.Yellow;
+                    Circle.Draw(drawColor, 100, relPos);
+                    Drawing.DrawText(Drawing.WorldToScreen(relPos), System.Drawing.Color.AliceBlue, f.Name, 2);
+                    if (f.IsFacing(Player.Instance))
+                    {
+                        Drawing.DrawText(Drawing.WorldToScreen(f.Position), System.Drawing.Color.OrangeRed, "Facing", 3);
+                    }
+                }
             }
-            var delay = Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanDelay"));
-            Drawing.DrawText(0, 0, System.Drawing.Color.White, delay.ToString(), 2);
         }
-*/
     }
 }

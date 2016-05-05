@@ -21,6 +21,7 @@ namespace CassOp
         public static Vector3 LastQPos = new Vector3();
         public static Vector3 LastWPos = new Vector3();
         public static bool FlashR;
+        public static float ComboDmgMod = 0.7f;
 
         public static void LoadSpells()
         {

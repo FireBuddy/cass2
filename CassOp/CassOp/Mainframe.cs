@@ -47,7 +47,7 @@ namespace CassOp
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
             {
-                //Modes.LastHit();
+                Modes.LastHit();
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {

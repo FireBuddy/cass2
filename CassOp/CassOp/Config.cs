@@ -7,7 +7,7 @@ namespace CassOp
     internal class Config
     {
         private static Menu _cassop;
-        public static Menu Combo, Harass, LaneClear, JungleClear, Interrupter, Gapclose, Misc;
+        public static Menu Combo, Harass, LaneClear, JungleClear, Interrupter, Gapclose, Misc, LastHit;
 
         public static void CallMenu()
         {
@@ -69,6 +69,10 @@ namespace CassOp
             JungleClear.Add("jungEonP", new CheckBox("E only on poisoned"));
             JungleClear.Add("manaToJC", new Slider("Min Mana % to JungleClear", 10));
 
+            LastHit = _cassop.AddSubMenu("LastHit", "lasthit");
+            LastHit.AddGroupLabel("Options for LastHit");
+            LastHit.Add("useEInLH", new CheckBox("Use E"));
+            LastHit.Add("lastEonP", new CheckBox("E only on poisoned", false));
 
             Interrupter = _cassop.AddSubMenu("Interrupter", "Interrupter");
             Interrupter.AddGroupLabel("Options for Interrupter");

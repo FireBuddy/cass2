@@ -61,7 +61,8 @@ namespace CassOp
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
-                        if (wPred.HitChancePercent >= 85)
+                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                            wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
                         }
@@ -70,7 +71,8 @@ namespace CassOp
                 else
                 {
                     var wPred = Spells.W.GetPrediction(target);
-                    if (wPred.HitChancePercent >= 85)
+                    if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                        wPred.HitChancePercent >= 85)
                     {
                         Spells.W.Cast(wPred.CastPosition);
                     }
@@ -120,7 +122,8 @@ namespace CassOp
                         minions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
-                if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC"))
+                if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC") &&
+                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= 550)
                 {
                     Spells.W.Cast(wFarmLoc.Position.To3D());
                 }
@@ -133,7 +136,7 @@ namespace CassOp
                         .FirstOrDefault(
                             m =>
                                 m.IsValidTarget(Spells.E.Range) &&
-                                (Config.IsChecked(Config.JungleClear, "jungEonP") && m.HasBuffOfType(BuffType.Poison)));
+                                (!Config.IsChecked(Config.JungleClear, "jungEonP") || m.HasBuffOfType(BuffType.Poison)));
                 if (jngToE != null)
                 {
                     Spells.E.Cast(jngToE);
@@ -170,7 +173,8 @@ namespace CassOp
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
-                        if (wPred.HitChancePercent >= 85)
+                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                            wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
                         }
@@ -234,7 +238,8 @@ namespace CassOp
                         objAiMinions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
-                if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC"))
+                if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC") &&
+                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= 550)
                 {
                     Spells.W.Cast(wFarmLoc.Position.To3D());
                 }
@@ -246,7 +251,7 @@ namespace CassOp
                     EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
                         m =>
                             m.IsValidTarget(Spells.E.Range) && Player.Instance.GetSpellDamage(m, SpellSlot.E) > m.Health &&
-                            ((Config.IsChecked(Config.LaneClear, "laneEonP") && m.HasBuffOfType(BuffType.Poison)) ||
+                            ((!Config.IsChecked(Config.LaneClear, "laneEonP") || m.HasBuffOfType(BuffType.Poison)) ||
                              (Config.IsChecked(Config.LaneClear, "useManaEInLC") &&
                               Player.Instance.ManaPercent <= Config.GetSliderValue(Config.LaneClear, "manaEInLC"))));
                 if (minToE != null)
@@ -283,6 +288,26 @@ namespace CassOp
             }
         }
 
-        public static void LastHit() {}
+        public static void LastHit()
+        {
+            if (Orbwalker.IsAutoAttacking)
+            {
+                return;
+            }
+            if (Config.IsChecked(Config.LastHit, "useEInLH") && Spells.E.IsReady())
+            {
+                var minToE =
+                    EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
+                        m => m.Health < Player.Instance.GetSpellDamage(m, SpellSlot.E) && m.IsValidTarget(Spells.E.Range));
+                if (minToE != null)
+                {
+                    if (!Config.IsChecked(Config.LastHit, "lastEonP") || minToE.HasBuffOfType(BuffType.Poison))
+                    {
+                        Spells.E.Cast(minToE);
+
+                    }
+                }
+            }
+        }
     }
 }

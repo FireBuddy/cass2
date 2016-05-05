@@ -122,7 +122,8 @@ namespace CassOp
             if (Spells.W.IsReady() && target.IsValidTarget(Spells.W.Range))
             {
                 var wPred = Spells.W.GetPrediction(target);
-                if (wPred.HitChancePercent >= 85)
+                if (wPred.CastPosition.Distance(EloBuddy.Player.Instance.Position) >= 550 &&
+                    !wPred.CastPosition.IsWall() && wPred.HitChancePercent >= 85)
                 {
                     Spells.W.Cast(wPred.CastPosition);
                 }

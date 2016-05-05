@@ -61,7 +61,7 @@ namespace CassOp
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
-                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange && !wPred.CastPosition.IsWall() &&
                             wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
@@ -71,7 +71,7 @@ namespace CassOp
                 else
                 {
                     var wPred = Spells.W.GetPrediction(target);
-                    if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                    if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange && !wPred.CastPosition.IsWall() &&
                         wPred.HitChancePercent >= 85)
                     {
                         Spells.W.Cast(wPred.CastPosition);
@@ -123,7 +123,7 @@ namespace CassOp
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC") &&
-                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= 550)
+                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= Spells.WMinRange)
                 {
                     Spells.W.Cast(wFarmLoc.Position.To3D());
                 }
@@ -173,7 +173,7 @@ namespace CassOp
                         !target.HasBuffOfType(BuffType.Poison))
                     {
                         var wPred = Spells.W.GetPrediction(target);
-                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= 550 && !wPred.CastPosition.IsWall() &&
+                        if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange && !wPred.CastPosition.IsWall() &&
                             wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
@@ -239,7 +239,7 @@ namespace CassOp
                             .Select(mx => mx.ServerPosition.To2D())
                             .ToList(), Spells.W.Width, Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC") &&
-                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= 550)
+                    wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= Spells.WMinRange)
                 {
                     Spells.W.Cast(wFarmLoc.Position.To3D());
                 }

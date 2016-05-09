@@ -1,0 +1,12 @@
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\Olaf.exe.config
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\Olaf.exe
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\Olaf.pdb
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\EloBuddy.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\EloBuddy.SDK.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\SharpDX.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\SharpDX.XInput.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\obj\Release\Olaf.exe
+C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\obj\Release\Olaf.pdb

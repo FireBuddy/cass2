@@ -92,7 +92,6 @@ namespace Olaf
 
             Orbwalker.OnPostAttack -= FastCombo1;
             Orbwalker.OnPostAttack += FastCombo2;
-            Modes.FcTimer1.Stop();
         }
 
         private static void FastCombo2(AttackableUnit target, EventArgs args)
@@ -100,7 +99,7 @@ namespace Olaf
             Modes.Bursting = false;
             Modes.SafeToPickup = true;
             Orbwalker.OnPostAttack -= FastCombo2;
-            Modes.FcTimer2.Stop();
+            Modes.FcTimer1.Stop();
         }
 
         public static void FcTimer1Elapsed(object sender, ElapsedEventArgs e)
@@ -154,7 +153,6 @@ namespace Olaf
 
             Orbwalker.OnPostAttack -= FastJungle1;
             Orbwalker.OnPostAttack += FastJungle2;
-            Modes.FjTimer1.Stop();
         }
 
         private static void FastJungle2(AttackableUnit target, EventArgs args)
@@ -162,7 +160,7 @@ namespace Olaf
             Modes.Bursting = false;
             Modes.SafeToPickup = true;
             Orbwalker.OnPostAttack -= FastJungle2;
-            Modes.FjTimer2.Stop();
+            Modes.FjTimer1.Stop();
         }
 
         public static void FjTimer1Elapsed(object sender, ElapsedEventArgs e)

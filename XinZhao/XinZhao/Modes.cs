@@ -15,7 +15,7 @@ namespace XinZhao
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            if (target == null)
+            if (target == null || target.IsInvulnerable)
             {
                 return;
             }
@@ -55,7 +55,7 @@ namespace XinZhao
         public static void Harass()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            if (target == null)
+            if (target == null || target.IsInvulnerable)
             {
                 return;
             }

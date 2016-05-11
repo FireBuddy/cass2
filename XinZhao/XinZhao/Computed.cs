@@ -84,7 +84,7 @@ namespace XinZhao
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 var comboTarget = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-                if (comboTarget == null || target.NetworkId != comboTarget.NetworkId)
+                if (comboTarget == null || target.NetworkId != comboTarget.NetworkId || comboTarget.IsInvulnerable)
                 {
                     return;
                 }
@@ -107,7 +107,7 @@ namespace XinZhao
                 return;
             }
             var comboTarget = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            if (comboTarget == null || target.NetworkId != comboTarget.NetworkId)
+            if (comboTarget == null || target.NetworkId != comboTarget.NetworkId || comboTarget.IsInvulnerable)
             {
                 return;
             }
@@ -141,7 +141,7 @@ namespace XinZhao
                     break;
             }
             if (xinsecTarget == null || !Spells.E.CanCast() || !Spells.R.CanCast() ||
-                xinsecTarget.HasBuff("XinZhaoIntimidate"))
+                xinsecTarget.HasBuff("XinZhaoIntimidate") || xinsecTarget.IsInvulnerable)
             {
                 return;
             }

@@ -23,3 +23,15 @@ C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Release\Newtonsoft.J
 C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Release\EloBuddy.Sandbox.dll
 C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\obj\Release\XinZhao.exe
 C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\obj\Release\XinZhao.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\XinZhao.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\XinZhao.exe
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\XinZhao.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\SharpDX.XInput.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\obj\Release\XinZhao.exe
+C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\obj\Release\XinZhao.pdb

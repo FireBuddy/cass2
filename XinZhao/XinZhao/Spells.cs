@@ -4,7 +4,7 @@ using EloBuddy.SDK;
 
 namespace XinZhao
 {
-    class Spells
+    internal class Spells
     {
         public static Spell.Active Q;
         public static Spell.Active W;

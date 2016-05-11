@@ -3,7 +3,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Rendering;
 using SharpDX;
 using Color = System.Drawing.Color;
 
@@ -44,15 +43,18 @@ namespace XinZhao
             {
                 Modes.Combo();
             }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.JungleClear, "jcMana"))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.JungleClear, "jcMana"))
             {
                 Modes.JungleClear();
             }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "harassMana"))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "harassMana"))
             {
                 Modes.Harass();
             }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.LaneClear, "lcMana"))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
+                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.LaneClear, "lcMana"))
             {
                 Modes.LaneClear();
             }
@@ -80,29 +82,32 @@ namespace XinZhao
                             .FirstOrDefault();
                     break;
             }
-            
-            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast() && !xinsecTarget.HasBuff("XinZhaoIntimidate")) 
+
+            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast() &&
+                !xinsecTarget.HasBuff("XinZhaoIntimidate"))
             {
-                Drawing.DrawText(
-                        Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite, "Xinsec", 10);
+                Drawing.DrawText(Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite, "Xinsec", 10);
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
                     var xinsecTargetExtend = Vector3.Zero;
                     var closeAllies =
-                        EntityManager.Heroes.Allies.Where(a => !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
+                        EntityManager.Heroes.Allies.Where(
+                            a =>
+                                !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
                             .OrderBy(a => a.Distance(Player.Instance.Position));
                     var closeTurrets = EntityManager.Turrets.Allies.OrderBy(t => t.Distance(Player.Instance.Position));
                     if (closeTurrets.Any())
                     {
-                        xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        xinsecTargetExtend =
+                            xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
                     }
                     if (closeAllies.Any())
                     {
-                        xinsecTargetExtend = xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                        xinsecTargetExtend =
+                            xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
                     }
                     Drawing.DrawCircle(xinsecTargetExtend, 100, Color.AliceBlue);
                 }
-                
             }
         }
     }

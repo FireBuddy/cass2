@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using EloBuddy.SDK.Menu;
+﻿using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
 namespace XinZhao
 {
-    class Config
+    internal class Config
     {
         private static Menu _xinZhao;
         public static Menu Combo, Harass, LaneClear, JungleClear, Draw, Misc;
+
         public static void CallMenu()
         {
-            _xinZhao =
-                MainMenu.AddMenu("XinZhao", "XinZhao");
+            _xinZhao = MainMenu.AddMenu("XinZhao", "XinZhao");
 
-            Combo = _xinZhao.
-            AddSubMenu("Combo", "combo");
+            Combo = _xinZhao.AddSubMenu("Combo", "combo");
             Combo.Add("useQcombo", new CheckBox("Use Q"));
             Combo.Add("useWcombo", new CheckBox("Use W"));
             Combo.Add("useEcombo", new CheckBox("Use E"));
@@ -27,36 +20,31 @@ namespace XinZhao
             Combo.Add("useRcombo", new CheckBox("Use R"));
             Combo.Add("comboMinR", new Slider("Min Targets to hit for R", 5, 1, 5));
 
-            Harass = _xinZhao.
-                AddSubMenu("Harass", "Harass");
+            Harass = _xinZhao.AddSubMenu("Harass", "Harass");
             Harass.Add("useQharass", new CheckBox("Use Q"));
             Harass.Add("useWharass", new CheckBox("Use W"));
             Harass.Add("useEharass", new CheckBox("Use E"));
             Harass.Add("harassETower", new CheckBox("Don't E under tower"));
             Harass.Add("harassMana", new Slider("Min Mana % to Harass", 80));
 
-            LaneClear = _xinZhao.
-                AddSubMenu("LaneClear", "LaneClear");
+            LaneClear = _xinZhao.AddSubMenu("LaneClear", "LaneClear");
             LaneClear.Add("useQLC", new CheckBox("Use Q", false));
             LaneClear.Add("useWLC", new CheckBox("Use W", false));
             LaneClear.Add("useELC", new CheckBox("Use E"));
             LaneClear.Add("lcEtargets", new Slider("Min Targets to hit for E", 3, 0, 10));
             LaneClear.Add("lcMana", new Slider("Min Mana % to LaneClear", 80));
 
-            JungleClear = _xinZhao.
-                AddSubMenu("JungleClear", "JungleClear");
+            JungleClear = _xinZhao.AddSubMenu("JungleClear", "JungleClear");
             JungleClear.Add("useQJC", new CheckBox("Use Q"));
             JungleClear.Add("useWJC", new CheckBox("Use W"));
             JungleClear.Add("useEJC", new CheckBox("Use E", false));
             JungleClear.Add("jcMana", new Slider("Min Mana % to JungleClear"));
 
-            Draw = _xinZhao.
-                AddSubMenu("Draw", "Draw");
+            Draw = _xinZhao.AddSubMenu("Draw", "Draw");
             Draw.Add("drawXinsec", new CheckBox("Draw Xinsec Target"));
             Draw.Add("drawXinsecpred", new CheckBox("Draw Xinsec move pos"));
 
-            Misc = _xinZhao.
-                AddSubMenu("Misc", "Misc");
+            Misc = _xinZhao.AddSubMenu("Misc", "Misc");
             Misc.Add("xinsecKey", new KeyBind("Xinsec", false, KeyBind.BindTypes.HoldActive, 'T'));
             Misc.Add("xinsecFlash", new CheckBox("Use Flash with Xinsec"));
             Misc.Add(

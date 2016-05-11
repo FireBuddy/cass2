@@ -11,6 +11,7 @@ namespace XinZhao
     internal static class OtherUtils
     {
         private static DangerLevel _wanteDangerLevel;
+
         public static void OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
         {
             if (!sender.IsEnemy || Player.Instance.IsRecalling() || !Config.IsChecked(Config.Misc, "useInterrupt"))

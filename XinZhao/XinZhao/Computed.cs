@@ -140,7 +140,8 @@ namespace XinZhao
                             .FirstOrDefault();
                     break;
             }
-            if (xinsecTarget == null || !Spells.E.CanCast() || !Spells.R.CanCast() || xinsecTarget.HasBuff("XinZhaoIntimidate"))
+            if (xinsecTarget == null || !Spells.E.CanCast() || !Spells.R.CanCast() ||
+                xinsecTarget.HasBuff("XinZhaoIntimidate"))
             {
                 return;
             }
@@ -173,7 +174,8 @@ namespace XinZhao
             {
                 if (Spells.Flash.IsReady && Config.IsChecked(Config.Misc, "xinsecFlash"))
                 {
-                    var eTargetHero = EntityManager.Heroes.Enemies.Where(
+                    var eTargetHero =
+                        EntityManager.Heroes.Enemies.Where(
                             m =>
                                 m.Distance(Player.Instance.Position) <= Spells.E.Range &&
                                 m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
@@ -200,11 +202,13 @@ namespace XinZhao
                         Spells.E.Cast(eTargetMin);
                         if (closeTurrets.Any())
                         {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                            xinsecTargetExtend =
+                                xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
                         }
                         if (closeAllies.Any())
                         {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                            xinsecTargetExtend =
+                                xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
                         }
                         Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
                         Core.DelayAction(() => Spells.R.Cast(), castDelay + 70);

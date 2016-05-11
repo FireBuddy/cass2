@@ -178,7 +178,7 @@ namespace XinZhao
                         EntityManager.Heroes.Enemies.Where(
                             m =>
                                 m.Distance(Player.Instance.Position) <= Spells.E.Range &&
-                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25 && m != xinsecTarget)
+                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25 && m != xinsecTarget && m.NetworkId != xinsecTarget.NetworkId)
                             .OrderBy(m => m.Distance(xinsecTargetExtend))
                             .FirstOrDefault();
                     if (eTargetHero != null)

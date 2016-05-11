@@ -81,7 +81,7 @@ namespace XinZhao
                     break;
             }
             
-            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast()) 
+            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast() && !xinsecTarget.HasBuff("XinZhaoIntimidate")) 
             {
                 Drawing.DrawText(
                         Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite, "Xinsec", 10);

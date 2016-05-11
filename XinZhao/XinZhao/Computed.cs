@@ -140,7 +140,7 @@ namespace XinZhao
                             .FirstOrDefault();
                     break;
             }
-            if (xinsecTarget == null || !Spells.E.CanCast() || !Spells.R.CanCast())
+            if (xinsecTarget == null || !Spells.E.CanCast() || !Spells.R.CanCast() || xinsecTarget.HasBuff("XinZhaoIntimidate"))
             {
                 return;
             }

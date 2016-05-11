@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
+using SharpDX;
 
 namespace XinZhao
 {
@@ -57,6 +59,11 @@ namespace XinZhao
         {
             return spellSkillshot.IsLearned && spellSkillshot.IsReady() &&
                    Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellSkillshot.Slot).SData.Mana;
+        }
+
+        public static bool UnderEnemyTurret(this Vector3 position)
+        {
+            return (EntityManager.Turrets.Enemies.Any(turret => turret.Distance(position) < 775));
         }
     }
 }

@@ -19,7 +19,6 @@ namespace XinZhao
         public static Item TitHydra;
         public static Item CorruptingPotion;
 
-        public static bool XinsecNow;
 
         public static void LoadSpells()
         {

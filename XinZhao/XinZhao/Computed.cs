@@ -23,7 +23,8 @@ namespace XinZhao
 
         public static void JungleOnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "jcMana"))
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "jcMana"))
             {
                 return;
             }
@@ -37,11 +38,13 @@ namespace XinZhao
             }
             var combinedHealth =
                 jngTargets.Where(m => m.Distance(Player.Instance.Position) <= 250).Sum(targut => targut.Health);
-            if (Spells.W.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(jngTarget) * 4 && Config.IsChecked(Config.JungleClear, "useWJC"))
+            if (Spells.W.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(jngTarget) * 4 &&
+                Config.IsChecked(Config.JungleClear, "useWJC"))
             {
                 Spells.W.Cast();
             }
-            if (Spells.Q.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(jngTarget) * 4 && Config.IsChecked(Config.JungleClear, "useQJC"))
+            if (Spells.Q.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(jngTarget) * 4 &&
+                Config.IsChecked(Config.JungleClear, "useQJC"))
             {
                 Spells.Q.Cast();
             }
@@ -49,7 +52,8 @@ namespace XinZhao
 
         public static void LaneOnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "lcMana"))
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "lcMana"))
             {
                 return;
             }
@@ -63,11 +67,13 @@ namespace XinZhao
             }
             var combinedHealth =
                 minz.Where(m => m.Distance(Player.Instance.Position) <= 350).Sum(targut => targut.Health);
-            if (Spells.W.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(minion) * 4 && Config.IsChecked(Config.LaneClear, "useWLC"))
+            if (Spells.W.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(minion) * 4 &&
+                Config.IsChecked(Config.LaneClear, "useWLC"))
             {
                 Spells.W.Cast();
             }
-            if (Spells.Q.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(minion) * 4 && Config.IsChecked(Config.LaneClear, "useQLC"))
+            if (Spells.Q.CanCast() && combinedHealth >= Player.Instance.GetAutoAttackDamage(minion) * 4 &&
+                Config.IsChecked(Config.LaneClear, "useQLC"))
             {
                 Spells.Q.Cast();
             }
@@ -95,7 +101,8 @@ namespace XinZhao
 
         public static void HarassOnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Player.Instance.ManaPercent < Config.GetSliderValue(Config.Harass, "harassMana"))
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) ||
+                Player.Instance.ManaPercent < Config.GetSliderValue(Config.Harass, "harassMana"))
             {
                 return;
             }
@@ -117,6 +124,7 @@ namespace XinZhao
         public static void Xinsec()
         {
             AIHeroClient xinsecTarget = null;
+            Obj_AI_Base eTargetMin = null;
             switch (Config.GetComboBoxValue(Config.Misc, "xinsecTargetting"))
             {
                 case 0:
@@ -138,7 +146,8 @@ namespace XinZhao
             }
             var xinsecTargetExtend = Vector3.Zero;
             var closeAllies =
-                EntityManager.Heroes.Allies.Where(a => !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
+                EntityManager.Heroes.Allies.Where(
+                    a => !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
                     .OrderBy(a => a.Distance(Player.Instance.Position));
             var closeTurrets = EntityManager.Turrets.Allies.OrderBy(t => t.Distance(Player.Instance.Position));
             if (closeTurrets.Any())
@@ -164,18 +173,41 @@ namespace XinZhao
             {
                 if (Spells.Flash.IsReady && Config.IsChecked(Config.Misc, "xinsecFlash"))
                 {
-                    var eTargetMin =
+                    var eTargetHero = EntityManager.Heroes.Enemies.Where(
+                            m =>
+                                m.Distance(Player.Instance.Position) <= Spells.E.Range &&
+                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
+                            .OrderBy(m => m.Distance(xinsecTargetExtend))
+                            .FirstOrDefault();
+                    if (eTargetHero != null)
+                    {
+                        eTargetMin = eTargetHero;
+                    }
+                    var eTargetMinion =
                         EntityManager.MinionsAndMonsters.EnemyMinions.Where(
                             m =>
                                 m.Distance(Player.Instance.Position) <= Spells.E.Range &&
                                 m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
                             .OrderBy(m => m.Distance(xinsecTargetExtend))
                             .FirstOrDefault();
+                    if (eTargetMinion != null)
+                    {
+                        eTargetMin = eTargetMinion;
+                    }
                     if (eTargetMin != null)
                     {
+                        var castDelay = Mainframe.RDelay.Next(325, 375);
                         Spells.E.Cast(eTargetMin);
-                        Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), 355);
-                        Core.DelayAction(() => Spells.R.Cast(), 420);
+                        if (closeTurrets.Any())
+                        {
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        }
+                        if (closeAllies.Any())
+                        {
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                        }
+                        Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
+                        Core.DelayAction(() => Spells.R.Cast(), castDelay + 70);
                     }
                 }
             }

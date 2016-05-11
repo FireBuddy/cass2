@@ -25,6 +25,10 @@ namespace XinZhao
             {
                 Spells.R.Cast();
             }
+            if (Config.IsChecked(Config.Combo, "comboETower") && target.Position.UnderEnemyTurret())
+            {
+                return;
+            }
             if (target.Distance(Player.Instance.Position) >= 300 && Player.Instance.HasBuff("XenZhaoComboTarget") &&
                 Spells.E.CanCast() && Config.IsChecked(Config.Combo, "useEcombo"))
             {
@@ -52,6 +56,10 @@ namespace XinZhao
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
             if (target == null)
+            {
+                return;
+            }
+            if (Config.IsChecked(Config.Harass, "harassETower") && target.Position.UnderEnemyTurret())
             {
                 return;
             }

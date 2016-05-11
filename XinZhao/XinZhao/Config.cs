@@ -23,6 +23,7 @@ namespace XinZhao
             Combo.Add("useQcombo", new CheckBox("Use Q"));
             Combo.Add("useWcombo", new CheckBox("Use W"));
             Combo.Add("useEcombo", new CheckBox("Use E"));
+            Combo.Add("comboETower", new CheckBox("Don't E under tower", false));
             Combo.Add("useRcombo", new CheckBox("Use R"));
             Combo.Add("comboMinR", new Slider("Min Targets to hit for R", 5, 1, 5));
 
@@ -31,6 +32,7 @@ namespace XinZhao
             Harass.Add("useQharass", new CheckBox("Use Q"));
             Harass.Add("useWharass", new CheckBox("Use W"));
             Harass.Add("useEharass", new CheckBox("Use E"));
+            Harass.Add("harassETower", new CheckBox("Don't E under tower"));
             Harass.Add("harassMana", new Slider("Min Mana % to Harass", 80));
 
             LaneClear = _xinZhao.

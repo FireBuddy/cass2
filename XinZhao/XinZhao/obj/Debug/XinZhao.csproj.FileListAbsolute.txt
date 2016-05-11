@@ -1,0 +1,26 @@
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\XinZhao.exe.config
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\XinZhao.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\XinZhao.pdb
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\EloBuddy.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\EloBuddy.SDK.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\SharpDX.Direct3D9.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\SharpDX.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\SharpDX.XInput.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\Newtonsoft.Json.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\bin\Debug\EloBuddy.Sandbox.dll
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\obj\Debug\XinZhao.exe
+c:\users\ridiculous\documents\visual studio 2015\Projects\XinZhao\XinZhao\obj\Debug\XinZhao.pdb
+C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\XinZhao\XinZhao\obj\Debug\XinZhao.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\XinZhao.exe.config
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\obj\Debug\XinZhao.exe
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\obj\Debug\XinZhao.pdb
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\XinZhao.exe
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\XinZhao.pdb
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\EloBuddy.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\EloBuddy.SDK.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\SharpDX.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\SharpDX.XInput.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Source\Repos\EB-WIP\XinZhao\XinZhao\obj\Debug\XinZhao.csprojResolveAssemblyReference.cache

@@ -178,7 +178,7 @@ namespace XinZhao
                         EntityManager.Heroes.Enemies.Where(
                             m =>
                                 m.Distance(Player.Instance.Position) <= Spells.E.Range &&
-                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
+                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25 && m != xinsecTarget)
                             .OrderBy(m => m.Distance(xinsecTargetExtend))
                             .FirstOrDefault();
                     if (eTargetHero != null)
@@ -211,7 +211,7 @@ namespace XinZhao
                                 xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
                         }
                         Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
-                        Core.DelayAction(() => Spells.R.Cast(), castDelay + 70);
+                        Core.DelayAction(() => Spells.R.Cast(), castDelay + 50);
                     }
                 }
             }

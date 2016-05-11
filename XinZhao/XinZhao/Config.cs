@@ -45,12 +45,15 @@ namespace XinZhao
             Draw.Add("drawXinsecpred", new CheckBox("Draw Xinsec move pos"));
 
             Misc = _xinZhao.AddSubMenu("Misc", "Misc");
+            Misc.AddLabel("Xinsec");
             Misc.Add("xinsecKey", new KeyBind("Xinsec", false, KeyBind.BindTypes.HoldActive, 'T'));
             Misc.Add("xinsecFlash", new CheckBox("Use Flash with Xinsec"));
             Misc.Add(
                 "xinsecTargetting",
                 new ComboBox("Xinsec Targetting", 0, "Selected Target", "Target Selector", "Lowest MaxHealth"));
+
             Misc.AddSeparator(5);
+            Misc.AddLabel("Misc");
             Misc.Add("useInterrupt", new CheckBox("Interrupt Spells with R", false));
             Misc.Add("dangerL", new ComboBox("Min DangerLevel to interrupt", 2, "Low", "Medium", "High"));
         }

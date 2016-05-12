@@ -10,3 +10,6 @@ c:\users\ridiculous\documents\visual studio 2015\Projects\Support Mode\Support M
 c:\users\ridiculous\documents\visual studio 2015\Projects\Support Mode\Support Mode\obj\Release\Support Mode.csprojResolveAssemblyReference.cache
 c:\users\ridiculous\documents\visual studio 2015\Projects\Support Mode\Support Mode\obj\Release\Support Mode.exe
 c:\users\ridiculous\documents\visual studio 2015\Projects\Support Mode\Support Mode\obj\Release\Support Mode.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\Release\Support Mode.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\obj\Release\Support Mode.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\obj\Release\Support Mode.pdb

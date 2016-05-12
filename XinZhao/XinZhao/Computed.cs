@@ -124,7 +124,7 @@ namespace XinZhao
         public static void Xinsec()
         {
             AIHeroClient xinsecTarget = null;
-            Obj_AI_Base eTargetMin = null;
+            Obj_AI_Base eTarget = null;
             switch (Config.GetComboBoxValue(Config.Misc, "xinsecTargetting"))
             {
                 case 0:
@@ -159,63 +159,60 @@ namespace XinZhao
             {
                 xinsecTargetExtend = xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
             }
-            var eTarget =
-                EntityManager.Heroes.Enemies.Where(
+            var eTargetMinion =
+                EntityManager.MinionsAndMonsters.EnemyMinions.Where(
                     m =>
-                        m.Distance(xinsecTarget) <= Spells.R.Range - 20 && m.Distance(xinsecTargetExtend) <= 50 &&
-                        Player.Instance.Position.Distance(xinsecTarget) + 50 < Player.Instance.Position.Distance(m) &&
-                        m.IsValidTarget(Spells.E.Range)).OrderBy(e => e.Distance(Player.Instance)).FirstOrDefault();
-            if (eTarget != null)
+                        m.Distance(Player.Instance.Position) <= Spells.E.Range &&
+                        m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
+                    .OrderBy(m => m.Distance(xinsecTargetExtend))
+                    .FirstOrDefault();
+            if (eTargetMinion != null)
             {
-                Spells.E.Cast(eTarget);
-                Core.DelayAction(() => Spells.R.Cast(), 300);
+                eTarget = eTargetMinion;
             }
             else
             {
-                if (Spells.Flash.IsReady && Config.IsChecked(Config.Misc, "xinsecFlash"))
+                var eTargetHero =
+                    EntityManager.Heroes.Enemies.Where(
+                        m =>
+                            m.Distance(Player.Instance.Position) <= Spells.E.Range &&
+                            m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25 && m != xinsecTarget &&
+                            m.NetworkId != xinsecTarget.NetworkId)
+                        .OrderBy(m => m.Distance(xinsecTargetExtend))
+                        .FirstOrDefault();
+                if (eTargetHero != null)
                 {
-                    var eTargetHero =
-                        EntityManager.Heroes.Enemies.Where(
-                            m =>
-                                m.Distance(Player.Instance.Position) <= Spells.E.Range &&
-                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25 && m != xinsecTarget && m.NetworkId != xinsecTarget.NetworkId)
-                            .OrderBy(m => m.Distance(xinsecTargetExtend))
-                            .FirstOrDefault();
-                    if (eTargetHero != null)
+                    eTarget = eTargetHero;
+                }
+            }
+            if (eTarget != null)
+            {
+                if (eTarget.Distance(xinsecTargetExtend) <= 40 && eTarget.Distance(xinsecTarget) > 7)
+                {
+                    Spells.E.Cast(eTarget);
+                    Core.DelayAction(() => Spells.R.Cast(), 300);
+                }
+                if (eTarget.Distance(xinsecTargetExtend) > 40 && Spells.Flash.IsReady &&
+                    Config.IsChecked(Config.Misc, "xinsecFlash"))
+                {
+                    var castDelay = Mainframe.RDelay.Next(325, 375);
+                    Spells.E.Cast(eTarget);
+                    if (closeTurrets.Any())
                     {
-                        eTargetMin = eTargetHero;
+                        xinsecTargetExtend =
+                            xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
                     }
-                    var eTargetMinion =
-                        EntityManager.MinionsAndMonsters.EnemyMinions.Where(
-                            m =>
-                                m.Distance(Player.Instance.Position) <= Spells.E.Range &&
-                                m.Distance(xinsecTargetExtend) < Spells.FlashRange - 25)
-                            .OrderBy(m => m.Distance(xinsecTargetExtend))
-                            .FirstOrDefault();
-                    if (eTargetMinion != null)
+                    if (closeAllies.Any())
                     {
-                        eTargetMin = eTargetMinion;
+                        xinsecTargetExtend =
+                            xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
                     }
-                    if (eTargetMin != null)
-                    {
-                        var castDelay = Mainframe.RDelay.Next(325, 375);
-                        Spells.E.Cast(eTargetMin);
-                        if (closeTurrets.Any())
-                        {
-                            xinsecTargetExtend =
-                                xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
-                        }
-                        if (closeAllies.Any())
-                        {
-                            xinsecTargetExtend =
-                                xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
-                        }
-                        Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
-                        Core.DelayAction(() => Spells.R.Cast(), castDelay + 50);
-                    }
+                    Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
+                    Core.DelayAction(() => Spells.R.Cast(), castDelay + 40);
                 }
             }
         }
+
 
         public static void OnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {

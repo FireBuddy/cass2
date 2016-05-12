@@ -90,8 +90,7 @@ namespace XinZhao
         {
             var minz =
                 EntityManager.MinionsAndMonsters.EnemyMinions.Where(
-                    m => m.Distance(Player.Instance.Position) <= Spells.E.Range + 200)
-                    .OrderByDescending(m => m.MaxHealth);
+                    m => m.Distance(Player.Instance.Position) <= Spells.E.Range).OrderByDescending(m => m.MaxHealth);
             var minion = minz.FirstOrDefault();
             if (minion == null || Orbwalker.IsAutoAttacking)
             {
@@ -101,8 +100,7 @@ namespace XinZhao
             {
                 var minAoE = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => mina.Distance(m) <= 100);
                 if (minAoE.Count() >= Config.GetSliderValue(Config.LaneClear, "lcEtargets") &&
-                    Config.IsChecked(Config.LaneClear, "useELC") && mina.IsValidTarget(Spells.E.Range) &&
-                    Spells.E.CanCast())
+                    Config.IsChecked(Config.LaneClear, "useELC") && Spells.E.CanCast())
                 {
                     Spells.E.Cast(mina);
                 }

@@ -40,7 +40,9 @@ namespace XinZhao
             {
                 if (!Spells.E.CanCast())
                 {
+/*
                     target = TargetSelector.GetTarget(175, DamageType.Physical);
+*/
                 }
                 else
                 {
@@ -74,7 +76,9 @@ namespace XinZhao
             {
                 if (!Spells.E.CanCast())
                 {
+/*
                     target = TargetSelector.GetTarget(175, DamageType.Physical);
+*/
                 }
                 else
                 {

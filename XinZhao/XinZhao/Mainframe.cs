@@ -3,7 +3,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Rendering;
 using SharpDX;
 using Color = System.Drawing.Color;
 
@@ -91,7 +90,10 @@ namespace XinZhao
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
                     var xinsecTargetExtend = Vector3.Zero;
-                    var allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+                    var allyMasz =
+                        EntityManager.Heroes.Allies.Where(
+                            a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid)
+                            .ToArray();
                     if (allyMasz.Any())
                     {
                         var allv2 = new Vector2[allyMasz.Count()];
@@ -103,14 +105,19 @@ namespace XinZhao
                     }
                     else
                     {
-                        var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
-                        if (closeTurrets.Any())
+                        var closeTurret =
+                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
+                                .OrderBy(t => t.Distance(Player.Instance.Position))
+                                .FirstOrDefault();
+                        if (closeTurret != null)
                         {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
                         }
                         else
                         {
-                            var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                            var nex =
+                                ObjectManager.Get<Obj_Building>()
+                                    .FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
                             if (nex != null)
                             {
                                 xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();

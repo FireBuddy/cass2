@@ -3,7 +3,6 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
-using Color = System.Drawing.Color;
 
 namespace XinZhao
 {
@@ -147,7 +146,9 @@ namespace XinZhao
                 return;
             }
             var xinsecTargetExtend = Vector3.Zero;
-            var allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+            var allyMasz =
+                EntityManager.Heroes.Allies.Where(
+                    a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
             if (allyMasz.Any())
             {
                 var allv2 = new Vector2[allyMasz.Count()];
@@ -159,10 +160,13 @@ namespace XinZhao
             }
             else
             {
-                var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
-                if (closeTurrets.Any())
+                var closeTurret =
+                    EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
+                        .OrderBy(t => t.Distance(Player.Instance.Position))
+                        .FirstOrDefault();
+                if (closeTurret != null)
                 {
-                    xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                    xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
                 }
                 else
                 {
@@ -211,7 +215,10 @@ namespace XinZhao
                 {
                     var castDelay = Mainframe.RDelay.Next(325, 375);
                     Spells.E.Cast(eTarget);
-                    allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+                    allyMasz =
+                        EntityManager.Heroes.Allies.Where(
+                            a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid)
+                            .ToArray();
                     if (allyMasz.Any())
                     {
                         var allv2 = new Vector2[allyMasz.Count()];
@@ -223,14 +230,19 @@ namespace XinZhao
                     }
                     else
                     {
-                        var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
-                        if (closeTurrets.Any())
+                        var closeTurret =
+                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
+                                .OrderBy(t => t.Distance(Player.Instance.Position))
+                                .FirstOrDefault();
+                        if (closeTurret != null)
                         {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
                         }
                         else
                         {
-                            var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                            var nex =
+                                ObjectManager.Get<Obj_Building>()
+                                    .FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
                             if (nex != null)
                             {
                                 xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
@@ -239,7 +251,6 @@ namespace XinZhao
                     }
                     Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
                     Core.DelayAction(() => Spells.R.Cast(), castDelay + 40);
-                    
                 }
             }
         }

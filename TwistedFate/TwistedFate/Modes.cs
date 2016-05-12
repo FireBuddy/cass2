@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -12,6 +13,10 @@ namespace TwistedFate
     {
         public static void PermActive()
         {
+            if (Config.IsChecked(Config.Misc, "autoQonCC"))
+            {
+                AutoCCQ();
+            }
             var wMana = Player.Instance.Spellbook.GetSpell(SpellSlot.W).SData.Mana;
             if (Player.Instance.Mana >= wMana)
             {
@@ -251,6 +256,17 @@ namespace TwistedFate
         public static void Flee()
         {
             throw new NotImplementedException();
+        }
+
+        public static void AutoCCQ()
+        {
+            if (!Spells.Q.IsReady())
+            {
+                return;
+            }
+            foreach (var qPred in EntityManager.Heroes.Enemies.Where(m => m.IsValidTarget(Spells.Q.Range)).Select(enemy => Spells.Q.GetPrediction(enemy)).Where(qPred => qPred.HitChance == HitChance.Immobile)) {
+                Spells.Q.Cast(qPred.CastPosition);
+            }
         }
     }
 }

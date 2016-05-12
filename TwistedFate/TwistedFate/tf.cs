@@ -14,6 +14,7 @@ namespace TwistedFate
         {
             Game.OnUpdate += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
+            Obj_AI_Base.OnProcessSpellCast += Computed.YellowIntoQ;
             Orbwalker.OnPreAttack += Computed.OnBeforeAttack;
             Orbwalker.OnPostAttack += Computed.OnPostAttack;
             //Drawing.OnDraw += Drawing_OnDraw;

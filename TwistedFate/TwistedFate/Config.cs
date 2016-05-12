@@ -17,6 +17,7 @@ namespace TwistedFate
             Combo.Add("useQinCombo", new CheckBox("Use Q in combo"));
             Combo.Add("qAAReset", new CheckBox("Only use Q after AA to reset", false));
             Combo.Add("useWinCombo", new CheckBox("Use W in Combo"));
+            Combo.Add("yellowIntoQ", new CheckBox("Q after Yellow Card", false));
             Combo.Add("wModeC", new ComboBox("W Mode", 0, "Smart Mode", "Always Yellow", "Always Blue", "Always Red"));
             Combo.Add("disableAAselectingC", new CheckBox("Disable AA while selecting a card", false));
 
@@ -57,6 +58,8 @@ namespace TwistedFate
             Misc = _twistedFate.AddSubMenu("Misc", "misc");
             Misc.Add("AutoYAG", new CheckBox("Auto Yellow on R teleport"));
             Misc.Add("qKillsteal", new CheckBox("Killsteal with Q"));
+            Misc.Add("autoYellowIntoQ", new CheckBox("Auto Q after Yellow Card", false));
+            Misc.Add("autoQonCC", new CheckBox("Auto Q on hard CC'd targets", false));
             Misc.Add("cancelAApicking", new CheckBox("Cancel AA right before card pick", false));
             Misc.Add("humanizePicks", new CheckBox("Humanize Card Picks"));
             Misc.Add("humanizeInt", new Slider("Humanize", 50, 10, 300));

@@ -58,5 +58,28 @@ namespace TwistedFate
                 args.Process = false;
             }
         }
+
+        public static void YellowIntoQ(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe || args.SData.Name.ToLower() != "goldcardpreattack" || !Spells.Q.IsReady())
+            {
+                return;
+            }
+            var qTarget = args.Target as Obj_AI_Base;
+            if (qTarget == null || !qTarget.IsValidTarget(Spells.Q.Range))
+            {
+                return;
+            }
+            if (Config.IsChecked(Config.Combo, "yellowIntoQ") && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                var qPred = Spells.Q.GetPrediction(qTarget);
+                Spells.Q.Cast(qPred.CastPosition);
+            }
+            if (Config.IsChecked(Config.Misc, "autoYellowIntoQ"))
+            {
+                var qPred = Spells.Q.GetPrediction(qTarget);
+                Spells.Q.Cast(qPred.CastPosition);
+            }
+        }
     }
 }

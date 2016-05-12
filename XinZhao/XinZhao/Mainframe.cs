@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Rendering;
 using SharpDX;
 using Color = System.Drawing.Color;
 
@@ -90,21 +91,31 @@ namespace XinZhao
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
                     var xinsecTargetExtend = Vector3.Zero;
-                    var closeAllies =
-                        EntityManager.Heroes.Allies.Where(
-                            a =>
-                                !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
-                            .OrderBy(a => a.Distance(Player.Instance.Position));
-                    var closeTurrets = EntityManager.Turrets.Allies.OrderBy(t => t.Distance(Player.Instance.Position));
-                    if (closeTurrets.Any())
+                    var allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+                    if (allyMasz.Any())
                     {
-                        xinsecTargetExtend =
-                            xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        var allv2 = new Vector2[allyMasz.Count()];
+                        for (var i = 0; i < allyMasz.Count(); i++)
+                        {
+                            allv2[i] = allyMasz[i].Position.To2D();
+                        }
+                        xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
                     }
-                    if (closeAllies.Any())
+                    else
                     {
-                        xinsecTargetExtend =
-                            xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                        var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
+                        if (closeTurrets.Any())
+                        {
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        }
+                        else
+                        {
+                            var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                            if (nex != null)
+                            {
+                                xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
+                            }
+                        }
                     }
                     Drawing.DrawCircle(xinsecTargetExtend, 100, Color.AliceBlue);
                 }

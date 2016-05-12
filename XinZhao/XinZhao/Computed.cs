@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace XinZhao
 {
@@ -146,18 +147,31 @@ namespace XinZhao
                 return;
             }
             var xinsecTargetExtend = Vector3.Zero;
-            var closeAllies =
-                EntityManager.Heroes.Allies.Where(
-                    a => !a.IsMe && a.Distance(Player.Instance.Position) <= 750 && a.Distance(xinsecTarget) > 150)
-                    .OrderBy(a => a.Distance(Player.Instance.Position));
-            var closeTurrets = EntityManager.Turrets.Allies.OrderBy(t => t.Distance(Player.Instance.Position));
-            if (closeTurrets.Any())
+            var allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+            if (allyMasz.Any())
             {
-                xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                var allv2 = new Vector2[allyMasz.Count()];
+                for (var i = 0; i < allyMasz.Count(); i++)
+                {
+                    allv2[i] = allyMasz[i].Position.To2D();
+                }
+                xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
             }
-            if (closeAllies.Any())
+            else
             {
-                xinsecTargetExtend = xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
+                if (closeTurrets.Any())
+                {
+                    xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                }
+                else
+                {
+                    var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                    if (nex != null)
+                    {
+                        xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
+                    }
+                }
             }
             var eTargetMinion =
                 EntityManager.MinionsAndMonsters.EnemyMinions.Where(
@@ -197,18 +211,35 @@ namespace XinZhao
                 {
                     var castDelay = Mainframe.RDelay.Next(325, 375);
                     Spells.E.Cast(eTarget);
-                    if (closeTurrets.Any())
+                    allyMasz = EntityManager.Heroes.Allies.Where(a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+                    if (allyMasz.Any())
                     {
-                        xinsecTargetExtend =
-                            xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        var allv2 = new Vector2[allyMasz.Count()];
+                        for (var i = 0; i < allyMasz.Count(); i++)
+                        {
+                            allv2[i] = allyMasz[i].Position.To2D();
+                        }
+                        xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
                     }
-                    if (closeAllies.Any())
+                    else
                     {
-                        xinsecTargetExtend =
-                            xinsecTarget.Position.Extend(closeAllies.FirstOrDefault().Position, -185).To3D();
+                        var closeTurrets = EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000).OrderBy(t => t.Distance(Player.Instance.Position));
+                        if (closeTurrets.Any())
+                        {
+                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurrets.FirstOrDefault().Position, -185).To3D();
+                        }
+                        else
+                        {
+                            var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                            if (nex != null)
+                            {
+                                xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
+                            }
+                        }
                     }
                     Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
                     Core.DelayAction(() => Spells.R.Cast(), castDelay + 40);
+                    
                 }
             }
         }

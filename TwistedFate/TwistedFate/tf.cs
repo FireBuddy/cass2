@@ -14,7 +14,7 @@ namespace TwistedFate
 
         public static void Init()
         {
-            Game.OnUpdate += OnGameUpdate;
+            Game.OnTick += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnProcessSpellCast += Computed.YellowIntoQ;
             Orbwalker.OnPreAttack += Computed.OnBeforeAttack;

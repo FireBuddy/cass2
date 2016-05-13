@@ -61,6 +61,7 @@ namespace TwistedFate
             Misc.Add("autoYellowIntoQ", new CheckBox("Auto Q after Yellow Card", false));
             Misc.Add("autoQonCC", new CheckBox("Auto Q on immobile targets", false));
             Misc.Add("cancelAApicking", new CheckBox("Cancel AA right before card pick", false));
+            Misc.Add("drawRrange", new CheckBox("Draw R range", false));
             Misc.Add("humanizePicks", new CheckBox("Humanize Card Picks"));
             Misc.Add("humanizeInt", new Slider("Humanize", 50, 10, 300));
         }

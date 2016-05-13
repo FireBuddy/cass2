@@ -1,6 +1,8 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Rendering;
+using SharpDX;
 
 namespace TwistedFate
 {
@@ -17,7 +19,7 @@ namespace TwistedFate
             Obj_AI_Base.OnProcessSpellCast += Computed.YellowIntoQ;
             Orbwalker.OnPreAttack += Computed.OnBeforeAttack;
             Orbwalker.OnPostAttack += Computed.OnPostAttack;
-            //Drawing.OnDraw += Drawing_OnDraw;
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void OnGameUpdate(EventArgs args)
@@ -55,6 +57,12 @@ namespace TwistedFate
 
         //private static void Game_OnTick(EventArgs args) {}
         //private static void OnDash(Obj_AI_Base sender, Dash.DashEventArgs args) {}
-        //private static void Drawing_OnDraw(EventArgs args) {}
+        private static void Drawing_OnDraw(EventArgs args)
+        {
+            if (Config.IsChecked(Config.Misc, "drawRrange"))
+            {
+                Circle.Draw(Color.AliceBlue, Spells.R.Range, Player);
+            }
+        }
     }
 }

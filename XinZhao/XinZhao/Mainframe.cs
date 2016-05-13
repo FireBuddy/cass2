@@ -92,21 +92,11 @@ namespace XinZhao
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
                     var extendToPos = Vector3.Zero;
-                    Obj_AI_Base bestAlly = null;
-                    foreach (
-                        var ally in
-                            EntityManager.Heroes.Allies.Where(
-                                x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid))
-                    {
-                        if (bestAlly == null)
-                        {
-                            bestAlly = ally;
-                        }
-                        if (ally.CountAlliesInRange(750) > bestAlly.CountAlliesInRange(750))
-                        {
-                            bestAlly = ally;
-                        }
-                    }
+                    Obj_AI_Base bestAlly =
+                        EntityManager.Heroes.Allies.Where(
+                            x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid)
+                            .OrderByDescending(x => x.CountAlliesInRange(750))
+                            .FirstOrDefault();
                     if (bestAlly != null)
                     {
                         var bestAllyMasz =
@@ -126,7 +116,7 @@ namespace XinZhao
                     else
                     {
                         var closeTurret =
-                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
+                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1500)
                                 .OrderBy(t => t.Distance(Player.Instance.Position))
                                 .FirstOrDefault();
                         if (closeTurret != null)

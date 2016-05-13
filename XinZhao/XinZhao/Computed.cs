@@ -8,6 +8,7 @@ namespace XinZhao
 {
     internal class Computed
     {
+        internal static bool RecalcFlashPosAfterE = true;
         public static void OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
             throw new NotImplementedException();
@@ -150,18 +151,11 @@ namespace XinZhao
                 return;
             }
             var extendToPos = Vector3.Zero;
-            Obj_AI_Base bestAlly = null;
-            foreach (var ally in EntityManager.Heroes.Allies.Where(x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid))
-            {
-                if (bestAlly == null)
-                {
-                    bestAlly = ally;
-                }
-                if (ally.CountAlliesInRange(750) > bestAlly.CountAlliesInRange(750))
-                {
-                    bestAlly = ally;
-                }
-            }
+            Obj_AI_Base bestAlly =
+                EntityManager.Heroes.Allies.Where(
+                    x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid)
+                    .OrderByDescending(x => x.CountAlliesInRange(750))
+                    .FirstOrDefault();
             if (bestAlly != null)
             {
                 var bestAllyMasz =
@@ -181,7 +175,7 @@ namespace XinZhao
             else
             {
                 var closeTurret =
-                    EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
+                    EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1500)
                         .OrderBy(t => t.Distance(Player.Instance.Position))
                         .FirstOrDefault();
                 if (closeTurret != null)
@@ -236,6 +230,50 @@ namespace XinZhao
                 {
                     var castDelay = Mainframe.RDelay.Next(325, 375);
                     Spells.E.Cast(eTarget);
+                    if (RecalcFlashPosAfterE)
+                    {
+                        bestAlly =
+                EntityManager.Heroes.Allies.Where(
+                    x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid)
+                    .OrderByDescending(x => x.CountAlliesInRange(750))
+                    .FirstOrDefault();
+                        if (bestAlly != null)
+                        {
+                            var bestAllyMasz =
+                                   EntityManager.Heroes.Allies.Where(
+                                       a => a.Distance(bestAlly.Position) <= 750 && !a.IsMe && !a.IsDead && a.IsValid)
+                                       .ToArray();
+                            if (bestAllyMasz.Any())
+                            {
+                                var bestallv2 = new Vector2[bestAllyMasz.Count()];
+                                for (var i = 0; i < bestAllyMasz.Count(); i++)
+                                {
+                                    bestallv2[i] = bestAllyMasz[i].Position.To2D();
+                                }
+                                extendToPos = bestallv2.CenterPoint().To3D();
+                            }
+                        }
+                        else
+                        {
+                            var closeTurret =
+                                EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1500)
+                                    .OrderBy(t => t.Distance(Player.Instance.Position))
+                                    .FirstOrDefault();
+                            if (closeTurret != null)
+                            {
+                                extendToPos = closeTurret.Position;
+                            }
+                            else
+                            {
+                                var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+                                if (nex != null)
+                                {
+                                    extendToPos = nex.Position;
+                                }
+                            }
+                        }
+                        xinsecTargetExtend = xinsecTarget.Position.Extend(extendToPos, -200).To3D();
+                    }
                     Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
                     Core.DelayAction(() => Spells.R.Cast(), castDelay + 40);
                 }

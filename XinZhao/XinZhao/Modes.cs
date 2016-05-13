@@ -30,21 +30,23 @@ namespace XinZhao
             {
                 return;
             }
-            if (Config.IsChecked(Config.Combo, "useEcombo") && Spells.E.CanCast() && (target == wantedTarget || target.HealthPercent <= 20))
+            if (!Config.IsChecked(Config.Combo, "useEcombo") || !Spells.E.CanCast() ||
+                (target != wantedTarget && !(target.HealthPercent <= 20)))
             {
-                if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
-                {
-                    Spells.E.Cast(target);
-                }
-                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
+                return;
+            }
+            if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
+            {
+                Spells.E.Cast(target);
+            }
+            if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
                 target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
-                {
-                    Spells.E.Cast(target);
-                }
-                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
-                {
-                    Spells.E.Cast(target);
-                }
+            {
+                Spells.E.Cast(target);
+            }
+            if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
+            {
+                Spells.E.Cast(target);
             }
         }
 

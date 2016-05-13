@@ -17,7 +17,6 @@ namespace Soraka_HealBot
         public static void Init()
         {
             Game.OnTick += Game_OnTick;
-            Game.OnUpdate += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Modes.OnBeforeAttack;
@@ -26,7 +25,6 @@ namespace Soraka_HealBot
             //Dash.OnDash += OnDash;
         }
 
-        private static void OnGameUpdate(EventArgs args) {}
 
         private static void Game_OnTick(EventArgs args)
         {

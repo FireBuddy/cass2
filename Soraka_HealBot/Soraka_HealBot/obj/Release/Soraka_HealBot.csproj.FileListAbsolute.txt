@@ -10,3 +10,15 @@ C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\Soraka_HealBot\Soraka_
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.Sandbox.dll
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.exe
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\Soraka_HealBot.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\SharpDX.XInput.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\obj\Release\Soraka_HealBot.pdb

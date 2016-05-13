@@ -26,28 +26,46 @@ namespace XinZhao
             {
                 Spells.R.Cast();
             }
+            if (!Orbwalker.IsAutoAttacking && Spells.W.CanCast() && target.IsValidTarget(175))
+            {
+                Spells.W.Cast();
+            }
+            if (!Config.IsChecked(Config.Combo, "useEcombo") || !Spells.E.CanCast())
+            {
+                return;
+            }
             if (Config.IsChecked(Config.Combo, "comboETower") && target.Position.UnderEnemyTurret())
             {
                 return;
             }
-            if (!Config.IsChecked(Config.Combo, "useEcombo") || !Spells.E.CanCast() ||
-                (target != wantedTarget && !(target.HealthPercent <= 20)))
+            if (Config.GetComboBoxValue(Config.Combo, "comboEmode") == 0)
             {
-                return;
+                if (target != wantedTarget)
+                {
+                    return;
+                }
+                if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
+                {
+                    Spells.E.Cast(target);
+                }
+                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
+                    target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
+                {
+                    Spells.E.Cast(target);
+                }
+                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
+                {
+                    Spells.E.Cast(target);
+                }
             }
-            if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
+            if (Config.GetComboBoxValue(Config.Combo, "comboEmode") == 1)
             {
-                Spells.E.Cast(target);
+                if (target.Distance(Player.Instance.Position) >= 225)
+                {
+                    Spells.E.Cast(target);
+                }
             }
-            if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
-                target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
-            {
-                Spells.E.Cast(target);
-            }
-            if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
-            {
-                Spells.E.Cast(target);
-            }
+            
         }
 
         public static void Harass()

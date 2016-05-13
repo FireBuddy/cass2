@@ -35,4 +35,3 @@ C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\Newtonsoft.J
 C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\bin\Release\EloBuddy.Sandbox.dll
 C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\obj\Release\XinZhao.exe
 C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\obj\Release\XinZhao.pdb
-C:\Users\ridiculous\Documents\GitHub\EB\XinZhao\XinZhao\obj\Release\XinZhao.csprojResolveAssemblyReference.cache

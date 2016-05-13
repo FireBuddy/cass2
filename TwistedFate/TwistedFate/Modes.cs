@@ -203,7 +203,7 @@ namespace TwistedFate
                 EntityManager.MinionsAndMonsters.Monsters.Where(
                     x => x.Distance(Player.Instance.Position) <= Player.Instance.AttackRange + 200)
                     .OrderByDescending(x => x.MaxHealth);
-            if (!jungle.Any() || Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC"))
+            if (!jungle.Any() || Player.Instance.ManaPercent < Config.GetSliderValue(Config.JungleClear, "manaToJC") || jungle.FirstOrDefault() == null)
             {
                 return;
             }
@@ -220,7 +220,23 @@ namespace TwistedFate
                             Math.Max(30f, Config.GetSliderValue(Config.JungleClear, "manaToJC") + 10))
                         {
                             var targetAoE = jungle.Count(x => x.Distance(jungle.FirstOrDefault()) <= 250);
-                            CardSelector.StartSelecting(targetAoE > 2 ? Cards.Red : Cards.Yellow);
+                            if (targetAoE > 2)
+                            {
+                                CardSelector.StartSelecting(Cards.Red);
+                            }
+                            else
+                            {
+                                // ReSharper disable once PossibleNullReferenceException
+                                if (jungle.FirstOrDefault().HealthPercent >= 40 && Player.Instance.HealthPercent < 75)
+                                {
+                                    CardSelector.StartSelecting(Cards.Yellow);
+                                }
+                                else
+                                {
+                                    CardSelector.StartSelecting(Cards.Blue);
+                                }
+                            }
+                            //CardSelector.StartSelecting(targetAoE > 2 ? Cards.Red : Cards.Yellow);
                         }
                         else
                         {

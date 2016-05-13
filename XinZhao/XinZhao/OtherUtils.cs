@@ -66,5 +66,36 @@ namespace XinZhao
         {
             return (EntityManager.Turrets.Enemies.Any(turret => turret.Distance(position) < 775));
         }
+
+        public static Vector3 GetBestAllyPlace(this Vector3 position, float range, float inRange = 750)
+        {
+            Obj_AI_Base bestAlly =
+                EntityManager.Heroes.Allies.Where(
+                    x => x.Distance(Player.Instance.Position) <= range && !x.IsMe && !x.IsDead && x.IsValid)
+                    .OrderByDescending(x => x.CountAlliesInRange(inRange))
+                    .FirstOrDefault();
+            if (bestAlly != null)
+            {
+                var bestAllyMasz =
+                    EntityManager.Heroes.Allies.Where(
+                        a => a.Distance(bestAlly.Position) <= inRange && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
+                var bestallv2 = new Vector2[bestAllyMasz.Count()];
+                for (var i = 0; i < bestAllyMasz.Count(); i++)
+                {
+                    bestallv2[i] = bestAllyMasz[i].Position.To2D();
+                }
+                return bestallv2.CenterPoint().To3D();
+            }
+            var closeTurret =
+                EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= range)
+                    .OrderBy(t => t.Distance(Player.Instance.Position))
+                    .FirstOrDefault();
+            if (closeTurret != null)
+            {
+                return closeTurret.Position;
+            }
+            var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
+            return nex?.Position ?? Vector3.Zero;
+        }
     }
 }

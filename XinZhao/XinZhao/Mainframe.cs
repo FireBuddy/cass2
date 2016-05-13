@@ -91,49 +91,7 @@ namespace XinZhao
                     "Xinsec:" + Environment.NewLine + xinsecTarget.ChampionName, 10);
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
-                    var extendToPos = Vector3.Zero;
-                    Obj_AI_Base bestAlly =
-                        EntityManager.Heroes.Allies.Where(
-                            x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid)
-                            .OrderByDescending(x => x.CountAlliesInRange(750))
-                            .FirstOrDefault();
-                    if (bestAlly != null)
-                    {
-                        var bestAllyMasz =
-                            EntityManager.Heroes.Allies.Where(
-                                a => a.Distance(bestAlly.Position) <= 750 && !a.IsMe && !a.IsDead && a.IsValid)
-                                .ToArray();
-                        if (bestAllyMasz.Any())
-                        {
-                            var bestallv2 = new Vector2[bestAllyMasz.Count()];
-                            for (var i = 0; i < bestAllyMasz.Count(); i++)
-                            {
-                                bestallv2[i] = bestAllyMasz[i].Position.To2D();
-                            }
-                            extendToPos = bestallv2.CenterPoint().To3D();
-                        }
-                    }
-                    else
-                    {
-                        var closeTurret =
-                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1500)
-                                .OrderBy(t => t.Distance(Player.Instance.Position))
-                                .FirstOrDefault();
-                        if (closeTurret != null)
-                        {
-                            extendToPos = closeTurret.Position;
-                        }
-                        else
-                        {
-                            var nex =
-                                ObjectManager.Get<Obj_Building>()
-                                    .FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
-                            if (nex != null)
-                            {
-                                extendToPos = nex.Position;
-                            }
-                        }
-                    }
+                    var extendToPos = Player.Instance.Position.GetBestAllyPlace(1750);
                     var xinsecTargetExtend = xinsecTarget.Position.Extend(extendToPos, -200).To3D();
                     Drawing.DrawCircle(xinsecTargetExtend, 100, Color.AliceBlue);
                 }

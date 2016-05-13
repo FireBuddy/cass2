@@ -15,6 +15,7 @@ namespace XinZhao
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
+            var wantedTarget = TargetSelector.GetTarget(1500, DamageType.Physical);
             if (target == null || target.IsInvulnerable)
             {
                 return;
@@ -29,27 +30,20 @@ namespace XinZhao
             {
                 return;
             }
-            if (target.Distance(Player.Instance.Position) >= 300 && Player.Instance.HasBuff("XenZhaoComboTarget") &&
-                Spells.E.CanCast() && Config.IsChecked(Config.Combo, "useEcombo"))
+            if (Config.IsChecked(Config.Combo, "useEcombo") && Spells.E.CanCast() && (target == wantedTarget || target.HealthPercent <= 20))
             {
-                Spells.E.Cast(target);
-            }
-            if ((target.Distance(Player.Instance.Position) > Spells.E.Range * 0.65f &&
-                 target.MoveSpeed + 15 >= Player.Instance.MoveSpeed) ||
-                (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f))
-            {
-                if (!Spells.E.CanCast())
+                if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
                 {
-/*
-                    target = TargetSelector.GetTarget(175, DamageType.Physical);
-*/
+                    Spells.E.Cast(target);
                 }
-                else
+                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
+                target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
                 {
-                    if (Config.IsChecked(Config.Combo, "useEcombo"))
-                    {
-                        Spells.E.Cast(target);
-                    }
+                    Spells.E.Cast(target);
+                }
+                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
+                {
+                    Spells.E.Cast(target);
                 }
             }
         }

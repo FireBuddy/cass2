@@ -83,7 +83,11 @@ namespace XinZhao
         {
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                var comboTarget = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
+                var comboTarget = TargetSelector.GetTarget(Spells.E.Range - 100, DamageType.Physical);
+                if (!Spells.E.CanCast())
+                {
+                    comboTarget = TargetSelector.GetTarget(175, DamageType.Physical);
+                }
                 if (comboTarget == null || target.NetworkId != comboTarget.NetworkId || comboTarget.IsInvulnerable)
                 {
                     return;
@@ -145,18 +149,34 @@ namespace XinZhao
             {
                 return;
             }
-            var xinsecTargetExtend = Vector3.Zero;
-            var allyMasz =
-                EntityManager.Heroes.Allies.Where(
-                    a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid).ToArray();
-            if (allyMasz.Any())
+            var extendToPos = Vector3.Zero;
+            Obj_AI_Base bestAlly = null;
+            foreach (var ally in EntityManager.Heroes.Allies.Where(x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid))
             {
-                var allv2 = new Vector2[allyMasz.Count()];
-                for (var i = 0; i < allyMasz.Count(); i++)
+                if (bestAlly == null)
                 {
-                    allv2[i] = allyMasz[i].Position.To2D();
+                    bestAlly = ally;
                 }
-                xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
+                if (ally.CountAlliesInRange(750) > bestAlly.CountAlliesInRange(750))
+                {
+                    bestAlly = ally;
+                }
+            }
+            if (bestAlly != null)
+            {
+                var bestAllyMasz =
+                       EntityManager.Heroes.Allies.Where(
+                           a => a.Distance(bestAlly.Position) <= 750 && !a.IsMe && !a.IsDead && a.IsValid)
+                           .ToArray();
+                if (bestAllyMasz.Any())
+                {
+                    var bestallv2 = new Vector2[bestAllyMasz.Count()];
+                    for (var i = 0; i < bestAllyMasz.Count(); i++)
+                    {
+                        bestallv2[i] = bestAllyMasz[i].Position.To2D();
+                    }
+                    extendToPos = bestallv2.CenterPoint().To3D();
+                }
             }
             else
             {
@@ -166,17 +186,18 @@ namespace XinZhao
                         .FirstOrDefault();
                 if (closeTurret != null)
                 {
-                    xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
+                    extendToPos = closeTurret.Position;
                 }
                 else
                 {
                     var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
                     if (nex != null)
                     {
-                        xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
+                        extendToPos = nex.Position;
                     }
                 }
             }
+            var xinsecTargetExtend = xinsecTarget.Position.Extend(extendToPos, -200).To3D();
             var eTargetMinion =
                 EntityManager.MinionsAndMonsters.EnemyMinions.Where(
                     m =>
@@ -215,40 +236,6 @@ namespace XinZhao
                 {
                     var castDelay = Mainframe.RDelay.Next(325, 375);
                     Spells.E.Cast(eTarget);
-                    allyMasz =
-                        EntityManager.Heroes.Allies.Where(
-                            a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid)
-                            .ToArray();
-                    if (allyMasz.Any())
-                    {
-                        var allv2 = new Vector2[allyMasz.Count()];
-                        for (var i = 0; i < allyMasz.Count(); i++)
-                        {
-                            allv2[i] = allyMasz[i].Position.To2D();
-                        }
-                        xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
-                    }
-                    else
-                    {
-                        var closeTurret =
-                            EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= 1000)
-                                .OrderBy(t => t.Distance(Player.Instance.Position))
-                                .FirstOrDefault();
-                        if (closeTurret != null)
-                        {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
-                        }
-                        else
-                        {
-                            var nex =
-                                ObjectManager.Get<Obj_Building>()
-                                    .FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
-                            if (nex != null)
-                            {
-                                xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
-                            }
-                        }
-                    }
                     Core.DelayAction(() => Player.CastSpell(Spells.Flash.Slot, xinsecTargetExtend), castDelay);
                     Core.DelayAction(() => Spells.R.Cast(), castDelay + 40);
                 }

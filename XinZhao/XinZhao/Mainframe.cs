@@ -62,7 +62,7 @@ namespace XinZhao
 
         private static void OnDraw(EventArgs args)
         {
-            if (!Config.IsChecked(Config.Draw, "drawXinsec"))
+            if (!Config.IsChecked(Config.Draw, "drawXinsec") || Player.Instance.IsDead)
             {
                 return;
             }
@@ -86,22 +86,42 @@ namespace XinZhao
             if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast() &&
                 !xinsecTarget.HasBuff("XinZhaoIntimidate") && !xinsecTarget.IsInvulnerable)
             {
-                Drawing.DrawText(Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite, "Xinsec", 10);
+                Drawing.DrawText(
+                    Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite,
+                    "Xinsec:" + Environment.NewLine + xinsecTarget.ChampionName, 10);
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
-                    var xinsecTargetExtend = Vector3.Zero;
-                    var allyMasz =
-                        EntityManager.Heroes.Allies.Where(
-                            a => a.Distance(Player.Instance.Position) <= 1000 && !a.IsMe && !a.IsDead && a.IsValid)
-                            .ToArray();
-                    if (allyMasz.Any())
+                    var extendToPos = Vector3.Zero;
+                    Obj_AI_Base bestAlly = null;
+                    foreach (
+                        var ally in
+                            EntityManager.Heroes.Allies.Where(
+                                x => x.Distance(Player.Instance.Position) <= 1500 && !x.IsMe && !x.IsDead && x.IsValid))
                     {
-                        var allv2 = new Vector2[allyMasz.Count()];
-                        for (var i = 0; i < allyMasz.Count(); i++)
+                        if (bestAlly == null)
                         {
-                            allv2[i] = allyMasz[i].Position.To2D();
+                            bestAlly = ally;
                         }
-                        xinsecTargetExtend = xinsecTarget.Position.Extend(allv2.CenterPoint().To3D(), -185).To3D();
+                        if (ally.CountAlliesInRange(750) > bestAlly.CountAlliesInRange(750))
+                        {
+                            bestAlly = ally;
+                        }
+                    }
+                    if (bestAlly != null)
+                    {
+                        var bestAllyMasz =
+                            EntityManager.Heroes.Allies.Where(
+                                a => a.Distance(bestAlly.Position) <= 750 && !a.IsMe && !a.IsDead && a.IsValid)
+                                .ToArray();
+                        if (bestAllyMasz.Any())
+                        {
+                            var bestallv2 = new Vector2[bestAllyMasz.Count()];
+                            for (var i = 0; i < bestAllyMasz.Count(); i++)
+                            {
+                                bestallv2[i] = bestAllyMasz[i].Position.To2D();
+                            }
+                            extendToPos = bestallv2.CenterPoint().To3D();
+                        }
                     }
                     else
                     {
@@ -111,7 +131,7 @@ namespace XinZhao
                                 .FirstOrDefault();
                         if (closeTurret != null)
                         {
-                            xinsecTargetExtend = xinsecTarget.Position.Extend(closeTurret.Position, -185).To3D();
+                            extendToPos = closeTurret.Position;
                         }
                         else
                         {
@@ -120,10 +140,11 @@ namespace XinZhao
                                     .FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
                             if (nex != null)
                             {
-                                xinsecTargetExtend = xinsecTarget.Position.Extend(nex.Position, -185).To3D();
+                                extendToPos = nex.Position;
                             }
                         }
                     }
+                    var xinsecTargetExtend = xinsecTarget.Position.Extend(extendToPos, -200).To3D();
                     Drawing.DrawCircle(xinsecTargetExtend, 100, Color.AliceBlue);
                 }
             }

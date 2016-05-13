@@ -15,7 +15,7 @@ namespace XinZhao
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            var wantedTarget = TargetSelector.GetTarget(1500, DamageType.Physical);
+            var wantedTarget = TargetSelector.GetTarget(Spells.E.Range + 150, DamageType.Physical);
             if (target == null || target.IsInvulnerable)
             {
                 return;

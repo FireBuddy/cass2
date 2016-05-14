@@ -11,3 +11,16 @@ C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\bin\Debu
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Debug\CassOp.exe
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Debug\CassOp.pdb
 C:\Users\ridiculous\Documents\Visual Studio 2015\Projects\CassOp\CassOp\obj\Debug\CassOp.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\CassOp.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\CassOp.exe
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\CassOp.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\SharpDX.XInput.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\Debug\CassOp.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\Debug\CassOp.exe
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\Debug\CassOp.pdb

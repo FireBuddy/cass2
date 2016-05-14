@@ -11,7 +11,7 @@ namespace CassOp
 
     internal class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += OnLoadingComplete;
         }

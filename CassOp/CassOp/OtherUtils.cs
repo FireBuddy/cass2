@@ -49,14 +49,10 @@ namespace CassOp
             }
             if (Config.IsChecked(Config.Gapclose, "qGapclose"))
             {
-                if (Spells.Q.IsInRange(sender) && Spells.Q.IsReady())
+                if (Spells.Q.IsInRange(args.End) && Spells.Q.IsReady())
                 {
-                    var qPred = Spells.Q.GetPrediction(sender);
-                    if (qPred.HitChancePercent >= 90)
-                    {
                         var delay = Mainframe.RDelay.Next(100, 120);
-                        Core.DelayAction(() => Spells.Q.Cast(qPred.CastPosition), delay);
-                    }
+                        Core.DelayAction(() => Spells.Q.Cast(args.End), delay);
                 }
             }
             /*if (Config.IsChecked(Config.Gapclose, "wGapclose"))

@@ -12,7 +12,7 @@ namespace TwistedFate
         public static readonly Random RDelay = new Random();
         private static AIHeroClient Player => EloBuddy.Player.Instance;
 
-        internal static int originalSkinId;
+        internal static int OriginalSkinId;
 
 
         public static void Init()
@@ -24,7 +24,11 @@ namespace TwistedFate
             Orbwalker.OnPostAttack += Computed.OnPostAttack;
             Drawing.OnDraw += Drawing_OnDraw;
 
-            originalSkinId = Player.SkinId;
+            OriginalSkinId = Player.SkinId;
+            if (Config.IsChecked(Config.Misc, "useSkin"))
+            {
+                Player.SetSkinId(Config.GetSliderValue(Config.Misc, "skinId"));
+            }
         }
 
         private static void OnGameUpdate(EventArgs args)
@@ -74,7 +78,7 @@ namespace TwistedFate
         {
             if (!args.NewValue)
             {
-                Player.SetSkinId(originalSkinId);
+                Player.SetSkinId(OriginalSkinId);
             }
             if (args.NewValue)
             {

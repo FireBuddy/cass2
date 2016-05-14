@@ -11,3 +11,6 @@ C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\bin\Release\
 C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\obj\Release\Olaf.csprojResolveAssemblyReference.cache
 C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\obj\Release\Olaf.exe
 C:\Users\ridiculous\documents\visual studio 2015\Projects\Olaf\Olaf\obj\Release\Olaf.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Olaf\Olaf\bin\Release\Olaf.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\Olaf\Olaf\obj\Release\Olaf.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Olaf\Olaf\obj\Release\Olaf.pdb

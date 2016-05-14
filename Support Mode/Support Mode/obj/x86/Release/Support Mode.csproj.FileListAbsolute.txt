@@ -1,0 +1,12 @@
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\Support Mode.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\Support Mode.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\Support Mode.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\SharpDX.XInput.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\bin\x86\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\obj\x86\Release\Support Mode.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Support Mode\Support Mode\obj\x86\Release\Support Mode.pdb

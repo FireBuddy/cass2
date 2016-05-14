@@ -50,16 +50,16 @@ namespace Soraka_HealBot
             {
                 if (Spells.Q.IsInRange(args.End) && Spells.Q.IsReady())
                 {
-                        var delay = RDelay.Next(100, 120);
-                        Core.DelayAction(() => Spells.Q.Cast(args.End), delay);
+                    var delay = RDelay.Next(100, 120);
+                    Core.DelayAction(() => Spells.Q.Cast(args.End), delay);
                 }
             }
             if (Config.IsChecked(Config.Gapclose, "eGapclose"))
             {
                 if (Spells.E.IsInRange(args.End) && Spells.E.IsReady())
                 {
-                        var delay = RDelay.Next(100, 120);
-                        Core.DelayAction(() => Spells.E.Cast(args.End), delay);
+                    var delay = RDelay.Next(100, 120);
+                    Core.DelayAction(() => Spells.E.Cast(args.End), delay);
                 }
             }
         }

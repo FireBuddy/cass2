@@ -51,8 +51,8 @@ namespace CassOp
             {
                 if (Spells.Q.IsInRange(args.End) && Spells.Q.IsReady())
                 {
-                        var delay = Mainframe.RDelay.Next(100, 120);
-                        Core.DelayAction(() => Spells.Q.Cast(args.End), delay);
+                    var delay = Mainframe.RDelay.Next(100, 120);
+                    Core.DelayAction(() => Spells.Q.Cast(args.End), delay);
                 }
             }
             /*if (Config.IsChecked(Config.Gapclose, "wGapclose"))

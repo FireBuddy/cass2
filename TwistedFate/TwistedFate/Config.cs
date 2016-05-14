@@ -64,6 +64,9 @@ namespace TwistedFate
             Misc.Add("drawRrange", new CheckBox("Draw R range", false));
             Misc.Add("humanizePicks", new CheckBox("Humanize Card Picks"));
             Misc.Add("humanizeInt", new Slider("Humanize", 50, 10, 300));
+            Misc.AddSeparator(10);
+            Misc.Add("useSkin", new CheckBox("Use Skinchanger", false)).OnValueChange += Tf.OnUseSkinChange;
+            Misc.Add("skinId", new Slider("Skin ID", 0, 0, 9)).OnValueChange += Tf.OnSkinSliderChange;
         }
 
         public static bool IsChecked(Menu obj, string value)

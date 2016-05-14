@@ -1,6 +1,7 @@
 ﻿using System;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using SharpDX;
 
@@ -11,6 +12,8 @@ namespace TwistedFate
         public static readonly Random RDelay = new Random();
         private static AIHeroClient Player => EloBuddy.Player.Instance;
 
+        internal static int originalSkinId;
+
 
         public static void Init()
         {
@@ -20,6 +23,8 @@ namespace TwistedFate
             Orbwalker.OnPreAttack += Computed.OnBeforeAttack;
             Orbwalker.OnPostAttack += Computed.OnPostAttack;
             Drawing.OnDraw += Drawing_OnDraw;
+
+            originalSkinId = Player.SkinId;
         }
 
         private static void OnGameUpdate(EventArgs args)
@@ -62,6 +67,26 @@ namespace TwistedFate
             if (Config.IsChecked(Config.Misc, "drawRrange"))
             {
                 Circle.Draw(Color.AliceBlue, Spells.R.Range, Player);
+            }
+        }
+
+        public static void OnUseSkinChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
+        {
+            if (!args.NewValue)
+            {
+                Player.SetSkinId(originalSkinId);
+            }
+            if (args.NewValue)
+            {
+                Player.SetSkinId(Config.GetSliderValue(Config.Misc, "skinId"));
+            }
+        }
+
+        public static void OnSkinSliderChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
+        {
+            if (Config.IsChecked(Config.Misc, "useSkin"))
+            {
+                Player.SetSkinId(args.NewValue);
             }
         }
     }

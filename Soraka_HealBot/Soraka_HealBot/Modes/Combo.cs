@@ -9,7 +9,7 @@ namespace Soraka_HealBot.Modes
     {
         internal static void Execute()
         {
-            var target = TargetSelector.GetTarget(Spells.Q.Range + 400, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
             if (target == null)
             {
                 return;

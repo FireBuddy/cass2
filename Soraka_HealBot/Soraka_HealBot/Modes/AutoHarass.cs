@@ -69,7 +69,7 @@ namespace Soraka_HealBot.Modes
                     return;
                 }
             }
-            if (Config.IsChecked(Config.Harass, "eOnlyCCHarass"))
+            if (Config.IsChecked(Config.Harass, "autoEHarassOnlyCC"))
             {
                 var ePred = Spells.E.GetPrediction(target);
                 if (ePred.HitChance == HitChance.Immobile)

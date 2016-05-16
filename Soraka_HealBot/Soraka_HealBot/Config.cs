@@ -52,6 +52,7 @@ namespace Soraka_HealBot
             Harass.AddGroupLabel("Auto Harass");
             Harass.Add("autoQHarass", new CheckBox("Auto Q", false));
             Harass.Add("autoEHarass", new CheckBox("Auto E", false));
+            Harass.Add("autoEHarassOnlyCC", new CheckBox("Use Auto E only on immobile"));
             Harass.Add("dontAutoHarassTower", new CheckBox("Dont Auto Harass under Tower"));
             Harass.Add("dontHarassInBush", new CheckBox("Dont Auto Harass when in Bush"));
             Harass.Add("manaAutoHarass", new Slider("Min Mana % to Auto Harass", 60));

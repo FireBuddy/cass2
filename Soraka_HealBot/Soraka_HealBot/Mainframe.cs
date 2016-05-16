@@ -1,17 +1,21 @@
-﻿using System;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Rendering;
-using SharpDX;
-using Soraka_HealBot.Extensions;
-using Soraka_HealBot.Modes;
-
-namespace Soraka_HealBot
+﻿namespace Soraka_HealBot
 {
+    using System;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Events;
+    using EloBuddy.SDK.Rendering;
+
+    using SharpDX;
+
+    using Soraka_HealBot.Extensions;
+    using Soraka_HealBot.Modes;
+
     public static class Mainframe
     {
+        #region Public Methods and Operators
+
         public static void Init()
         {
             Game.OnTick += Game_OnTick;
@@ -22,59 +26,24 @@ namespace Soraka_HealBot
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
         }
 
-        private static void Game_OnTick(EventArgs args)
-        {
-            if (Player.Instance.IsDead)
-            {
-                return;
-            }
-            if (Config.IsChecked(Config.AutoRMenu, "autoR") && Spells.R.CanCast())
-            {
-                Computed.AutoR();
-            }
-            if (Config.IsChecked(Config.AssistKs, "autoAssistKS") && Spells.R.CanCast())
-            {
-                Computed.AssistKs();
-            }
-            if (Spells.W.CanCast() && Config.IsChecked(Config.AutoWMenu, "autoW"))
-            {
-                Computed.HealBotW();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-            {
-                Combo.Execute();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
-            {
-                Harass.Execute();
-            }
-            if (Config.IsChecked(Config.Harass, "autoQHarass"))
-            {
-                AutoHarass.AutoQ();
-            }
-            if (Config.IsChecked(Config.Harass, "autoEHarass"))
-            {
-                AutoHarass.AutoE();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
-            {
-                LaneClear.Execute();
-            }
-        }
+        #endregion
 
+        #region Methods
 
         private static void Drawing_OnDraw(EventArgs args)
         {
-            if (Config.IsChecked(Config.Draw, "wRangeDraw") &&
-                (!Config.IsChecked(Config.Draw, "onlyReady") || Spells.W.CanCast()))
+            if (Config.IsChecked(Config.Draw, "wRangeDraw")
+                && (!Config.IsChecked(Config.Draw, "onlyReady") || Spells.W.CanCast()))
             {
                 Circle.Draw(Color.White, Spells.W.Range, Player.Instance.Position);
             }
-            if (Config.IsChecked(Config.Draw, "qRange") &&
-                (!Config.IsChecked(Config.Draw, "onlyReady") || Spells.Q.CanCast()))
+
+            if (Config.IsChecked(Config.Draw, "qRange")
+                && (!Config.IsChecked(Config.Draw, "onlyReady") || Spells.Q.CanCast()))
             {
                 Circle.Draw(Color.White, Spells.Q.Range, Player.Instance.Position);
             }
+
             /* Debug Drawings
             var validAllies = EntityManager.Heroes.Allies.Where(ally => !ally.IsMe && !ally.IsDead && !ally.IsZombie);
             var drawTip = 10;
@@ -124,5 +93,55 @@ namespace Soraka_HealBot
             Drawing.DrawText(0, 0, System.Drawing.Color.Red, allyInNeed.Name, 2);
             */
         }
+
+        private static void Game_OnTick(EventArgs args)
+        {
+            if (Player.Instance.IsDead)
+            {
+                return;
+            }
+
+            if (Config.IsChecked(Config.AutoRMenu, "autoR") && Spells.R.CanCast())
+            {
+                Computed.AutoR();
+            }
+
+            if (Config.IsChecked(Config.AssistKs, "autoAssistKS") && Spells.R.CanCast())
+            {
+                Computed.AssistKs();
+            }
+
+            if (Spells.W.CanCast() && Config.IsChecked(Config.AutoWMenu, "autoW"))
+            {
+                Computed.HealBotW();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                Combo.Execute();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                Harass.Execute();
+            }
+
+            if (Config.IsChecked(Config.Harass, "autoQHarass"))
+            {
+                AutoHarass.AutoQ();
+            }
+
+            if (Config.IsChecked(Config.Harass, "autoEHarass"))
+            {
+                AutoHarass.AutoE();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                LaneClear.Execute();
+            }
+        }
+
+        #endregion
     }
 }

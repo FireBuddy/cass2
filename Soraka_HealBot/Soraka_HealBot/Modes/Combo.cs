@@ -1,12 +1,15 @@
-﻿using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Enumerations;
-using Soraka_HealBot.Extensions;
-
-namespace Soraka_HealBot.Modes
+﻿namespace Soraka_HealBot.Modes
 {
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Enumerations;
+
+    using Soraka_HealBot.Extensions;
+
     internal static class Combo
     {
+        #region Methods
+
         internal static void Execute()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
@@ -14,10 +17,12 @@ namespace Soraka_HealBot.Modes
             {
                 return;
             }
+
             if (Config.IsChecked(Config.Combo, "useQInCombo") && Spells.Q.CanCast())
             {
                 Spells.Q.Cast(target);
             }
+
             if (Config.IsChecked(Config.Combo, "useEInCombo") && Spells.E.CanCast())
             {
                 if (Config.IsChecked(Config.Combo, "eOnlyCC"))
@@ -27,10 +32,14 @@ namespace Soraka_HealBot.Modes
                     {
                         Spells.E.Cast(target);
                     }
+
                     return;
                 }
+
                 Spells.E.Cast(target);
             }
         }
+
+        #endregion
     }
 }

@@ -21,7 +21,7 @@ namespace Soraka_HealBot
                     ally =>
                         !ally.IsMe && !ally.IsDead && !ally.IsZombie && ally.IsHPBarRendered && !ally.IsInShopRange() &&
                         ally.Distance(Player.Instance) <= Spells.W.Range && !ally.IsRecalling() &&
-                        Config.IsChecked(Config.AutoWMenu, "autoW_" + ally.BaseSkinName));
+                        Config.IsChecked(Config.AutoWMenu, "autoW_" + ally.BaseSkinName)).ToList();
             if (!validAlliesInRange.Any())
             {
                 return;
@@ -33,7 +33,7 @@ namespace Soraka_HealBot
                     validAlliesInRange.Where(
                         ally =>
                             ally.HealthPercent <=
-                            Config.GetSliderValue(Config.AutoWMenu, "autoWBuff_HP_" + ally.BaseSkinName));
+                            Config.GetSliderValue(Config.AutoWMenu, "autoWBuff_HP_" + ally.BaseSkinName)).ToList();
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Soraka_HealBot
                     validAlliesInRange.Where(
                         ally =>
                             ally.HealthPercent <=
-                            Config.GetSliderValue(Config.AutoWMenu, "autoW_HP_" + ally.BaseSkinName));
+                            Config.GetSliderValue(Config.AutoWMenu, "autoW_HP_" + ally.BaseSkinName)).ToList();
             }
             if (!alliesToConsider.Any())
             {

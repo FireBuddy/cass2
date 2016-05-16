@@ -26,7 +26,6 @@ namespace Soraka_HealBot.Modes
                     if (ePred.HitChance == HitChance.Immobile)
                     {
                         Spells.E.Cast(target);
-                        return;
                     }
                     return;
                 }

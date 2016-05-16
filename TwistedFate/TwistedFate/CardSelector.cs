@@ -1,30 +1,35 @@
-﻿using System;
-using EloBuddy;
-using EloBuddy.SDK;
-
-namespace TwistedFate
+﻿namespace TwistedFate
 {
+    using System;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+
     public enum Cards
     {
-        Red,
-        Yellow,
-        Blue,
+        Red, 
+
+        Yellow, 
+
+        Blue, 
+
         None
     }
 
     public enum SelectStatus
     {
-        Ready,
-        Selecting,
-        Selected,
+        Ready, 
+
+        Selecting, 
+
+        Selected, 
+
         Cooldown
     }
 
     internal class CardSelector
     {
-        public static Cards Select;
-        public static int LastWSent;
-        public static int LastSendWSent = 0;
+        #region Constructors and Destructors
 
         static CardSelector()
         {
@@ -32,36 +37,32 @@ namespace TwistedFate
             Game.OnUpdate += OnGameUpdate;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public static Cards Select { get; set; }
+
         public static SelectStatus Status { get; set; }
 
-        private static void SendWPacket()
-        {
-            if (Config.IsChecked(Config.Misc, "humanizePicks"))
-            {
-                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
-                {
-                    Orbwalker.ResetAutoAttack();
-                }
-                Core.DelayAction(
-                    () => Player.Instance.Spellbook.CastSpell(SpellSlot.W, false),
-                    Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanizeInt")));
-            }
-            else
-            {
-                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
-                {
-                    Orbwalker.ResetAutoAttack();
-                }
-                Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
-            }
-        }
+        #endregion
+
+        #region Properties
+
+        internal static int LastSendWSent { get; } = 0;
+
+        internal static int LastWSent { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public static void StartSelecting(Cards card)
         {
             if (Player.Instance.Spellbook.GetSpell(SpellSlot.W).Name == "PickACard" && Status == SelectStatus.Ready)
             {
                 Select = card;
-                if (Environment.TickCount - LastWSent > 170 + Game.Ping / 2)
+                if (Environment.TickCount - LastWSent > 170 + (Game.Ping / 2))
                 {
                     Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
                     LastWSent = Environment.TickCount;
@@ -69,14 +70,18 @@ namespace TwistedFate
             }
         }
 
+        #endregion
+
+        #region Methods
+
         private static void OnGameUpdate(EventArgs args)
         {
             var wName = Player.Instance.Spellbook.GetSpell(SpellSlot.W).Name;
             var wState = Player.Instance.Spellbook.CanUseSpell(SpellSlot.W);
 
-            if ((wState == SpellState.Ready && wName == "PickACard" &&
-                 (Status != SelectStatus.Selecting || Environment.TickCount - LastWSent > 500)) ||
-                Player.Instance.IsDead)
+            if ((wState == SpellState.Ready && wName == "PickACard"
+                 && (Status != SelectStatus.Selecting || Environment.TickCount - LastWSent > 500))
+                || Player.Instance.IsDead)
             {
                 Status = SelectStatus.Ready;
             }
@@ -116,12 +121,38 @@ namespace TwistedFate
                 Status = SelectStatus.Selecting;
             }
 
-            if (args.SData.Name.Equals("GoldCardLock", StringComparison.InvariantCultureIgnoreCase) ||
-                args.SData.Name.Equals("BlueCardLock", StringComparison.InvariantCultureIgnoreCase) ||
-                args.SData.Name.Equals("RedCardLock", StringComparison.InvariantCultureIgnoreCase))
+            if (args.SData.Name.Equals("GoldCardLock", StringComparison.InvariantCultureIgnoreCase)
+                || args.SData.Name.Equals("BlueCardLock", StringComparison.InvariantCultureIgnoreCase)
+                || args.SData.Name.Equals("RedCardLock", StringComparison.InvariantCultureIgnoreCase))
             {
                 Status = SelectStatus.Selected;
             }
         }
+
+        private static void SendWPacket()
+        {
+            if (Config.IsChecked(Config.Misc, "humanizePicks"))
+            {
+                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
+
+                Core.DelayAction(
+                    () => Player.Instance.Spellbook.CastSpell(SpellSlot.W, false), 
+                    Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanizeInt")));
+            }
+            else
+            {
+                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
+
+                Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
+            }
+        }
+
+        #endregion
     }
 }

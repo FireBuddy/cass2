@@ -1,20 +1,42 @@
-﻿using System;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
-
-namespace CassOp
+﻿namespace CassOp
 {
+    using System;
+
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
+
     internal class Config
     {
-        private static Menu _cassop;
-        public static Menu Combo, Harass, LaneClear, JungleClear, Interrupter, Gapclose, Misc, LastHit;
+        #region Properties
+
+        internal static Menu Cassop { get; private set; }
+
+        internal static Menu Combo { get; private set; }
+
+        internal static Menu Gapclose { get; private set; }
+
+        internal static Menu Harass { get; private set; }
+
+        internal static Menu Interrupter { get; private set; }
+
+        internal static Menu JungleClear { get; private set; }
+
+        internal static Menu LaneClear { get; private set; }
+
+        internal static Menu LastHit { get; private set; }
+
+        internal static Menu Misc { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public static void CallMenu()
         {
-            _cassop = MainMenu.AddMenu("Cassiopeia", "cass");
-            _cassop.AddGroupLabel("Cassiopeia by mztikk");
+            Cassop = MainMenu.AddMenu("Cassiopeia", "cass");
+            Cassop.AddGroupLabel("Cassiopeia by mztikk");
 
-            Combo = _cassop.AddSubMenu("Combo", "combo");
+            Combo = Cassop.AddSubMenu("Combo", "combo");
             Combo.AddGroupLabel("Options for Combo");
             Combo.Add("useQInCombo", new CheckBox("Use Q"));
             Combo.Add("useWInCombo", new CheckBox("Use W"));
@@ -29,7 +51,7 @@ namespace CassOp
             Combo.Add("comboFlashR", new CheckBox("Flash R Combo on killable", false));
             Combo.Add("maxEnFlash", new Slider("Max enemies around target to Flash R", 2, 0, 4));
 
-            Harass = _cassop.AddSubMenu("Harass", "harass");
+            Harass = Cassop.AddSubMenu("Harass", "harass");
             Harass.AddGroupLabel("Options for Harass");
             Harass.Add("useQInHarass", new CheckBox("Use Q"));
             Harass.Add("useWInHarass", new CheckBox("Use W", false));
@@ -49,7 +71,7 @@ namespace CassOp
             Harass.Add("dontAutoHarassTower", new CheckBox("Dont Auto Harass under Tower"));
             Harass.Add("manaToAutoHarass", new Slider("Min Mana % to Auto Harass", 60));
 
-            LaneClear = _cassop.AddSubMenu("LaneClear", "laneclear");
+            LaneClear = Cassop.AddSubMenu("LaneClear", "laneclear");
             LaneClear.AddGroupLabel("Options for LaneClear");
             LaneClear.Add("useQInLC", new CheckBox("Use Q", false));
             LaneClear.Add("useWInLC", new CheckBox("Use W"));
@@ -61,7 +83,7 @@ namespace CassOp
             LaneClear.Add("manaEInLC", new Slider("If Mana below this ignore poison for E LastHit", 30, 1));
             LaneClear.Add("manaToLC", new Slider("Min Mana % to LaneClear", 20));
 
-            JungleClear = _cassop.AddSubMenu("JungleClear", "jungleclear");
+            JungleClear = Cassop.AddSubMenu("JungleClear", "jungleclear");
             JungleClear.AddGroupLabel("Options for JungleClear");
             JungleClear.Add("useQInJC", new CheckBox("Use Q"));
             JungleClear.Add("useWInJC", new CheckBox("Use W"));
@@ -69,22 +91,22 @@ namespace CassOp
             JungleClear.Add("jungEonP", new CheckBox("E only on poisoned"));
             JungleClear.Add("manaToJC", new Slider("Min Mana % to JungleClear", 10));
 
-            LastHit = _cassop.AddSubMenu("LastHit", "lasthit");
+            LastHit = Cassop.AddSubMenu("LastHit", "lasthit");
             LastHit.AddGroupLabel("Options for LastHit");
             LastHit.Add("useEInLH", new CheckBox("Use E"));
             LastHit.Add("lastEonP", new CheckBox("E only on poisoned", false));
 
-            Interrupter = _cassop.AddSubMenu("Interrupter", "Interrupter");
+            Interrupter = Cassop.AddSubMenu("Interrupter", "Interrupter");
             Interrupter.AddGroupLabel("Options for Interrupter");
             Interrupter.Add("bInterrupt", new CheckBox("Interrupt spells with R"));
             Interrupter.Add("dangerL", new ComboBox("Min DangerLevel to interrupt", 2, "Low", "Medium", "High"));
 
-            Gapclose = _cassop.AddSubMenu("Anti GapCloser", "AntiGapCloser");
+            Gapclose = Cassop.AddSubMenu("Anti GapCloser", "AntiGapCloser");
             Gapclose.AddGroupLabel("Options for Anti GapClose");
             Gapclose.Add("qGapclose", new CheckBox("Anti GapClose with Q", false));
-            //Gapclose.Add("wGapclose", new CheckBox("Anti GapClose with W"));
 
-            Misc = _cassop.AddSubMenu("Misc", "misc");
+            // Gapclose.Add("wGapclose", new CheckBox("Anti GapClose with W"));
+            Misc = Cassop.AddSubMenu("Misc", "misc");
             Misc.AddGroupLabel("Misc Options");
             Misc.Add("antiMissR", new CheckBox("Block R Casts if they miss/don't face"));
             Misc.Add("assistedR", new KeyBind("Assisted R", false, KeyBind.BindTypes.HoldActive, 'R'));
@@ -100,9 +122,9 @@ namespace CassOp
             Misc.Add("manaTearStack", new Slider("Min Mana % to stack Tear", 50));
         }
 
-        public static bool IsChecked(Menu obj, string value)
+        public static int GetComboBoxValue(Menu obj, string value)
         {
-            return obj[value].Cast<CheckBox>().CurrentValue;
+            return obj[value].Cast<ComboBox>().CurrentValue;
         }
 
         public static int GetSliderValue(Menu obj, string value)
@@ -110,14 +132,16 @@ namespace CassOp
             return obj[value].Cast<Slider>().CurrentValue;
         }
 
-        public static int GetComboBoxValue(Menu obj, string value)
+        public static bool IsChecked(Menu obj, string value)
         {
-            return obj[value].Cast<ComboBox>().CurrentValue;
+            return obj[value].Cast<CheckBox>().CurrentValue;
         }
 
         public static bool IsKeyPressed(Menu obj, string value)
         {
             return obj[value].Cast<KeyBind>().CurrentValue;
         }
+
+        #endregion
     }
 }

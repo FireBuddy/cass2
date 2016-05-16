@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-
-namespace XinZhao
+﻿namespace XinZhao
 {
+    using System;
+    using System.Linq;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+
     internal class Modes
     {
-        public static void PermActive()
-        {
-            throw new NotImplementedException();
-        }
+        #region Public Methods and Operators
 
         public static void Combo()
         {
@@ -20,44 +18,54 @@ namespace XinZhao
             {
                 return;
             }
+
             var enemiesAroundPlayer =
                 EntityManager.Heroes.Enemies.Where(en => en.Distance(Player.Instance.Position) <= Spells.R.Range);
             if (enemiesAroundPlayer.Count() >= Config.GetSliderValue(Config.Combo, "comboMinR") && Spells.R.CanCast())
             {
                 Spells.R.Cast();
             }
+
             if (!Orbwalker.IsAutoAttacking && Spells.W.CanCast() && target.IsValidTarget(175))
             {
                 Spells.W.Cast();
             }
+
             if (!Config.IsChecked(Config.Combo, "useEcombo") || !Spells.E.CanCast())
             {
                 return;
             }
+
             if (Config.IsChecked(Config.Combo, "comboETower") && target.Position.UnderEnemyTurret())
             {
                 return;
             }
+
             if (Config.GetComboBoxValue(Config.Combo, "comboEmode") == 0)
             {
                 if (target != wantedTarget)
                 {
                     return;
                 }
-                if (target.Distance(Player.Instance.Position) >= 300 && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
+
+                if (target.Distance(Player.Instance.Position) >= 300
+                    && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
                 {
                     Spells.E.Cast(target);
                 }
-                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f &&
-                    target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
+
+                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f
+                    && target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
                 {
                     Spells.E.Cast(target);
                 }
+
                 if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
                 {
                     Spells.E.Cast(target);
                 }
             }
+
             if (Config.GetComboBoxValue(Config.Combo, "comboEmode") == 1)
             {
                 if (target.Distance(Player.Instance.Position) >= 225)
@@ -65,7 +73,11 @@ namespace XinZhao
                     Spells.E.Cast(target);
                 }
             }
-            
+        }
+
+        public static void Flee()
+        {
+            throw new NotImplementedException();
         }
 
         public static void Harass()
@@ -75,22 +87,25 @@ namespace XinZhao
             {
                 return;
             }
+
             if (Config.IsChecked(Config.Harass, "harassETower") && target.Position.UnderEnemyTurret())
             {
                 return;
             }
-            if (target.Distance(Player.Instance.Position) >= 255 && Player.Instance.HasBuff("XenZhaoComboTarget") &&
-                Spells.E.CanCast() && Config.IsChecked(Config.Harass, "useEharass"))
+
+            if (target.Distance(Player.Instance.Position) >= 255 && Player.Instance.HasBuff("XenZhaoComboTarget")
+                && Spells.E.CanCast() && Config.IsChecked(Config.Harass, "useEharass"))
             {
                 Spells.E.Cast(target);
             }
-            if ((target.Distance(Player.Instance.Position) > Spells.E.Range * 0.55f &&
-                 target.MoveSpeed + 5 >= Player.Instance.MoveSpeed) ||
-                (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.70f))
+
+            if ((target.Distance(Player.Instance.Position) > Spells.E.Range * 0.55f
+                 && target.MoveSpeed + 5 >= Player.Instance.MoveSpeed)
+                || (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.70f))
             {
                 if (!Spells.E.CanCast())
                 {
-/*
+                    /*
                     target = TargetSelector.GetTarget(175, DamageType.Physical);
 */
                 }
@@ -100,27 +115,6 @@ namespace XinZhao
                     {
                         Spells.E.Cast(target);
                     }
-                }
-            }
-        }
-
-        public static void LaneClear()
-        {
-            var minz =
-                EntityManager.MinionsAndMonsters.EnemyMinions.Where(
-                    m => m.Distance(Player.Instance.Position) <= Spells.E.Range).OrderByDescending(m => m.MaxHealth);
-            var minion = minz.FirstOrDefault();
-            if (minion == null || Orbwalker.IsAutoAttacking)
-            {
-                return;
-            }
-            foreach (var mina in minz)
-            {
-                var minAoE = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => mina.Distance(m) <= 100);
-                if (minAoE.Count() >= Config.GetSliderValue(Config.LaneClear, "lcEtargets") &&
-                    Config.IsChecked(Config.LaneClear, "useELC") && Spells.E.CanCast())
-                {
-                    Spells.E.Cast(mina);
                 }
             }
         }
@@ -135,10 +129,33 @@ namespace XinZhao
             {
                 return;
             }
-            if (Config.IsChecked(Config.JungleClear, "useEJC") && Spells.E.CanCast() &&
-                jngTarget.IsValidTarget(Spells.E.Range))
+
+            if (Config.IsChecked(Config.JungleClear, "useEJC") && Spells.E.CanCast()
+                && jngTarget.IsValidTarget(Spells.E.Range))
             {
                 Spells.E.Cast(jngTarget);
+            }
+        }
+
+        public static void LaneClear()
+        {
+            var minz =
+                EntityManager.MinionsAndMonsters.EnemyMinions.Where(
+                    m => m.Distance(Player.Instance.Position) <= Spells.E.Range).OrderByDescending(m => m.MaxHealth);
+            var minion = minz.FirstOrDefault();
+            if (minion == null || Orbwalker.IsAutoAttacking)
+            {
+                return;
+            }
+
+            foreach (var mina in minz)
+            {
+                var minAoE = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => mina.Distance(m) <= 100);
+                if (minAoE.Count() >= Config.GetSliderValue(Config.LaneClear, "lcEtargets")
+                    && Config.IsChecked(Config.LaneClear, "useELC") && Spells.E.CanCast())
+                {
+                    Spells.E.Cast(mina);
+                }
             }
         }
 
@@ -147,9 +164,11 @@ namespace XinZhao
             throw new NotImplementedException();
         }
 
-        public static void Flee()
+        public static void PermActive()
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

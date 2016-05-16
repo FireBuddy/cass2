@@ -1,70 +1,41 @@
-﻿using System;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Enumerations;
-using EloBuddy.SDK.Events;
-using SharpDX;
-
-namespace XinZhao
+﻿namespace XinZhao
 {
+    using System;
+    using System.Linq;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Enumerations;
+    using EloBuddy.SDK.Events;
+
+    using SharpDX;
+
     internal static class OtherUtils
     {
-        private static DangerLevel _wanteDangerLevel;
+        #region Static Fields
 
-        public static void OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
-        {
-            if (!sender.IsEnemy || Player.Instance.IsRecalling() || !Config.IsChecked(Config.Misc, "useInterrupt"))
-            {
-                return;
-            }
-            switch (Config.GetComboBoxValue(Config.Misc, "dangerL"))
-            {
-                case 0:
-                    _wanteDangerLevel = DangerLevel.Low;
-                    break;
-                case 1:
-                    _wanteDangerLevel = DangerLevel.Medium;
-                    break;
-                case 2:
-                    _wanteDangerLevel = DangerLevel.High;
-                    break;
-                default:
-                    _wanteDangerLevel = DangerLevel.High;
-                    break;
-            }
-            if (Spells.R.CanCast() && sender.IsValidTarget(Spells.R.Range) && e.DangerLevel == _wanteDangerLevel)
-            {
-                Spells.R.Cast();
-            }
-        }
+        private static DangerLevel wanteDangerLevel;
 
-        public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         public static bool CanCast(this Spell.Active spellActive)
         {
-            return spellActive.IsLearned && spellActive.IsReady() &&
-                   Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellActive.Slot).SData.Mana;
+            return spellActive.IsLearned && spellActive.IsReady()
+                   && Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellActive.Slot).SData.Mana;
         }
 
         public static bool CanCast(this Spell.Targeted spellTargeted)
         {
-            return spellTargeted.IsLearned && spellTargeted.IsReady() &&
-                   Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellTargeted.Slot).SData.Mana;
+            return spellTargeted.IsLearned && spellTargeted.IsReady()
+                   && Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellTargeted.Slot).SData.Mana;
         }
 
         public static bool CanCast(this Spell.Skillshot spellSkillshot)
         {
-            return spellSkillshot.IsLearned && spellSkillshot.IsReady() &&
-                   Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellSkillshot.Slot).SData.Mana;
-        }
-
-        public static bool UnderEnemyTurret(this Vector3 position)
-        {
-            return (EntityManager.Turrets.Enemies.Any(turret => turret.Distance(position) < 775));
+            return spellSkillshot.IsLearned && spellSkillshot.IsReady()
+                   && Player.Instance.Mana >= Player.Instance.Spellbook.GetSpell(spellSkillshot.Slot).SData.Mana;
         }
 
         public static Vector3 GetBestAllyPlace(this Vector3 position, float range, float inRange = 750)
@@ -84,8 +55,10 @@ namespace XinZhao
                 {
                     bestallv2[i] = bestAllyMasz[i].Position.To2D();
                 }
+
                 return bestallv2.CenterPoint().To3D();
             }
+
             var closeTurret =
                 EntityManager.Turrets.Allies.Where(t => t.Distance(Player.Instance.Position) <= range)
                     .OrderBy(t => t.Distance(Player.Instance.Position))
@@ -94,8 +67,50 @@ namespace XinZhao
             {
                 return closeTurret.Position;
             }
+
             var nex = ObjectManager.Get<Obj_Building>().FirstOrDefault(x => x.Name.StartsWith("HQ") && x.IsAlly);
             return nex?.Position ?? Vector3.Zero;
         }
+
+        public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
+        {
+            if (!sender.IsEnemy || Player.Instance.IsRecalling() || !Config.IsChecked(Config.Misc, "useInterrupt"))
+            {
+                return;
+            }
+
+            switch (Config.GetComboBoxValue(Config.Misc, "dangerL"))
+            {
+                case 0:
+                    wanteDangerLevel = DangerLevel.Low;
+                    break;
+                case 1:
+                    wanteDangerLevel = DangerLevel.Medium;
+                    break;
+                case 2:
+                    wanteDangerLevel = DangerLevel.High;
+                    break;
+                default:
+                    wanteDangerLevel = DangerLevel.High;
+                    break;
+            }
+
+            if (Spells.R.CanCast() && sender.IsValidTarget(Spells.R.Range) && e.DangerLevel == wanteDangerLevel)
+            {
+                Spells.R.Cast();
+            }
+        }
+
+        public static bool UnderEnemyTurret(this Vector3 position)
+        {
+            return EntityManager.Turrets.Enemies.Any(turret => turret.Distance(position) < 775);
+        }
+
+        #endregion
     }
 }

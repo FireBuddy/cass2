@@ -1,19 +1,31 @@
-﻿using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using EloBuddy.SDK.Rendering;
-using SharpDX;
-
-namespace TwistedFate
+﻿namespace TwistedFate
 {
+    using System;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy.SDK.Rendering;
+
+    using SharpDX;
+
     public static class Tf
     {
+        #region Static Fields
+
         public static readonly Random RDelay = new Random();
+
+        #endregion
+
+        #region Properties
+
+        internal static int OriginalSkinId { get; set; }
+
         private static AIHeroClient Player => EloBuddy.Player.Instance;
 
-        internal static int OriginalSkinId;
+        #endregion
 
+        #region Public Methods and Operators
 
         public static void Init()
         {
@@ -31,46 +43,11 @@ namespace TwistedFate
             }
         }
 
-        private static void OnGameUpdate(EventArgs args)
+        public static void OnSkinSliderChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
         {
-            if (Player.IsDead)
+            if (Config.IsChecked(Config.Misc, "useSkin"))
             {
-                return;
-            }
-            Modes.PermActive();
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-            {
-                Modes.Combo();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
-            {
-                Modes.Harass();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
-            {
-                Modes.JungleClear();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
-            {
-                Modes.LaneClear();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
-            {
-                //Modes.LastHit();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
-            {
-                //Modes.Flee();
-            }
-        }
-
-        //private static void Game_OnTick(EventArgs args) {}
-        //private static void OnDash(Obj_AI_Base sender, Dash.DashEventArgs args) {}
-        private static void Drawing_OnDraw(EventArgs args)
-        {
-            if (Config.IsChecked(Config.Misc, "drawRrange"))
-            {
-                Circle.Draw(Color.AliceBlue, Spells.R.Range, Player);
+                Player.SetSkinId(args.NewValue);
             }
         }
 
@@ -80,18 +57,56 @@ namespace TwistedFate
             {
                 Player.SetSkinId(OriginalSkinId);
             }
+
             if (args.NewValue)
             {
                 Player.SetSkinId(Config.GetSliderValue(Config.Misc, "skinId"));
             }
         }
 
-        public static void OnSkinSliderChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
+        #endregion
+
+        #region Methods
+
+        // private static void Game_OnTick(EventArgs args) {}
+        // private static void OnDash(Obj_AI_Base sender, Dash.DashEventArgs args) {}
+        private static void Drawing_OnDraw(EventArgs args)
         {
-            if (Config.IsChecked(Config.Misc, "useSkin"))
+            if (Config.IsChecked(Config.Misc, "drawRrange"))
             {
-                Player.SetSkinId(args.NewValue);
+                Circle.Draw(Color.AliceBlue, Spells.R.Range, Player);
             }
         }
+
+        private static void OnGameUpdate(EventArgs args)
+        {
+            if (Player.IsDead)
+            {
+                return;
+            }
+
+            Modes.PermActive();
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                Modes.Combo();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                Modes.Harass();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                Modes.JungleClear();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                Modes.LaneClear();
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,11 +1,14 @@
-﻿using System;
-using EloBuddy;
-using EloBuddy.SDK.Events;
-
-namespace Olaf
+﻿namespace Olaf
 {
+    using System;
+
+    using EloBuddy;
+    using EloBuddy.SDK.Events;
+
     internal class Program
     {
+        #region Methods
+
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += OnLoadingComplete;
@@ -17,9 +20,12 @@ namespace Olaf
             {
                 return;
             }
+
             Spells.LoadSpells();
             Config.CallMenu();
             Mainframe.Init();
         }
+
+        #endregion
     }
 }

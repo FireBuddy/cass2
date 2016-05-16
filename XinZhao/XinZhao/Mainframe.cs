@@ -1,16 +1,22 @@
-﻿using System;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Events;
-using SharpDX;
-using Color = System.Drawing.Color;
-
-namespace XinZhao
+﻿namespace XinZhao
 {
+    using System;
+    using System.Drawing;
+    using System.Linq;
+
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Events;
+
     internal class Mainframe
     {
+        #region Static Fields
+
         public static readonly Random RDelay = new Random();
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public static void Init()
         {
@@ -23,42 +29,14 @@ namespace XinZhao
             Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Computed.OnSpellCast;
             Drawing.OnDraw += OnDraw;
-            //Orbwalker.OnUnkillableMinion += Computed.OnUnkillableMinion;
-            //Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
+
+            // Orbwalker.OnUnkillableMinion += Computed.OnUnkillableMinion;
+            // Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
         }
 
+        #endregion
 
-        private static void OnGameUpdate(EventArgs args)
-        {
-            if (Player.Instance.IsDead)
-            {
-                return;
-            }
-            if (Config.IsKeyPressed(Config.Misc, "xinsecKey"))
-            {
-                Orbwalker.MoveTo(Game.CursorPos);
-                Computed.Xinsec();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-            {
-                Modes.Combo();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
-                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.JungleClear, "jcMana"))
-            {
-                Modes.JungleClear();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
-                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "harassMana"))
-            {
-                Modes.Harass();
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
-                Player.Instance.ManaPercent >= Config.GetSliderValue(Config.LaneClear, "lcMana"))
-            {
-                Modes.LaneClear();
-            }
-        }
+        #region Methods
 
         private static void OnDraw(EventArgs args)
         {
@@ -66,6 +44,7 @@ namespace XinZhao
             {
                 return;
             }
+
             AIHeroClient xinsecTarget = null;
             switch (Config.GetComboBoxValue(Config.Misc, "xinsecTargetting"))
             {
@@ -83,12 +62,14 @@ namespace XinZhao
                     break;
             }
 
-            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast() &&
-                !xinsecTarget.HasBuff("XinZhaoIntimidate") && !xinsecTarget.IsInvulnerable)
+            if (xinsecTarget != null && Spells.E.CanCast() && Spells.R.CanCast()
+                && !xinsecTarget.HasBuff("XinZhaoIntimidate") && !xinsecTarget.IsInvulnerable)
             {
                 Drawing.DrawText(
-                    Drawing.WorldToScreen(xinsecTarget.Position), Color.AntiqueWhite,
-                    "Xinsec:" + Environment.NewLine + xinsecTarget.ChampionName, 10);
+                    Drawing.WorldToScreen(xinsecTarget.Position), 
+                    Color.AntiqueWhite, 
+                    "Xinsec:" + Environment.NewLine + xinsecTarget.ChampionName, 
+                    10);
                 if (Config.IsChecked(Config.Draw, "drawXinsecpred"))
                 {
                     var extendToPos = Player.Instance.Position.GetBestAllyPlace(1750);
@@ -97,5 +78,44 @@ namespace XinZhao
                 }
             }
         }
+
+        private static void OnGameUpdate(EventArgs args)
+        {
+            if (Player.Instance.IsDead)
+            {
+                return;
+            }
+
+            if (Config.IsKeyPressed(Config.Misc, "xinsecKey"))
+            {
+                Orbwalker.MoveTo(Game.CursorPos);
+                Computed.Xinsec();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                Modes.Combo();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)
+                && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.JungleClear, "jcMana"))
+            {
+                Modes.JungleClear();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)
+                && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.Harass, "harassMana"))
+            {
+                Modes.Harass();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)
+                && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.LaneClear, "lcMana"))
+            {
+                Modes.LaneClear();
+            }
+        }
+
+        #endregion
     }
 }

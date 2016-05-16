@@ -1,16 +1,108 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SharpDX;
-
-namespace CassOp
+﻿namespace CassOp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using SharpDX;
+
     internal class Mec
     {
-        // For debugging.
-        public static Vector2[] GMinMaxCorners;
-        public static RectangleF GMinMaxBox;
-        public static Vector2[] GNonCulledPoints;
+        #region Properties
+
+        internal static RectangleF GMinMaxBox { get; private set; }
+
+        internal static Vector2[] GMinMaxCorners { get; private set; }
+
+        internal static Vector2[] GNonCulledPoints { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        // Find a minimal bounding circle.
+        public static void FindMinimalBoundingCircle(List<Vector2> points, out Vector2 center, out float radius)
+        {
+            // Find the convex hull.
+            var hull = MakeConvexHull(points);
+
+            // The best solution so far.
+            var bestCenter = points[0];
+            var bestRadius2 = float.MaxValue;
+
+            // Look at pairs of hull points.
+            for (var i = 0; i < hull.Count - 1; i++)
+            {
+                for (var j = i + 1; j < hull.Count; j++)
+                {
+                    // Find the circle through these two points.
+                    var testCenter = new Vector2((hull[i].X + hull[j].X) / 2f, (hull[i].Y + hull[j].Y) / 2f);
+                    var dx = testCenter.X - hull[i].X;
+                    var dy = testCenter.Y - hull[i].Y;
+                    var testRadius2 = dx * dx + dy * dy;
+
+                    // See if this circle would be an improvement.
+                    if (testRadius2 < bestRadius2)
+                    {
+                        // See if this circle encloses all of the points.
+                        if (CircleEnclosesPoints(testCenter, testRadius2, points, i, j, -1))
+                        {
+                            // Save this solution.
+                            bestCenter = testCenter;
+                            bestRadius2 = testRadius2;
+                        }
+                    }
+                }
+
+                // for i
+            }
+
+            // for j
+
+            // Look at triples of hull points.
+            for (var i = 0; i < hull.Count - 2; i++)
+            {
+                for (var j = i + 1; j < hull.Count - 1; j++)
+                {
+                    for (var k = j + 1; k < hull.Count; k++)
+                    {
+                        // Find the circle through these three points.
+                        Vector2 testCenter;
+                        float testRadius2;
+                        FindCircle(hull[i], hull[j], hull[k], out testCenter, out testRadius2);
+
+                        // See if this circle would be an improvement.
+                        if (testRadius2 < bestRadius2)
+                        {
+                            // See if this circle encloses all of the points.
+                            if (CircleEnclosesPoints(testCenter, testRadius2, points, i, j, k))
+                            {
+                                // Save this solution.
+                                bestCenter = testCenter;
+                                bestRadius2 = testRadius2;
+                            }
+                        }
+                    }
+
+                    // for k
+                }
+
+                // for i
+            }
+
+            // for j
+            center = bestCenter;
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (bestRadius2 == float.MaxValue)
+            {
+                radius = 0;
+            }
+            else
+            {
+                radius = (float)Math.Sqrt(bestRadius2);
+            }
+        }
 
         /// <summary>
         ///     Returns the mininimum enclosing circle from a list of points.
@@ -25,106 +117,6 @@ namespace CassOp
             return new MecCircle(center, radius);
         }
 
-        // Find the points nearest the upper left, upper right,
-        // lower left, and lower right corners.
-        private static void GetMinMaxCorners(List<Vector2> points,
-            // ReSharper disable once RedundantAssignment
-            ref Vector2 ul,
-            // ReSharper disable once RedundantAssignment
-            ref Vector2 ur,
-            // ReSharper disable once RedundantAssignment
-            ref Vector2 ll,
-            // ReSharper disable once RedundantAssignment
-            ref Vector2 lr)
-        {
-            // Start with the first point as the solution.
-            ul = points[0];
-            ur = ul;
-            ll = ul;
-            lr = ul;
-
-            // Search the other points.
-            foreach (var pt in points)
-            {
-                if (-pt.X - pt.Y > -ul.X - ul.Y)
-                {
-                    ul = pt;
-                }
-                if (pt.X - pt.Y > ur.X - ur.Y)
-                {
-                    ur = pt;
-                }
-                if (-pt.X + pt.Y > -ll.X + ll.Y)
-                {
-                    ll = pt;
-                }
-                if (pt.X + pt.Y > lr.X + lr.Y)
-                {
-                    lr = pt;
-                }
-            }
-
-            GMinMaxCorners = new[] { ul, ur, lr, ll }; // For debugging.
-        }
-
-        // Find a box that fits inside the MinMax quadrilateral.
-        private static RectangleF GetMinMaxBox(List<Vector2> points)
-        {
-            // Find the MinMax quadrilateral.
-            Vector2 ul = new Vector2(0, 0), ur = ul, ll = ul, lr = ul;
-            GetMinMaxCorners(points, ref ul, ref ur, ref ll, ref lr);
-
-            // Get the coordinates of a box that lies inside this quadrilateral.
-            var xmin = ul.X;
-            var ymin = ul.Y;
-
-            var xmax = ur.X;
-            if (ymin < ur.Y)
-            {
-                ymin = ur.Y;
-            }
-
-            if (xmax > lr.X)
-            {
-                xmax = lr.X;
-            }
-            var ymax = lr.Y;
-
-            if (xmin < ll.X)
-            {
-                xmin = ll.X;
-            }
-            if (ymax > ll.Y)
-            {
-                ymax = ll.Y;
-            }
-
-            var result = new RectangleF(xmin, ymin, xmax - xmin, ymax - ymin);
-            GMinMaxBox = result; // For debugging.
-            return result;
-        }
-
-        // Cull points out of the convex hull that lie inside the
-        // trapezoid defined by the vertices with smallest and
-        // largest X and Y coordinates.
-        // Return the points that are not culled.
-        private static List<Vector2> HullCull(List<Vector2> points)
-        {
-            // Find a culling box.
-            var cullingBox = GetMinMaxBox(points);
-
-            // Cull the points.
-            var results =
-                points.Where(
-                    pt =>
-                        pt.X <= cullingBox.Left || pt.X >= cullingBox.Right || pt.Y <= cullingBox.Top ||
-                        pt.Y >= cullingBox.Bottom).ToList();
-
-            GNonCulledPoints = new Vector2[results.Count]; // For debugging.
-            results.CopyTo(GNonCulledPoints); // For debugging.
-            return results;
-        }
-
         // Return the points that make up a polygon's convex hull.
         // This method leaves the points list unchanged.
         public static List<Vector2> MakeConvexHull(List<Vector2> points)
@@ -136,6 +128,7 @@ namespace CassOp
             // if (there's a tie, take the one with the smaller X value.
             Vector2[] bestPt = { points[0] };
             foreach (
+
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 var pt in points.Where(pt => (pt.Y < bestPt[0].Y) || ((pt.Y == bestPt[0].Y) && (pt.X < bestPt[0].X))))
             {
@@ -193,16 +186,19 @@ namespace CassOp
             return hull;
         }
 
+        #endregion
+
+        #region Methods
+
         // Return a number that gives the ordering of angles
         // WRST horizontal from the point (x1, y1) to (x2, y2).
         // In other words, AngleValue(x1, y1, x2, y2) is not
         // the angle, but if:
-        //   Angle(x1, y1, x2, y2) > Angle(x1, y1, x2, y2)
+        // Angle(x1, y1, x2, y2) > Angle(x1, y1, x2, y2)
         // then
-        //   AngleValue(x1, y1, x2, y2) > AngleValue(x1, y1, x2, y2)
+        // AngleValue(x1, y1, x2, y2) > AngleValue(x1, y1, x2, y2)
         // this angle is greater than the angle for another set
         // of points,) this number for
-        //
         // This function is dy / (dy + dx).
         private static float AngleValue(float x1, float y1, float x2, float y2)
         {
@@ -212,6 +208,7 @@ namespace CassOp
             var ax = Math.Abs(dx);
             var dy = y2 - y1;
             var ay = Math.Abs(dy);
+
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (ax + ay == 0)
             {
@@ -222,6 +219,7 @@ namespace CassOp
             {
                 t = dy / (ax + ay);
             }
+
             if (dx < 0)
             {
                 t = 2 - t;
@@ -230,85 +228,13 @@ namespace CassOp
             {
                 t = 4 + t;
             }
+
             return t * 90;
         }
 
-        // Find a minimal bounding circle.
-        public static void FindMinimalBoundingCircle(List<Vector2> points, out Vector2 center, out float radius)
-        {
-            // Find the convex hull.
-            var hull = MakeConvexHull(points);
-
-            // The best solution so far.
-            var bestCenter = points[0];
-            var bestRadius2 = float.MaxValue;
-
-            // Look at pairs of hull points.
-            for (var i = 0; i < hull.Count - 1; i++)
-            {
-                for (var j = i + 1; j < hull.Count; j++)
-                {
-                    // Find the circle through these two points.
-                    var testCenter = new Vector2((hull[i].X + hull[j].X) / 2f, (hull[i].Y + hull[j].Y) / 2f);
-                    var dx = testCenter.X - hull[i].X;
-                    var dy = testCenter.Y - hull[i].Y;
-                    var testRadius2 = dx * dx + dy * dy;
-
-                    // See if this circle would be an improvement.
-                    if (testRadius2 < bestRadius2)
-                    {
-                        // See if this circle encloses all of the points.
-                        if (CircleEnclosesPoints(testCenter, testRadius2, points, i, j, -1))
-                        {
-                            // Save this solution.
-                            bestCenter = testCenter;
-                            bestRadius2 = testRadius2;
-                        }
-                    }
-                } // for i
-            } // for j
-
-            // Look at triples of hull points.
-            for (var i = 0; i < hull.Count - 2; i++)
-            {
-                for (var j = i + 1; j < hull.Count - 1; j++)
-                {
-                    for (var k = j + 1; k < hull.Count; k++)
-                    {
-                        // Find the circle through these three points.
-                        Vector2 testCenter;
-                        float testRadius2;
-                        FindCircle(hull[i], hull[j], hull[k], out testCenter, out testRadius2);
-
-                        // See if this circle would be an improvement.
-                        if (testRadius2 < bestRadius2)
-                        {
-                            // See if this circle encloses all of the points.
-                            if (CircleEnclosesPoints(testCenter, testRadius2, points, i, j, k))
-                            {
-                                // Save this solution.
-                                bestCenter = testCenter;
-                                bestRadius2 = testRadius2;
-                            }
-                        }
-                    } // for k
-                } // for i
-            } // for j
-
-            center = bestCenter;
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (bestRadius2 == float.MaxValue)
-            {
-                radius = 0;
-            }
-            else
-            {
-                radius = (float) Math.Sqrt(bestRadius2);
-            }
-        }
-
         // Return true if the indicated circle encloses all of the points.
-        private static bool CircleEnclosesPoints(Vector2 center,
+        private static bool CircleEnclosesPoints(
+            Vector2 center,
             float radius2,
             List<Vector2> points,
             int skip1,
@@ -316,9 +242,9 @@ namespace CassOp
             int skip3)
         {
             return (from point in points.Where((t, i) => (i != skip1) && (i != skip2) && (i != skip3))
-                let dx = center.X - point.X
-                let dy = center.Y - point.Y
-                select dx * dx + dy * dy).All(testRadius2 => !(testRadius2 > radius2));
+                    let dx = center.X - point.X
+                    let dy = center.Y - point.Y
+                    select dx * dx + dy * dy).All(testRadius2 => !(testRadius2 > radius2));
         }
 
         // Find a circle through the three points.
@@ -346,16 +272,129 @@ namespace CassOp
             radius2 = dx * dx + dy * dy;
         }
 
+        // Find a box that fits inside the MinMax quadrilateral.
+        private static RectangleF GetMinMaxBox(List<Vector2> points)
+        {
+            // Find the MinMax quadrilateral.
+            Vector2 ul = new Vector2(0, 0), ur = ul, ll = ul, lr = ul;
+            GetMinMaxCorners(points, ref ul, ref ur, ref ll, ref lr);
+
+            // Get the coordinates of a box that lies inside this quadrilateral.
+            var xmin = ul.X;
+            var ymin = ul.Y;
+
+            var xmax = ur.X;
+            if (ymin < ur.Y)
+            {
+                ymin = ur.Y;
+            }
+
+            if (xmax > lr.X)
+            {
+                xmax = lr.X;
+            }
+
+            var ymax = lr.Y;
+
+            if (xmin < ll.X)
+            {
+                xmin = ll.X;
+            }
+
+            if (ymax > ll.Y)
+            {
+                ymax = ll.Y;
+            }
+
+            var result = new RectangleF(xmin, ymin, xmax - xmin, ymax - ymin);
+            GMinMaxBox = result; // For debugging.
+            return result;
+        }
+
+        // Find the points nearest the upper left, upper right,
+        // lower left, and lower right corners.
+        private static void GetMinMaxCorners(
+            List<Vector2> points,
+            ref Vector2 ul,
+            ref Vector2 ur,
+            ref Vector2 ll,
+            ref Vector2 lr)
+        {
+            // Start with the first point as the solution.
+            ul = points[0];
+            ur = ul;
+            ll = ul;
+            lr = ul;
+
+            // Search the other points.
+            foreach (var pt in points)
+            {
+                if (-pt.X - pt.Y > -ul.X - ul.Y)
+                {
+                    ul = pt;
+                }
+
+                if (pt.X - pt.Y > ur.X - ur.Y)
+                {
+                    ur = pt;
+                }
+
+                if (-pt.X + pt.Y > -ll.X + ll.Y)
+                {
+                    ll = pt;
+                }
+
+                if (pt.X + pt.Y > lr.X + lr.Y)
+                {
+                    lr = pt;
+                }
+            }
+
+            GMinMaxCorners = new[] { ul, ur, lr, ll }; // For debugging.
+        }
+
+        // Cull points out of the convex hull that lie inside the
+        // trapezoid defined by the vertices with smallest and
+        // largest X and Y coordinates.
+        // Return the points that are not culled.
+        private static List<Vector2> HullCull(List<Vector2> points)
+        {
+            // Find a culling box.
+            var cullingBox = GetMinMaxBox(points);
+
+            // Cull the points.
+            var results =
+                points.Where(
+                    pt =>
+                    pt.X <= cullingBox.Left || pt.X >= cullingBox.Right || pt.Y <= cullingBox.Top
+                    || pt.Y >= cullingBox.Bottom).ToList();
+
+            GNonCulledPoints = new Vector2[results.Count]; // For debugging.
+            results.CopyTo(GNonCulledPoints); // For debugging.
+            return results;
+        }
+
+        #endregion
+
         public struct MecCircle
         {
+            #region Fields
+
             public Vector2 Center;
+
             public float Radius;
+
+            #endregion
+
+            #region Constructors and Destructors
 
             public MecCircle(Vector2 center, float radius)
             {
-                Center = center;
-                Radius = radius;
+                this.Center = center;
+                this.Radius = radius;
             }
+
+            #endregion
         }
     }
 }

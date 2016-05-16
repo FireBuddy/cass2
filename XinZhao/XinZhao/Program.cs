@@ -1,11 +1,14 @@
-﻿using System;
-using EloBuddy;
-using EloBuddy.SDK.Events;
-
-namespace XinZhao
+﻿namespace XinZhao
 {
+    using System;
+
+    using EloBuddy;
+    using EloBuddy.SDK.Events;
+
     internal class Program
     {
+        #region Methods
+
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += OnLoadingComplete;
@@ -17,9 +20,12 @@ namespace XinZhao
             {
                 return;
             }
+
             Spells.LoadSpells();
             Config.CallMenu();
             Mainframe.Init();
         }
+
+        #endregion
     }
 }

@@ -1,15 +1,24 @@
-﻿using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Enumerations;
-
-namespace TwistedFate
+﻿namespace TwistedFate
 {
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Enumerations;
+
     internal class Spells
     {
-        public static Spell.Skillshot Q;
-        public static Spell.Active W;
-        public static Spell.Active E;
-        public static Spell.Active R;
+        #region Properties
+
+        internal static Spell.Active E { get; private set; }
+
+        internal static Spell.Skillshot Q { get; private set; }
+
+        internal static Spell.Active R { get; private set; }
+
+        internal static Spell.Active W { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public static void LoadSpells()
         {
@@ -18,5 +27,7 @@ namespace TwistedFate
             E = new Spell.Active(SpellSlot.E);
             R = new Spell.Active(SpellSlot.R, 5500);
         }
+
+        #endregion
     }
 }

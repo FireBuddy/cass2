@@ -192,44 +192,47 @@ namespace TwistedFate
 
         public static void LaneClear()
         {
-            if (Orbwalker.LaneClearMinion != null)
+            if (Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
+            {
+                return;
+            }
+
+            if (Orbwalker.LaneClearMinion != null && Config.IsChecked(Config.LaneClear, "useWinLC"))
             {
                 var target =
                     EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
                         x => x.NetworkId == Orbwalker.LaneClearMinion.NetworkId);
-                if (target == null || Player.Instance.ManaPercent < Config.GetSliderValue(Config.LaneClear, "manaToLC"))
+                if (target != null)
                 {
-                    return;
-                }
-
-                switch (Config.GetComboBoxValue(Config.LaneClear, "wModeLC"))
-                {
-                    case 0:
-                        if (Player.Instance.ManaPercent
-                            >= Math.Max(30f, Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10))
-                        {
-                            var targetAoE =
-                                EntityManager.MinionsAndMonsters.EnemyMinions.Count(a => a.Distance(target) <= 250);
-                            if (targetAoE > 2)
+                    switch (Config.GetComboBoxValue(Config.LaneClear, "wModeLC"))
+                    {
+                        case 0:
+                            if (Player.Instance.ManaPercent
+                                >= Math.Max(50f, Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10))
                             {
-                                CardSelector.StartSelecting(Cards.Red);
+                                var targetAoE =
+                                    EntityManager.MinionsAndMonsters.EnemyMinions.Count(a => a.Distance(target) <= 250);
+                                if (targetAoE > 2)
+                                {
+                                    CardSelector.StartSelecting(Cards.Red);
+                                }
                             }
-                        }
-                        else
-                        {
-                            CardSelector.StartSelecting(Cards.Blue);
-                        }
+                            else
+                            {
+                                CardSelector.StartSelecting(Cards.Blue);
+                            }
 
-                        break;
-                    case 1:
-                        CardSelector.StartSelecting(Cards.Yellow);
-                        break;
-                    case 2:
-                        CardSelector.StartSelecting(Cards.Blue);
-                        break;
-                    case 3:
-                        CardSelector.StartSelecting(Cards.Red);
-                        break;
+                            break;
+                        case 1:
+                            CardSelector.StartSelecting(Cards.Yellow);
+                            break;
+                        case 2:
+                            CardSelector.StartSelecting(Cards.Blue);
+                            break;
+                        case 3:
+                            CardSelector.StartSelecting(Cards.Red);
+                            break;
+                    }
                 }
             }
 

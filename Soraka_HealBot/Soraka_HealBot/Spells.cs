@@ -18,5 +18,27 @@ namespace Soraka_HealBot
             E = new Spell.Skillshot(SpellSlot.E, 925, SkillShotType.Circular, (int) 0.5f, 1750, 235);
             R = new Spell.Active(SpellSlot.R);
         }
+
+        public static float GetUltHeal(AIHeroClient target)
+        {
+            var baseHeal = new[] { 0, 150, 250, 350 }[R.Level] + (Player.Instance.TotalMagicalDamage * 0.55f);
+            if (target.HealthPercent < 40)
+            {
+                return baseHeal * 1.5f;
+            }
+            return baseHeal;
+        }
+
+        public static float GetUltHeal()
+        {
+            var baseHeal = new[] { 0, 150, 250, 350 }[R.Level] + (Player.Instance.TotalMagicalDamage * 0.55f);
+            return baseHeal;
+        }
+
+        public static float GetWHeal()
+        {
+            var amount = new[] { 0, 110, 140, 170, 200 }[W.Level] + (Player.Instance.TotalMagicalDamage * 0.6f);
+            return amount;
+        }
     }
 }

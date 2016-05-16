@@ -79,9 +79,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Computed.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Extensions\HeroExtensions.cs" />
+    <Compile Include="Extensions\SpellExtensions.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Mainframe.cs" />
-    <Compile Include="Modes.cs" />
+    <Compile Include="Modes\AutoHarass.cs" />
+    <Compile Include="Modes\Harass.cs" />
+    <Compile Include="Modes\LaneClear.cs" />
+    <Compile Include="Modes\Combo.cs" />
     <Compile Include="OtherUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

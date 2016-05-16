@@ -3,6 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
+using Soraka_HealBot.Extensions;
 
 namespace Soraka_HealBot
 {
@@ -29,14 +30,10 @@ namespace Soraka_HealBot
                     _wantedLevel = DangerLevel.High;
                     break;
             }
-            if (Spells.E.IsReady() && Spells.E.IsInRange(sender) && args.DangerLevel == _wantedLevel)
+            if (Spells.E.CanCast() && Spells.E.IsInRange(sender) && args.DangerLevel == _wantedLevel)
             {
-                var ePred = Spells.E.GetPrediction(sender);
-                if (ePred.HitChancePercent >= 90)
-                {
-                    var delay = RDelay.Next(100, 120);
-                    Core.DelayAction(() => Spells.E.Cast(ePred.CastPosition), delay);
-                }
+                var delay = RDelay.Next(100, 120);
+                Core.DelayAction(() => Spells.E.Cast(sender), delay);
             }
         }
 

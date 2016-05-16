@@ -8,5 +8,6 @@ C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\x86\Re
 C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\x86\Release\SharpDX.XInput.dll
 C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\x86\Release\Newtonsoft.Json.dll
 C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\bin\x86\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\obj\x86\Release\Soraka_HealBot.csprojResolveAssemblyReference.cache
 C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\obj\x86\Release\Soraka_HealBot.exe
 C:\Users\ridiculous\Documents\GitHub\EB\Soraka_HealBot\Soraka_HealBot\obj\x86\Release\Soraka_HealBot.pdb

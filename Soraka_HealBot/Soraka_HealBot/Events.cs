@@ -53,7 +53,8 @@
             }
 
             if (Config.IsChecked(Config.AutoWMenu, "autoW") && Spells.W.CanCast()
-                && ally.Distance(Player.Instance) <= Spells.W.Range)
+                && ally.Distance(Player.Instance) <= Spells.W.Range
+                && Config.IsChecked(Config.AutoWMenu, "autoW_" + ally.BaseSkinName))
             {
                 if (ally.Health + Spells.GetWHeal() > enemyDmg && ally.Health <= enemyDmg)
                 {
@@ -61,7 +62,8 @@
                 }
             }
 
-            if (Config.IsChecked(Config.AutoRMenu, "autoR") && Spells.R.CanCast())
+            if (Config.IsChecked(Config.AutoRMenu, "autoR") && Spells.R.CanCast()
+                && Config.IsChecked(Config.AutoRMenu, "autoR_" + ally.BaseSkinName))
             {
                 if (ally.Health + Spells.GetUltHeal(ally) > enemyDmg && ally.Health <= enemyDmg)
                 {

@@ -8,5 +8,6 @@ C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\bin\x86\Release\
 C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\bin\x86\Release\SharpDX.XInput.dll
 C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\bin\x86\Release\Newtonsoft.Json.dll
 C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\bin\x86\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\obj\x86\Release\TwistedFate.csprojResolveAssemblyReference.cache
 C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\obj\x86\Release\TwistedFate.exe
 C:\Users\ridiculous\Documents\GitHub\EB\TwistedFate\TwistedFate\obj\x86\Release\TwistedFate.pdb

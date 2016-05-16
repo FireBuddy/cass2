@@ -144,7 +144,7 @@ namespace TwistedFate
                                                      + Player.Instance.Spellbook.GetSpell(SpellSlot.Q).SData.Mana);
                         if (Player.Instance.ManaPercent
                             >= Math.Max(
-                                30f, 
+                                45, 
                                 Config.GetSliderValue(Config.JungleClear, "manaToJC") + 10 + combinedManaPercent))
                         {
                             var targetAoE = jungle.Count(x => x.Distance(jungle.FirstOrDefault()) <= 250);
@@ -217,7 +217,7 @@ namespace TwistedFate
                                                          + Player.Instance.Spellbook.GetSpell(SpellSlot.Q).SData.Mana);
                             if (Player.Instance.ManaPercent
                                 >= Math.Max(
-                                    45f, 
+                                    45, 
                                     Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10 + combinedManaPercent))
                             {
                                 var targetAoE =

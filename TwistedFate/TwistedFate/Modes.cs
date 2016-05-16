@@ -139,8 +139,13 @@ namespace TwistedFate
                     }
                     else
                     {
+                        var combinedManaPercent = Player.Instance.MaxMana
+                                                  / (Player.Instance.Spellbook.GetSpell(SpellSlot.W).SData.Mana
+                                                     + Player.Instance.Spellbook.GetSpell(SpellSlot.Q).SData.Mana);
                         if (Player.Instance.ManaPercent
-                            >= Math.Max(30f, Config.GetSliderValue(Config.JungleClear, "manaToJC") + 10))
+                            >= Math.Max(
+                                30f, 
+                                Config.GetSliderValue(Config.JungleClear, "manaToJC") + 10 + combinedManaPercent))
                         {
                             var targetAoE = jungle.Count(x => x.Distance(jungle.FirstOrDefault()) <= 250);
                             if (targetAoE > 2)
@@ -207,8 +212,13 @@ namespace TwistedFate
                     switch (Config.GetComboBoxValue(Config.LaneClear, "wModeLC"))
                     {
                         case 0:
+                            var combinedManaPercent = Player.Instance.MaxMana
+                                                      / (Player.Instance.Spellbook.GetSpell(SpellSlot.W).SData.Mana
+                                                         + Player.Instance.Spellbook.GetSpell(SpellSlot.Q).SData.Mana);
                             if (Player.Instance.ManaPercent
-                                >= Math.Max(50f, Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10))
+                                >= Math.Max(
+                                    45f, 
+                                    Config.GetSliderValue(Config.LaneClear, "manaToLC") + 10 + combinedManaPercent))
                             {
                                 var targetAoE =
                                     EntityManager.MinionsAndMonsters.EnemyMinions.Count(a => a.Distance(target) <= 250);

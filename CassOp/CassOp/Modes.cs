@@ -33,7 +33,7 @@
                     var relPos = target.Position.Shorten(Player.Instance.Position, -300);
                     Spells.R.Cast(relPos);
                     Core.DelayAction(
-                        () => Player.CastSpell(Spells.Flash.Slot, target.Position),
+                        () => Player.CastSpell(Spells.Flash.Slot, target.Position), 
                         Mainframe.RDelay.Next(300, 400));
                 }
 
@@ -67,7 +67,7 @@
                     {
                         var wPred = Spells.W.GetPrediction(target);
                         if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange
-                            && !wPred.CastPosition.IsWall() && wPred.HitChancePercent >= 85)
+                            && wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
                         }
@@ -158,7 +158,7 @@
                     {
                         var wPred = Spells.W.GetPrediction(target);
                         if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange
-                            && !wPred.CastPosition.IsWall() && wPred.HitChancePercent >= 85)
+                            && wPred.HitChancePercent >= 85)
                         {
                             Spells.W.Cast(wPred.CastPosition);
                         }
@@ -204,8 +204,8 @@
                     Computed.GetBestCircularFarmLocation(
                         minions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(),
-                        Spells.Q.Width,
+                            .ToList(), 
+                        Spells.Q.Width, 
                         Spells.Q.Range);
                 if (qFarmLoc.MinionsHit > 0)
                 {
@@ -219,8 +219,8 @@
                     Computed.GetBestCircularFarmLocation(
                         minions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(),
-                        Spells.W.Width,
+                            .ToList(), 
+                        Spells.W.Width, 
                         Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC")
                     && wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= Spells.WMinRange)
@@ -261,8 +261,8 @@
                     Computed.GetBestCircularFarmLocation(
                         objAiMinions.Where(m => m.Distance(Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(),
-                        Spells.Q.Width,
+                            .ToList(), 
+                        Spells.Q.Width, 
                         Spells.Q.Range);
                 if (qFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minQInLC"))
                 {
@@ -277,8 +277,8 @@
                     Computed.GetBestCircularFarmLocation(
                         objAiMinions.Where(m => m.Distance(Player.Instance) <= Spells.W.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(),
-                        Spells.W.Width,
+                            .ToList(), 
+                        Spells.W.Width, 
                         Spells.W.Range);
                 if (wFarmLoc.MinionsHit >= Config.GetSliderValue(Config.LaneClear, "minWInLC")
                     && wFarmLoc.Position.To3D().Distance(Player.Instance.Position) >= Spells.WMinRange)

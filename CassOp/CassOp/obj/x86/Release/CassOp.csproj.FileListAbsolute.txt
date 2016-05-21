@@ -8,5 +8,6 @@ C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\x86\Release\SharpDX.dl
 C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\x86\Release\SharpDX.XInput.dll
 C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\x86\Release\Newtonsoft.Json.dll
 C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\bin\x86\Release\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\x86\Release\CassOp.csprojResolveAssemblyReference.cache
 C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\x86\Release\CassOp.exe
 C:\Users\ridiculous\Documents\GitHub\EB\CassOp\CassOp\obj\x86\Release\CassOp.pdb

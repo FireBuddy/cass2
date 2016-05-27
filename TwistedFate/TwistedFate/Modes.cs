@@ -32,7 +32,7 @@ namespace TwistedFate
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
-            if (!target.IsValidTarget(Spells.Q.Range))
+            if (target == null || !target.IsValidTarget(Spells.Q.Range))
             {
                 return;
             }
@@ -62,8 +62,9 @@ namespace TwistedFate
             }
 
             var qPred = Spells.Q.GetPrediction(target);
-            if (target != null && Player.Instance.Mana >= qMana && qPred.HitChancePercent >= 90
-                && !Config.IsChecked(Config.Combo, "qAAReset") && Config.IsChecked(Config.Combo, "useQinCombo"))
+            if (Player.Instance.Mana >= qMana && qPred.HitChancePercent >= 90
+                && !Config.IsChecked(Config.Combo, "qAAReset") && Config.IsChecked(Config.Combo, "useQinCombo")
+                && !Config.IsChecked(Config.Combo, "yellowIntoQ") && Spells.Q.IsReady())
             {
                 Spells.Q.Cast(qPred.CastPosition);
             }
@@ -77,7 +78,7 @@ namespace TwistedFate
         public static void Harass()
         {
             var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
-            if (!target.IsValidTarget(Spells.Q.Range)
+            if (target == null || !target.IsValidTarget(Spells.Q.Range)
                 || Player.Instance.ManaPercent < Config.GetSliderValue(Config.Harass, "manaToHarass"))
             {
                 return;
@@ -111,8 +112,8 @@ namespace TwistedFate
             }
 
             var qPred = Spells.Q.GetPrediction(target);
-            if (target != null && Player.Instance.Mana >= qMana && qPred.HitChancePercent >= 90
-                && Config.IsChecked(Config.Harass, "useQinHarass"))
+            if (Player.Instance.Mana >= qMana && qPred.HitChancePercent >= 90
+                && Config.IsChecked(Config.Harass, "useQinHarass") && Spells.Q.IsReady())
             {
                 Spells.Q.Cast(qPred.CastPosition);
             }

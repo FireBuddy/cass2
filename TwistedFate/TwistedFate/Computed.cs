@@ -81,7 +81,7 @@
             }
 
             if (Config.IsChecked(Config.Combo, "yellowIntoQ")
-                && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && Config.IsChecked(Config.Combo, "useQinCombo"))
             {
                 var qPred = Spells.Q.GetPrediction(qTarget);
                 Spells.Q.Cast(qPred.CastPosition);

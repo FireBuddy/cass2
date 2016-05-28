@@ -88,7 +88,7 @@
             DrawMenu.Add("bW", new CheckBox("Draw W Range", false));
             DrawMenu.Add("bE", new CheckBox("Draw E Range", false));
             DrawMenu.Add("bR", new CheckBox("Draw R Range", false));
-            DrawMenu.Add("onlyRdy", new CheckBox("Draw only when spells are ready"));
+            DrawMenu.Add("onlyRdy", new CheckBox("Draw only when spells can be cast"));
             DrawMenu.Add("drawFR", new CheckBox("Draw possible FlashUlt Targets", false));
         }
 

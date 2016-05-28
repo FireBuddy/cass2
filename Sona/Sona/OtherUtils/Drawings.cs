@@ -33,6 +33,12 @@
                 Drawing.DrawCircle(Player.Instance.Position, Spells.E.Range, Color.AliceBlue);
             }
 
+            if (Config.IsChecked(Config.DrawMenu, "bR")
+                && (!Config.IsChecked(Config.DrawMenu, "onlyRdy") || Spells.R.CanCast()))
+            {
+                Drawing.DrawCircle(Player.Instance.Position, Spells.R.Range, Color.AliceBlue);
+            }
+
             if (Config.IsChecked(Config.DrawMenu, "drawFR")
                 && (!Config.IsChecked(Config.DrawMenu, "onlyRdy") || (Spells.R.CanCast() && Spells.Flash.CanCast())))
             {

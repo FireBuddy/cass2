@@ -7,5 +7,6 @@ C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\x86\Release\EloBuddy.SDK.d
 C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\x86\Release\SharpDX.Direct3D9.dll
 C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\x86\Release\SharpDX.dll
 C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\x86\Release\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\x86\Release\Sona.csprojResolveAssemblyReference.cache
 C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\x86\Release\Sona.exe
 C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\x86\Release\Sona.pdb

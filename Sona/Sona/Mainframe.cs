@@ -21,6 +21,7 @@
             Orbwalker.OnPreAttack += Harass.OnPreAttack;
             Drawing.OnDraw += Drawings.OnDraw;
             Interrupter.OnInterruptableSpell += Interrupt.OnInterruptableSpell;
+            Gapcloser.OnGapcloser += Gapclose.OnGapclose;
         }
 
         private static void OnTick(EventArgs args)

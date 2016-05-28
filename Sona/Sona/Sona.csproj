@@ -91,6 +91,7 @@
     <Compile Include="Modes\Harass.cs" />
     <Compile Include="OtherUtils\Computed.cs" />
     <Compile Include="OtherUtils\Drawings.cs" />
+    <Compile Include="OtherUtils\Gapclose.cs" />
     <Compile Include="OtherUtils\Interrupt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

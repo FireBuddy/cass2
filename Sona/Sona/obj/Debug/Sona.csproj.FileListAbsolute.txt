@@ -1,0 +1,12 @@
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\Sona.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\Sona.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\Sona.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\Debug\Sona.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\Debug\Sona.exe
+C:\Users\ridiculous\Documents\GitHub\EB\Sona\Sona\obj\Debug\Sona.pdb

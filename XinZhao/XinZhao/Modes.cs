@@ -48,19 +48,28 @@
                     return;
                 }
 
+                var pathEndLoc = target.Path.OrderByDescending(x => x.Distance(target)).FirstOrDefault();
+                var dist = Player.Instance.Position.Distance(target.Position);
+                var distToPath = pathEndLoc.Distance(Player.Instance.Position);
+                if (distToPath <= dist)
+                {
+                    return;
+                }
+
                 if (target.Distance(Player.Instance.Position) >= 300
                     && (Player.Instance.HasBuff("XenZhaoComboTarget") || Spells.Q.CanCast()))
                 {
                     Spells.E.Cast(target);
                 }
 
-                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.50f
-                    && target.MoveSpeed + 15 >= Player.Instance.MoveSpeed)
+                var movspeedDif = Player.Instance.MoveSpeed - target.MoveSpeed;
+                if (movspeedDif <= 0 && !Player.Instance.IsInAutoAttackRange(target))
                 {
                     Spells.E.Cast(target);
                 }
 
-                if (target.Distance(Player.Instance.Position) > Spells.E.Range * 0.80f)
+                var timeToReach = dist / movspeedDif;
+                if (timeToReach > 4)
                 {
                     Spells.E.Cast(target);
                 }

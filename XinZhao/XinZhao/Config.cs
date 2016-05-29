@@ -34,7 +34,7 @@
             Combo.Add("useWcombo", new CheckBox("Use W"));
             Combo.Add("useEcombo", new CheckBox("Use E"));
             Combo.Add("comboETower", new CheckBox("Don't E under tower", false));
-            Combo.Add("comboEmode", new ComboBox("E Usage Mode", 0, "Try to not waste", "Use when out of melee range"));
+            Combo.Add("comboEmode", new ComboBox("E Usage Mode", 0, "Smart", "Use when out of melee range"));
             Combo.Add("useRcombo", new CheckBox("Use R"));
             Combo.Add("comboMinR", new Slider("Min Targets to hit for R", 5, 1, 5));
 

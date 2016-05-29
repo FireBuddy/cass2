@@ -88,6 +88,7 @@
     <Compile Include="Mainframe.cs" />
     <Compile Include="Modes\AutoW.cs" />
     <Compile Include="Modes\Combo.cs" />
+    <Compile Include="Modes\Flee.cs" />
     <Compile Include="Modes\Harass.cs" />
     <Compile Include="OtherUtils\Computed.cs" />
     <Compile Include="OtherUtils\Drawings.cs" />

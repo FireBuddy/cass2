@@ -22,6 +22,7 @@
             Drawing.OnDraw += Drawings.OnDraw;
             Interrupter.OnInterruptableSpell += Interrupt.OnInterruptableSpell;
             Gapcloser.OnGapcloser += Gapclose.OnGapclose;
+            Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
         }
 
         private static void OnTick(EventArgs args)
@@ -46,6 +47,11 @@
                 && Player.Instance.ManaPercent >= Config.GetSliderValue(Config.HarassMenu, "minMana"))
             {
                 Harass.Execute();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
+            {
+                Flee.Execute();
             }
         }
 

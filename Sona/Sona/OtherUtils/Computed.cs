@@ -15,6 +15,16 @@
 
         #region Methods
 
+        internal static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe)
+            {
+                return;
+            }
+
+            Spells.LastSpellSlot = args.Slot;
+        }
+
         internal static int PassiveCount()
         {
             return Player.Instance.Buffs.First(buff => buff.Name == "sonapassive").Count;

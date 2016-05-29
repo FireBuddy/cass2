@@ -14,6 +14,10 @@
 
         public static SpellDataInst Flash { get; private set; }
 
+        public static Spell.SpellBase LastSpell { get; set; }
+
+        public static SpellSlot LastSpellSlot { get; set; }
+
         public static Spell.Active Q { get; private set; }
 
         public static Spell.Skillshot R { get; private set; }

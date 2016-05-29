@@ -29,6 +29,7 @@
 
         public static void Init()
         {
+            Obj_AI_Base.OnProcessSpellCast += Computed.SafeCast;
             Game.OnTick += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Computed.OnProcessSpellCast;
             Obj_AI_Base.OnProcessSpellCast += Computed.YellowIntoQ;

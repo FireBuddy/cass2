@@ -53,6 +53,8 @@
 
         internal static int LastWSent { get; private set; }
 
+        private static int Delay { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -66,6 +68,9 @@
                 {
                     Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
                     LastWSent = Environment.TickCount;
+                    Delay = Config.IsChecked(Config.Misc, "humanizePicks")
+                                ? Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanizeInt"))
+                                : 0;
                 }
             }
         }
@@ -95,15 +100,18 @@
                 Status = SelectStatus.Selected;
             }
 
-            if (Select == Cards.Blue && wName.Equals("BlueCardLock", StringComparison.InvariantCultureIgnoreCase))
+            if (Select == Cards.Blue && wName.Equals("BlueCardLock", StringComparison.InvariantCultureIgnoreCase)
+                && Environment.TickCount - Delay > LastWSent)
             {
                 SendWPacket();
             }
-            else if (Select == Cards.Yellow && wName.Equals("GoldCardLock", StringComparison.InvariantCultureIgnoreCase))
+            else if (Select == Cards.Yellow && wName.Equals("GoldCardLock", StringComparison.InvariantCultureIgnoreCase)
+                     && Environment.TickCount - Delay > LastWSent)
             {
                 SendWPacket();
             }
-            else if (Select == Cards.Red && wName.Equals("RedCardLock", StringComparison.InvariantCultureIgnoreCase))
+            else if (Select == Cards.Red && wName.Equals("RedCardLock", StringComparison.InvariantCultureIgnoreCase)
+                     && Environment.TickCount - Delay > LastWSent)
             {
                 SendWPacket();
             }
@@ -131,26 +139,12 @@
 
         private static void SendWPacket()
         {
-            if (Config.IsChecked(Config.Misc, "humanizePicks"))
+            if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
             {
-                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
-                {
-                    Orbwalker.ResetAutoAttack();
-                }
-
-                Core.DelayAction(
-                    () => Player.Instance.Spellbook.CastSpell(SpellSlot.W, false), 
-                    Computed.RandomDelay(Config.GetSliderValue(Config.Misc, "humanizeInt")));
+                Orbwalker.ResetAutoAttack();
             }
-            else
-            {
-                if (Config.IsChecked(Config.Misc, "cancelAApicking") && Orbwalker.IsAutoAttacking)
-                {
-                    Orbwalker.ResetAutoAttack();
-                }
 
-                Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
-            }
+            Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
         }
 
         #endregion

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Windows.Input;
 
     using EloBuddy;
     using EloBuddy.SDK;
@@ -56,15 +57,27 @@
 
         public static int RandomDelay(int x)
         {
-            var y = x;
-            var i = Math.Abs(x);
-            while (i >= 10)
+            var vary = 0;
+            if (x < 100)
             {
-                i /= 10;
+                vary = 10;
             }
 
-            i = y / i;
-            return Tf.RDelay.Next(y - i, y + i);
+            if (x > 100)
+            {
+                vary = x / 10;
+            }
+
+            return Tf.RDelay.Next(x - vary, x + vary);
+        }
+
+        public static void SafeCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (Keyboard.IsKeyDown(Key.W) && args.SData.Name == "PickACard"
+                && Config.IsKeyPressed(Config.CardSelectorMenu, "csYellow"))
+            {
+                args.Process = false;
+            }
         }
 
         public static void YellowIntoQ(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -81,7 +94,8 @@
             }
 
             if (Config.IsChecked(Config.Combo, "yellowIntoQ")
-                && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && Config.IsChecked(Config.Combo, "useQinCombo"))
+                && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
+                && Config.IsChecked(Config.Combo, "useQinCombo"))
             {
                 var qPred = Spells.Q.GetPrediction(qTarget);
                 Spells.Q.Cast(qPred.CastPosition);

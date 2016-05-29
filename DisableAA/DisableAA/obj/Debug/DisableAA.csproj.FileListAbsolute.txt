@@ -1,0 +1,12 @@
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\DisableAA.exe.config
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\DisableAA.exe
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\DisableAA.pdb
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\EloBuddy.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\EloBuddy.Sandbox.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\EloBuddy.SDK.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\SharpDX.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\obj\Debug\DisableAA.csprojResolveAssemblyReference.cache
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\obj\Debug\DisableAA.exe
+C:\Users\ridiculous\Documents\GitHub\EB\DisableAA\DisableAA\obj\Debug\DisableAA.pdb

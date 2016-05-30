@@ -43,6 +43,8 @@
 
         public static Cards Select { get; set; }
 
+        public static bool Starting { get; set; } = false;
+
         public static SelectStatus Status { get; set; }
 
         #endregion
@@ -66,6 +68,7 @@
                 Select = card;
                 if (Environment.TickCount - LastWSent > 170 + (Game.Ping / 2))
                 {
+                    Starting = true;
                     Player.Instance.Spellbook.CastSpell(SpellSlot.W, false);
                     LastWSent = Environment.TickCount;
                     Delay = Config.IsChecked(Config.Misc, "humanizePicks")

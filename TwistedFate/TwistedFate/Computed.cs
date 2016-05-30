@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using System.Windows.Input;
 
     using EloBuddy;
     using EloBuddy.SDK;
@@ -71,12 +70,20 @@
             return Tf.RDelay.Next(x - vary, x + vary);
         }
 
-        public static void SafeCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        public static void SafeCast(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            if (Keyboard.IsKeyDown(Key.W) && args.SData.Name == "PickACard"
-                && Config.IsKeyPressed(Config.CardSelectorMenu, "csYellow"))
+            if (args.Slot != SpellSlot.W) return;
+            if (!CardSelector.Starting
+                && (Config.IsKeyPressed(Config.CardSelectorMenu, "csYellow")
+                    || Config.IsKeyPressed(Config.CardSelectorMenu, "csBlue")
+                    || Config.IsKeyPressed(Config.CardSelectorMenu, "csRed")))
             {
                 args.Process = false;
+            }
+
+            if (CardSelector.Starting)
+            {
+                CardSelector.Starting = false;
             }
         }
 

@@ -73,7 +73,7 @@
         public static void SafeCast(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
             if (args.Slot != SpellSlot.W) return;
-            if (!CardSelector.Starting
+            if (CardSelector.Starting
                 && (Config.IsKeyPressed(Config.CardSelectorMenu, "csYellow")
                     || Config.IsKeyPressed(Config.CardSelectorMenu, "csBlue")
                     || Config.IsKeyPressed(Config.CardSelectorMenu, "csRed")))

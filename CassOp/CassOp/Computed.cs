@@ -71,7 +71,7 @@
             var minionToE =
                 EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
                     x =>
-                    x.IsValidTarget(Spells.E.Range) && Player.GetSpellDamage(x, SpellSlot.E) >= x.Health
+                    x.IsValidTarget(Spells.E.Range) && Spells.GetEDamage(x) >= x.Health
                     && x.HasBuffOfType(BuffType.Poison));
             if (minionToE != null)
             {
@@ -214,7 +214,7 @@
 
             if (Spells.E.IsReady())
             {
-                dmg += Player.GetSpellDamage(target, SpellSlot.E) * 2;
+                dmg += Spells.GetEDamage(target);
             }
 
             if (Spells.R.IsReady())
@@ -235,11 +235,10 @@
         Stolen from:
             https://github.com/mrarticuno/Elobuddy/blob/master/Cassioloira/OneForWeek/Util/Misc/Misc.cs
         */
-
         public static FarmLocation GetBestCircularFarmLocation(
-            List<Vector2> minionPositions,
-            float width,
-            float range,
+            List<Vector2> minionPositions, 
+            float width, 
+            float range, 
             int useMecMax = 9)
         {
             var result = new Vector2();
@@ -303,7 +302,7 @@
             {
                 var entKs =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
-                        h => h.IsValidTarget(Spells.E.Range) && h.Health < Player.GetSpellDamage(h, SpellSlot.E));
+                        h => h.IsValidTarget(Spells.E.Range) && h.Health < Spells.GetEDamage(h));
                 if (entKs != null)
                 {
                     Spells.E.Cast(entKs);
@@ -373,7 +372,7 @@
 
             var eTravelTime = target.Distance(EloBuddy.Player.Instance) / Spells.E.Handle.SData.MissileSpeed
                               + Spells.E.CastDelay + Game.Ping / 2f / 1000;
-            if (Config.IsChecked(Config.Misc, "eLastHit") && Player.GetSpellDamage(target, SpellSlot.E) > target.Health
+            if (Config.IsChecked(Config.Misc, "eLastHit") && Spells.GetEDamage(target) > target.Health
                 && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit)
                 && Prediction.Health.GetPrediction(target, (int)eTravelTime * 1000) > 0)
             {
@@ -414,8 +413,8 @@
                     GetBestCircularFarmLocation(
                         objAiMinions.Where(m => m.Distance(EloBuddy.Player.Instance) <= Spells.Q.Range)
                             .Select(mx => mx.ServerPosition.To2D())
-                            .ToList(),
-                        Spells.Q.Width,
+                            .ToList(), 
+                        Spells.Q.Width, 
                         Spells.Q.Range);
                 if (qFarmLoc.MinionsHit >= 1)
                 {

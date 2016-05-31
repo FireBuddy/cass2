@@ -111,8 +111,7 @@
             {
                 var minToE =
                     EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
-                        m =>
-                        m.Health < Player.Instance.GetSpellDamage(m, SpellSlot.E) && m.IsValidTarget(Spells.E.Range));
+                        m => m.Health < Spells.GetEDamage(m) && m.IsValidTarget(Spells.E.Range));
                 if (minToE != null)
                 {
                     if (!Config.IsChecked(Config.LastHit, "lastEonP") || minToE.HasBuffOfType(BuffType.Poison))
@@ -292,7 +291,7 @@
                 var minToE =
                     EntityManager.MinionsAndMonsters.EnemyMinions.FirstOrDefault(
                         m =>
-                        m.IsValidTarget(Spells.E.Range) && Player.Instance.GetSpellDamage(m, SpellSlot.E) > m.Health
+                        m.IsValidTarget(Spells.E.Range) && Spells.GetEDamage(m) > m.Health
                         && ((!Config.IsChecked(Config.LaneClear, "laneEonP") || m.HasBuffOfType(BuffType.Poison))
                             || (Config.IsChecked(Config.LaneClear, "useManaEInLC")
                                 && Player.Instance.ManaPercent <= Config.GetSliderValue(Config.LaneClear, "manaEInLC"))));

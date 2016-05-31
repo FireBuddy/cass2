@@ -111,7 +111,7 @@
             Misc.Add("antiMissR", new CheckBox("Block R Casts if they miss/don't face"));
             Misc.Add("assistedR", new KeyBind("Assisted R", false, KeyBind.BindTypes.HoldActive, 'R'));
             Misc.Add(
-                "eLastHit",
+                "eLastHit", 
                 new CheckBox("Use E to kill unkillable (AA)" + Environment.NewLine + "minions while LastHit"));
             Misc.Add("eKillSteal", new CheckBox("Use E to Killsteal"));
             Misc.Add("humanDelay", new Slider("Humanize", 30, 1, 500));

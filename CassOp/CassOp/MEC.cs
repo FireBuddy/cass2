@@ -234,11 +234,11 @@
 
         // Return true if the indicated circle encloses all of the points.
         private static bool CircleEnclosesPoints(
-            Vector2 center,
-            float radius2,
-            List<Vector2> points,
-            int skip1,
-            int skip2,
+            Vector2 center, 
+            float radius2, 
+            List<Vector2> points, 
+            int skip1, 
+            int skip2, 
             int skip3)
         {
             return (from point in points.Where((t, i) => (i != skip1) && (i != skip2) && (i != skip3))
@@ -314,10 +314,10 @@
         // Find the points nearest the upper left, upper right,
         // lower left, and lower right corners.
         private static void GetMinMaxCorners(
-            List<Vector2> points,
-            ref Vector2 ul,
-            ref Vector2 ur,
-            ref Vector2 ll,
+            List<Vector2> points, 
+            ref Vector2 ul, 
+            ref Vector2 ur, 
+            ref Vector2 ll, 
             ref Vector2 lr)
         {
             // Start with the first point as the solution.

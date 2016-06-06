@@ -38,6 +38,7 @@
             Interrupter.OnInterruptableSpell += OtherUtils.OnInterruptableSpell;
             Gapcloser.OnGapcloser += OtherUtils.OnGapCloser;
             Chat.OnInput += OnChatInput;
+            Modes.Obj_AI_Base.OnBasicAttack += Obj_AI_Base_OnBasicAttack;
         }
 
         #endregion

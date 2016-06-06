@@ -9,6 +9,25 @@
     {
         #region Public Methods and Operators
 
+        private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base Sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (Sender == null || !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
+            {
+               return;
+            }
+            var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
+            if (!Sender.IsDashing() && Sender.Type == GameObjectType.AIHeroClient && Sender.IsValidTarget(Spells.Q.Range) && Spells.Q.IsReady() && Sender.IsEnemy)
+            {
+                if (ObjectManager.Player.Position.Distance(target.ServerPosition) <= 800)
+                {
+                    Spells.Q.Cast(Sender.ServerPosition + 75);
+                }
+                if (ObjectManager.Player.Position.Distance(target.ServerPosition) > 800)
+                {
+                    Spells.Q.Cast(Player.Instance.Position.Extend(target.ServerPosition, 875).To3D());
+                }
+            } 
+        }
         public static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells.R.Range + 250, DamageType.Magical);

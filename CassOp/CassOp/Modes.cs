@@ -72,7 +72,7 @@
                 var qPred = Spells.Q.GetPrediction(target);
                 if (qPred.HitChancePercent >= 85)
                 {
-                    Spells.Q.Cast(qPred.CastPosition);
+                    Spells.Q.Cast(qPred.CastPosition + 50);
                 }
             }
 
@@ -88,7 +88,7 @@
                         if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange
                             && wPred.HitChancePercent >= 85)
                         {
-                            Spells.W.Cast(wPred.CastPosition);
+                            Spells.W.Cast(wPred.CastPosition + 50);
                         }
                     }
                 }
@@ -98,7 +98,7 @@
                     if (wPred.CastPosition.Distance(Player.Instance.Position) >= Spells.WMinRange
                         && !wPred.CastPosition.IsWall() && wPred.HitChancePercent >= 85)
                     {
-                        Spells.W.Cast(wPred.CastPosition);
+                        Spells.W.Cast(wPred.CastPosition + 50);
                     }
                 }
             }
